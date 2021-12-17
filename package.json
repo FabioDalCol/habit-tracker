@@ -11,6 +11,7 @@
   "dependencies": {
     "@react-native-async-storage/async-storage": "~1.15.0",
     "@react-native-masked-view/masked-view": "0.2.5",
+    "@react-native-picker/picker": "2.1.0",
     "@react-navigation/drawer": "^6.1.8",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/native-stack": "^6.2.5",
@@ -24,6 +25,7 @@
     "expo-updates": "~0.10.13",
     "firebase": "^9.4.1",
     "install": "^0.13.0",
+    "just-clone": "^5.0.1",
     "npm": "^8.3.0",
     "rc-progress": "^3.1.4",
     "react": "17.0.1",
@@ -43,8 +45,7 @@
     "react-native-web": "0.17.1",
     "react-redux": "^7.2.6",
     "redux-persist": "^6.0.0",
-    "tailwind-rn": "^3.0.1",
-    "@react-native-picker/picker": "2.1.0"
+    "tailwind-rn": "^3.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

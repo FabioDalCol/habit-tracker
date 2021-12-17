@@ -17,6 +17,10 @@ import getHabits from "../Api";
 import { selectHabits, selectRefreshing} from "../slices/habitSlice";
 import { Input, CheckBox} from 'react-native-elements';
 import { TextInput } from "react-native-gesture-handler";
+import store from "../store";
+import { setHabits, decrementValue, incrementValue, setCompleted } from "../slices/habitSlice";
+import clone from 'just-clone';
+
 
 
 
@@ -32,6 +36,8 @@ const HomeScreen = ({navigation}) => {
   }
 
   const user = useSelector(selectUser);
+  const uid ="6GsiMJsZgCjpinhQgyCD";
+  const api_token = "ciao";
    // const { user } = useAuth();
 
   const [showView, setShowView] = useState(false);   
@@ -42,129 +48,73 @@ const HomeScreen = ({navigation}) => {
                       Walk:{icon:"walk",color:"brown"},
                       Custom:{icon:"chess-queen",color:"gray"}
                       }
-      const habits = [
-        {
-          id: 1,
-          habit: "Morning Walk",
-          icon: "hiking",
-          theme: "#008b8b",
-          stamp: "Today . 8am"
-        },
-        {
-          id: 2,
-          habit: "Meet with HR",
-          icon: "account-tie",
-          theme: "#37003c",
-          stamp: "Today . 12 noon"
-        },
-        {
-          id: 3,
-          habit: "Shopping with familly",
-          icon: "cart",
-          theme: "#fed132",
-          stamp: "Tomorrow . 3"
-        },
-        {
-          id: 4,
-          habit: "Time for Gym",
-          icon: "weight",
-          theme: "#008b8b",
-          stamp: "Saturday . 4pm"
-        },
-        {
-          id: 5,
-          habit: "Time for Gym",
-          icon: "weight",
-          theme: "#008b8b",
-          stamp: "Saturday . 4pm"
-        },
-        {
-          id: 6,
-          habit: "Time for Gym",
-          icon: "weight",
-          theme: "#008b8b",
-          stamp: "Saturday . 4pm"
-        },
-        {
-          id: 7,
-          habit: "Time for Gym",
-          icon: "weight",
-          theme: "#008b8b",
-          stamp: "Saturday . 4pm"
-        },
-        {
-          id: 8,
-          habit: "Time for Gym",
-          icon: "weight",
-          theme: "#008b8b",
-          stamp: "Saturday . 4pm"
-        },
-        {
-          id: 9,
-          habit: "Time for Gym",
-          icon: "weight",
-          theme: "#008b8b",
-          stamp: "Saturday . 4pm"
-        },{
-          id: 10,
-          habit: "Time for Gym",
-          icon: "weight",
-          theme: "#008b8b",
-          stamp: "Saturday . 4pm"
-        }
       
-      ];
-      
-      const Habit = ({ name, category, desc, countable, value = null, set_value = null }) => {
-        return (
-          <View style={styles.habit.main}>
-            <View style={styles.habit.container}>
-              <MaterialCommunityIcons
-                name={categories[category].icon}
-                size={30}
-                style={{ color: categories[category].color, marginRight: 5 }}
-              />
-              <View>
-                <Text style={tailwind('text-base')}>{name}</Text>
-                <Text style={{ color: styleColors.greyish }}>{desc}</Text>
-              </View>
-            </View>
-
-            
-            <View>  
-            
-            {countable && (
-              <View style={tailwind('flex-row')}>
-              <View >
-               
-               <TextInput  inputContainerStyle={styles.inputTextBox.container} style={[styles.inputValueBox,{width:15+String(value).length*10}]} value={String(value)}/>
-              </View>
-              
-              <Text style={[tailwind("text-center font-semibold"),{fontSize:18}]}>/{set_value}</Text>
-              
-              </View>
-            )}  
-            
-            
-            <View style={tailwind('flex-row justify-end'  )}>            
-              <MaterialCommunityIcons
-                name="plus"
-                size={30}
-                style={{ color: categories[category].color }}
-              />
-            <TouchableOpacity > 
-              <MaterialCommunityIcons
-                name="minus"
-                size={30}
-                style={{ color: categories[category].color, marginLeft: 5 }} 
-                onPress={()=>console.log("Ho premuto "+ name)}                
-              />
-              </TouchableOpacity> 
-            </View>
-            </View>
+  const Habit = ({ id, name, category, desc, countable, value = null, set_value = null }) => {
+    return (
+      <View style={styles.habit.main}>
+        <View style={styles.habit.container}>
+          <MaterialCommunityIcons
+            name={categories[category].icon}
+            size={30}
+            style={{ color: categories[category].color, marginRight: 5 }}
+          />
+          <View>
+            <Text style={tailwind('text-base')}>{name}</Text>
+            <Text style={{ color: styleColors.greyish }}>{desc}</Text>
           </View>
-        );
-      };
+        </View>
+
+        
+        <View>  
+        
+        {countable ? (<>
+          <View style={tailwind('flex-row justify-center')}>
+            <View>               
+              <TextInput  inputContainerStyle={styles.inputTextBox.container} style={[styles.inputValueBox,{width:15+String(value).length*10}]} value={String(value)}/>
+            </View>              
+            <Text style={[tailwind("text-center font-semibold"),{fontSize:18}]}>/{set_value}</Text>              
+          </View>
+
+          <View style={tailwind('flex-row justify-end'  )}> 
+          <TouchableOpacity onPress={()=>store.dispatch(incrementValue(id))} >           
+          <MaterialCommunityIcons
+            name="plus"
+            size={30}
+            style={{ color: categories[category].color }}
+          />
+           </TouchableOpacity>
+          <TouchableOpacity onPress={()=>store.dispatch(decrementValue(id))} > 
+          <MaterialCommunityIcons
+            name="minus"
+            size={30}
+            style={{ color: categories[category].color, marginLeft: 5 }}                           
+          />
+          </TouchableOpacity> 
+          </View>
+          </>
+        ):(<>
+          <View style={tailwind('pr-4 ')}>
+          <TouchableOpacity onPress={()=>store.dispatch(setCompleted(id))}>              
+          <MaterialCommunityIcons
+            name="check"
+            size={30}
+            style={{ color: categories[category].color, marginLeft: 5 }} 
+            onPress={()=>console.log("Ho premuto "+ name)}                
+          />
+          </TouchableOpacity>         
+                      
+        </View>
+
+        </>
+        )}  
+        
+        
+        
+        
+        </View>
+      </View>
+    );
+  };
 
   const setNewHabitComp = () => {
     setShowView(!showView)
@@ -173,7 +123,9 @@ const HomeScreen = ({navigation}) => {
   
   
   const newhabits = useSelector(selectHabits);
-  //console.log(newhabits) 
+  console.log(newhabits) 
+  const date = new Date(newhabits[2].completed[1]);
+  console.log(date.toString())
   
   console.log(user.uid)
   console.log(user.api_token)
@@ -191,7 +143,7 @@ const HomeScreen = ({navigation}) => {
           />
           </TouchableOpacity>
           <View style={tailwind('flex-row')}>
-          <TouchableOpacity onPress={()=> {getHabits('6GsiMJsZgCjpinhQgyCD','ciao',newhabits); console.log(newhabits)}} >
+          <TouchableOpacity onPress={()=> {getHabits(uid,api_token,newhabits); console.log(newhabits)}} >
             <MaterialCommunityIcons
               name="bell-outline" //
               size={30}
@@ -255,7 +207,7 @@ const HomeScreen = ({navigation}) => {
             refreshing={refreshing}
             onRefresh={()=>{
                     setRefreshing(true); 
-                    getHabits('6GsiMJsZgCjpinhQgyCD','ciao',newhabits,setRefreshing)
+                    getHabits(uid,api_token,newhabits,setRefreshing)
                   }
                 }
           />}
@@ -265,13 +217,15 @@ const HomeScreen = ({navigation}) => {
 
         {newhabits.map(habit => (          
           <Habit
-            key={habit.id}
+            key={habit.id} 
+            id = {habit.id}             
             name={habit.name}
             category={habit.category}
             desc={habit.desc}
             countable={habit.countable}
             value={habit.value}
-            set_value={habit.set_value}           
+            set_value={habit.set_value}
+                      
           />
         ))}
       </ScrollView> 

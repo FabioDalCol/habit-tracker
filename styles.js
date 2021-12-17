@@ -33,8 +33,10 @@ const styles =
             marginHorizontal: 16,
             marginVertical: 4,
             borderRadius: 20,
-            paddingVertical: 20,
-            paddingHorizontal: 24,
+            borderColor: '#22C55E' ,            
+            //borderWidth: 3, if completed
+            paddingVertical: 15,
+            paddingHorizontal: 15,
             alignItems: "center",
             justifyContent: "space-between"
         },
