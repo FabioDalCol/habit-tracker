@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, Text, StatusBar } from "react-native";
+import { View, Text, StatusBar, RefreshControl } from "react-native";
 import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { useSelector } from "react-redux";
@@ -13,18 +13,14 @@ import { useState } from "react";
 import { useRef } from 'react';
 import { styles } from "../styles";
 import { styleColors } from '../colors'
-import axios from 'axios';
+import getHabits from "../Api";
+import { selectHabits, selectRefreshing} from "../slices/habitSlice";
+import { Input, CheckBox} from 'react-native-elements';
+import { TextInput } from "react-native-gesture-handler";
+
+
 
 const HomeScreen = ({navigation}) => {
-
-
-  // const fetchUser = async () => {
-  //   const url = `https://habits-app-api.ew.r.appspot.com/api/v1/users/6GsiMJsZgCjpinhQgyCD/habits/BaVMYIr0Gs8xQfshL3qn`;
-  //   const response = await axios.get(url,{headers:{token: "ciao"}});
-  //   console.log(response.data);
-  // };
-
-  // fetchUser();
 
   const scrollRef = useRef();
 
@@ -40,7 +36,12 @@ const HomeScreen = ({navigation}) => {
 
   const [showView, setShowView] = useState(false);   
   const [newHabitForm, setNewHabitForm] = useState({Mon:false,Tue:false,Wed:false,Thu:false,Fri:false,Sat:false,Sun:false,Eve:false})
+  const [refreshing,setRefreshing] = useState(false); //pull down to refresh
 
+  const categories = {Drink:{icon:"cup-water", color:"#00BFFF"},
+                      Walk:{icon:"walk",color:"brown"},
+                      Custom:{icon:"chess-queen",color:"gray"}
+                      }
       const habits = [
         {
           id: 1,
@@ -114,35 +115,52 @@ const HomeScreen = ({navigation}) => {
       
       ];
       
-      const Habit = ({ habit, icon, theme, stamp }) => {
+      const Habit = ({ name, category, desc, countable, value = null, set_value = null }) => {
         return (
           <View style={styles.habit.main}>
             <View style={styles.habit.container}>
               <MaterialCommunityIcons
-                name={icon}
+                name={categories[category].icon}
                 size={30}
-                style={{ color: theme, marginRight: 5 }}
+                style={{ color: categories[category].color, marginRight: 5 }}
               />
               <View>
-                <Text style={tailwind('text-base')}>{habit}</Text>
-                <Text style={{ color: styleColors.greyish }}>{stamp}</Text>
+                <Text style={tailwind('text-base')}>{name}</Text>
+                <Text style={{ color: styleColors.greyish }}>{desc}</Text>
               </View>
             </View>
-      
-            <View style={tailwind('flex-row')}>
+
+            
+            <View>  
+            
+            {countable && (
+              <View style={tailwind('flex-row')}>
+              <View >
+               
+               <TextInput  inputContainerStyle={styles.inputTextBox.container} style={[styles.inputValueBox,{width:15+String(value).length*10}]} value={String(value)}/>
+              </View>
+              
+              <Text style={[tailwind("text-center font-semibold"),{fontSize:18}]}>/{set_value}</Text>
+              
+              </View>
+            )}  
+            
+            
+            <View style={tailwind('flex-row justify-end'  )}>            
               <MaterialCommunityIcons
-                name="pencil"
+                name="plus"
                 size={30}
-                style={{ color: theme }}
+                style={{ color: categories[category].color }}
               />
             <TouchableOpacity > 
               <MaterialCommunityIcons
-                name="trash-can"
+                name="minus"
                 size={30}
-                style={{ color: theme, marginLeft: 5 }} 
-                onPress={()=>console.log("Ho premuto "+ habit)}                
+                style={{ color: categories[category].color, marginLeft: 5 }} 
+                onPress={()=>console.log("Ho premuto "+ name)}                
               />
               </TouchableOpacity> 
+            </View>
             </View>
           </View>
         );
@@ -152,6 +170,10 @@ const HomeScreen = ({navigation}) => {
     setShowView(!showView)
   }  
 
+  
+  
+  const newhabits = useSelector(selectHabits);
+  //console.log(newhabits) 
   
   console.log(user.uid)
   console.log(user.api_token)
@@ -169,11 +191,13 @@ const HomeScreen = ({navigation}) => {
           />
           </TouchableOpacity>
           <View style={tailwind('flex-row')}>
+          <TouchableOpacity onPress={()=> {getHabits('6GsiMJsZgCjpinhQgyCD','ciao',newhabits); console.log(newhabits)}} >
             <MaterialCommunityIcons
               name="bell-outline" //
               size={30}
               style={{ color: styleColors.white }}
             />
+            </TouchableOpacity>
             <TouchableOpacity onPress={()=> {logout()}} >
             <AntDesign name="user" size={30} style={{ color: styleColors.white }} />
             </TouchableOpacity>
@@ -204,7 +228,7 @@ const HomeScreen = ({navigation}) => {
 
 
      
-
+      
       <View style={styles.habitBox}>
         <Text style={tailwind('text-2xl')}>Habits</Text>
         <TouchableOpacity onPress={()=>{
@@ -219,26 +243,41 @@ const HomeScreen = ({navigation}) => {
         </TouchableOpacity>    
           
       </View>
-        
+     
+      
+     
       <ScrollView 
         style={{backgroundColor: styleColors.background,marginHorizontal: 6}} //, borderBottomLeftRadius: 20, borderBottomRightRadius: 20, marginBottom: 20}}
         contentContainerStyle={{paddingBottom: 20}}
         ref={scrollRef}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={()=>{
+                    setRefreshing(true); 
+                    getHabits('6GsiMJsZgCjpinhQgyCD','ciao',newhabits,setRefreshing)
+                  }
+                }
+          />}
       >
         
         <NewHabit viewStyle = {styles.newHabit} show={showView} state={{newHabitForm,setNewHabitForm}} setShow={setNewHabitComp}/>                                             
 
-        {habits.map(habit => (          
+        {newhabits.map(habit => (          
           <Habit
             key={habit.id}
-            habit={habit.habit}
-            icon={habit.icon}
-            theme={habit.theme}
-            stamp={habit.stamp}
+            name={habit.name}
+            category={habit.category}
+            desc={habit.desc}
+            countable={habit.countable}
+            value={habit.value}
+            set_value={habit.set_value}           
           />
         ))}
       </ScrollView> 
+      
     </View>
+    
     
   );
 }

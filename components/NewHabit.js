@@ -20,7 +20,7 @@ const NewHabit = (props ) => {
     const categories= ['Drink', 'Run', 'Diet', 'Sport', 'Walk', 'Health'];
 
     
-    console.log(categories.map((num) => ({'label': num, 'value': num})));
+    categories.map((num) => ({'label': num, 'value': num}));
 
 
     console.log(newHabitForm);

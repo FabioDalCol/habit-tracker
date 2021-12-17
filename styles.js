@@ -81,7 +81,7 @@ const styles =
         paddingVertical: 20,
         paddingHorizontal: 10,
         marginHorizontal: 16,
-        marginVertical: 4,
+        marginVertical: 4,        
 
     },
     drawer:{
@@ -119,6 +119,26 @@ const styles =
             fontSize: 16
             },
         container:{borderBottomWidth: 0}        
+    },
+
+    inputValueBox:{
+        width: 30,
+        height: 25,
+        flex:1,
+        //flexDirection:'row',
+        backgroundColor: '#f4f6fc',
+        //paddingVertical: 2,
+        paddingHorizontal: 0,
+        borderWidth: 0,
+        paddingVertical: 0,
+        //marginTop:25,
+        borderBottomWidth: 0,
+        borderRadius:12, 
+        fontSize: 18,
+        alignItems: "center",
+        justifyContent: "center",
+        textAlign: "center"
+        
     },
 
     checkBox:{
@@ -160,6 +180,7 @@ const styles =
                 paddingBottom:50
               }
             },
+    
 
 }
 
