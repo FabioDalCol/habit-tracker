@@ -3,6 +3,8 @@ export const styleColors = {
     white: "#fff",
     background: "#f4f6fc",
     greyish: "#a4a4a4",
-    tint: "#2b49c3"
+    tint: "#2b49c3",
+    water: "#00BFFF",
+    greenComp: '#22C55E'
   };
 

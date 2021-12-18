@@ -33,17 +33,23 @@ const styles =
             marginHorizontal: 16,
             marginVertical: 4,
             borderRadius: 20,
-            borderColor: '#22C55E' ,            
-            //borderWidth: 3, if completed
+            borderColor: styleColors.greenComp ,           
             paddingVertical: 15,
-            paddingHorizontal: 15,
+            paddingHorizontal: 18,
             alignItems: "center",
             justifyContent: "space-between"
         },
         container:{ 
             flexDirection: "row", 
             alignItems: "flex-start", 
-            backgroundColor: "#ffffff" }
+            backgroundColor: "#ffffff" 
+        },
+        completed:{
+            color: styleColors.greenComp, 
+            marginTop: 0, 
+            marginLeft:-2
+        }
+
     },
     header: {
         padding: 16,
