@@ -2,6 +2,8 @@ import axios from 'axios';
 import store from './store';
 import { setHabits} from './slices/habitSlice';
 
+const weekDays = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
+
 const baseUrl = `https://habits-app-api.ew.r.appspot.com/api/v1/users/`;  
 
 const getHabits = async (uid,token,old,setRefreshing) => {      
@@ -38,6 +40,13 @@ const getDate = () => {
     let today = new Date()
     return today.toISOString().split('T')[0]
 }
+
+// const countTodayHabit = (habits) => {
+//     today = new Date ()
+//     for(var habit in habits){
+//         if(today.getDay())
+//     }
+// }
 
 export default getHabits
 export {updateHabit,getDate,addHabit,removeHabit}

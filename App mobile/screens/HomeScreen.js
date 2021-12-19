@@ -125,6 +125,7 @@ const HomeScreen = ({navigation}) => {
   }  
 
   const newhabits = useSelector(selectHabits);
+  
   //console.log(newhabits)   
   console.log(user.uid)
   console.log(user.api_token)

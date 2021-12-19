@@ -27,11 +27,11 @@ export const habitSlice = createSlice({
             if(state.habits[index].value >= state.habits[index].set_value){    //if habit is completed add today (yyyy-mm--dd) to db
                 var today = getDate();
                 var existIndex = state.habits[index].completed.indexOf(today)                  
-                if (existIndex<=0){
+                if (existIndex<0){
                     state.habits[index].completed.push(today)
                 }
             }
-            updateHabit(uid,token,state.habits[index],id)
+            updateHabit(uid,token,state.habits[index],id)    //add rollback if api write fails
         },   
         decrementValue: (state, action) => {
             id = action.payload.id;
@@ -43,11 +43,11 @@ export const habitSlice = createSlice({
                 if(state.habits[index].value < state.habits[index].set_value){       //if Habit isn't completed removes it from the db for today
                     var today = getDate();
                     var existIndex = state.habits[index].completed.indexOf(today)                 
-                    if (existIndex){
+                    if (existIndex>=0){
                         state.habits[index].completed.splice(existIndex,1)
                     }
                 }
-                updateHabit(uid,token,state.habits[index],id)
+                updateHabit(uid,token,state.habits[index],id)        //add rollback if api write fails
             }
         }, 
         triggerCompleted: (state, action) => {
@@ -63,7 +63,7 @@ export const habitSlice = createSlice({
             else {
                 state.habits[index].completed.splice(existIndex,1)
             }
-            updateHabit(uid,token,state.habits[index],id)
+            updateHabit(uid,token,state.habits[index],id)             
         },              
     }
 })

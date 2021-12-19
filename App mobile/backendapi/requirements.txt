@@ -1,5 +1,0 @@
-python-decouple
-firebase-admin
-pathlib
-django
-djangorestframework
