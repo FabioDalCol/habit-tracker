@@ -41,6 +41,18 @@ const getDate = () => {
     return today.toISOString().split('T')[0]
 }
 
+const getTodayHabits = (habits) => {
+    today = new Date ()
+    var ids = []
+  
+    for(var habit of habits){        
+        if (habit.repeat_days[weekDays[today.getDay()]]){        //If today weekday is true
+            ids.push(habit.id)
+        }      
+    }    
+    return ids
+}
+
 // const countTodayHabit = (habits) => {
 //     today = new Date ()
 //     for(var habit in habits){
@@ -49,4 +61,4 @@ const getDate = () => {
 // }
 
 export default getHabits
-export {updateHabit,getDate,addHabit,removeHabit}
+export {updateHabit,getDate,addHabit,removeHabit,getTodayHabits}

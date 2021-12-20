@@ -16,10 +16,11 @@ import getHabits from "../Api";
 import { selectHabits, selectRefreshing} from "../slices/habitSlice";
 import { TextInput } from "react-native-gesture-handler";
 import store from "../store";
-import {decrementValue, incrementValue, triggerCompleted  } from "../slices/habitSlice";
+import {decrementValue, incrementValue, triggerCompleted, initDay  } from "../slices/habitSlice";
 import clone from 'just-clone';
 import { useEffect } from "react";
 import { getDate } from "../Api";
+import { getTodayHabits } from "../Api";
 
 
 
@@ -43,7 +44,6 @@ const HomeScreen = ({navigation}) => {
     getHabits(uid,api_token,{})
     console.log("Got new habits")
 }, [])
-
   const [showView, setShowView] = useState(false);   
   const [newHabitForm, setNewHabitForm] = useState({Mon:false,Tue:false,Wed:false,Thu:false,Fri:false,Sat:false,Sun:false,Eve:false})
   const [refreshing,setRefreshing] = useState(false); //pull down to refresh  
@@ -125,11 +125,17 @@ const HomeScreen = ({navigation}) => {
   }  
 
   const newhabits = useSelector(selectHabits);
+
+  useEffect(() => {
+    if (newhabits != undefined){
+      store.dispatch(initDay({uid:uid,token:api_token}))
+    }
+  }, [newhabits])
   
   //console.log(newhabits)   
   console.log(user.uid)
   console.log(user.api_token)
-
+  
   return (
     <View style={[tailwind('flex-1'),{backgroundColor: styleColors.themeColor}]} >
       <StatusBar barStyle="light-content" backgroundColor={styleColors.themeColor} />
@@ -204,8 +210,9 @@ const HomeScreen = ({navigation}) => {
           />}>
     
         <NewHabit viewStyle = {styles.newHabit} show={showView} state={{newHabitForm,setNewHabitForm}} setShow={setNewHabitComp}/>                                             
-
-        {newhabits?.map(habit => (          
+       
+        {newhabits?.map(habit => 
+         (getTodayHabits(newhabits).includes(habit.id) && (
           <Habit
             key={habit.id} 
             id = {habit.id}             
@@ -215,9 +222,11 @@ const HomeScreen = ({navigation}) => {
             countable={habit.countable}
             value={habit.value}
             set_value={habit.set_value}
-            completeToday={habit.countable ? habit.value >= habit.set_value : habit.completed.includes(getDate())}      
+            completeToday={habit.stats[getDate()].completed}      
           />
-        ))}
+         )        
+         )
+        )}
       </ScrollView>   
     </View> 
   );

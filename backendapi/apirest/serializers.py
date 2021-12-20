@@ -12,6 +12,7 @@ class HabitSerializer(serializers.Serializer):
     set_value = serializers.IntegerField(required=False)
     countable = serializers.BooleanField()
     completed = serializers.ListField(child = serializers.CharField(max_length=13))
+    stats = serializers.DictField(child = serializers.DictField(), required = False)
 
 class AccountSerializer(serializers.Serializer):
     id = serializers.CharField(max_length=200, read_only=True)
