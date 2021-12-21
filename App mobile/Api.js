@@ -53,12 +53,18 @@ const getTodayHabits = (habits) => {
     return ids
 }
 
-// const countTodayHabit = (habits) => {
-//     today = new Date ()
-//     for(var habit in habits){
-//         if(today.getDay())
-//     }
-// }
+const countCompletedHabits = (habIds,habits) => {
+    var completed = 0;
+    var today = getDate();    
+    for(var id of habIds){
+        const index = habits.findIndex( habit => habit.id == id);        
+        if (habits[index].stats != undefined)            
+            if (habits[index].stats[today]?.completed){                
+                completed++;            
+            }
+    }  
+    return completed;
+}
 
 export default getHabits
-export {updateHabit,getDate,addHabit,removeHabit,getTodayHabits}
+export {updateHabit,getDate,addHabit,removeHabit,getTodayHabits,countCompletedHabits}

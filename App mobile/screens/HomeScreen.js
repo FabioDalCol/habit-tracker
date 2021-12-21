@@ -12,7 +12,7 @@ import { useState } from "react";
 import { useRef } from 'react';
 import { styles } from "../styles";
 import { styleColors } from '../colors'
-import getHabits from "../Api";
+import getHabits, { countCompletedHabits } from "../Api";
 import { selectHabits, selectRefreshing} from "../slices/habitSlice";
 import { TextInput } from "react-native-gesture-handler";
 import store from "../store";
@@ -128,10 +128,14 @@ const HomeScreen = ({navigation}) => {
 
   useEffect(() => {
     if (newhabits != undefined){
-      store.dispatch(initDay({uid:uid,token:api_token}))
+      store.dispatch(initDay({uid:uid,token:api_token}))     
+    
     }
   }, [newhabits])
   
+  var todayHabits = getTodayHabits(newhabits);
+  var completedHabitsCount = countCompletedHabits(todayHabits,newhabits);
+
   //console.log(newhabits)   
   console.log(user.uid)
   console.log(user.api_token)
@@ -163,25 +167,25 @@ const HomeScreen = ({navigation}) => {
         </View>
         <View style={tailwind('py-0 px-4')}>
           <Text style={[tailwind('text-4xl'),{ color: styleColors.white}]}>
-            Ciao,{"\n" + user?.fullname?.split(/(\s+)/)[0]}
+            Hi,{"\n" + user?.fullname?.split(/(\s+)/)[0]}
           </Text>          
         </View>
       </View>   
       
       <View style={styles.infoBox} >
-            <Text style={tailwind('text-2xl pb-4 ')}>Daily habits</Text>
+            <Text style={tailwind('text-2xl pb-4 ')}>Progress</Text>
             <View style={tailwind(" h-8 relative max-w-xl rounded-full overflow-hidden")}>
               <View style={tailwind("w-full h-full bg-gray-200 absolute")}>
-              <View style={tailwind(" h-full bg-green-500 absolute w-1/5")}></View>
+              <View style={tailwind(" h-full bg-green-500 absolute w-"+completedHabitsCount+"/"+todayHabits.length)}></View>
               <View style={tailwind("flex-1 justify-center")}>
-              <Text style={tailwind("text-center text-base font-semibold")}> 1 of 5</Text>
+              <Text style={tailwind("text-center text-base font-semibold")}> {completedHabitsCount} of {todayHabits.length}</Text>
               </View>
               </View>              
             </View>
         </View>      
 
       <View style={styles.habitBox}>
-        <Text style={tailwind('text-2xl')}>Habits</Text>
+        <Text style={tailwind('text-2xl')}>Daily Habits</Text>
         <TouchableOpacity onPress={()=>{
           setNewHabitComp();
           onPressAdd();
@@ -222,7 +226,7 @@ const HomeScreen = ({navigation}) => {
             countable={habit.countable}
             value={habit.value}
             set_value={habit.set_value}
-            completeToday={habit.stats[getDate()]?.completed}      
+            completeToday={habit.stats != undefined ? habit.stats[getDate()]?.completed : false}      
           />
          )        
          )
