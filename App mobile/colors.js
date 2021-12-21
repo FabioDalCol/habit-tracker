@@ -5,6 +5,9 @@ export const styleColors = {
     greyish: "#a4a4a4",
     tint: "#2b49c3",
     water: "#00BFFF",
-    greenComp: '#22C55E'
+    greenComp: '#22C55E',
+    pbOrange: "#f97316",
+    pbRed: "#ef4444"
+
   };
 
