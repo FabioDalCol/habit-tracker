@@ -222,7 +222,7 @@ const HomeScreen = ({navigation}) => {
             countable={habit.countable}
             value={habit.value}
             set_value={habit.set_value}
-            completeToday={habit.stats[getDate()].completed}      
+            completeToday={habit.stats[getDate()]?.completed}      
           />
          )        
          )

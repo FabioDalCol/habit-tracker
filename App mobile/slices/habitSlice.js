@@ -72,6 +72,7 @@ export const habitSlice = createSlice({
                     if(state.habits[index].stats[today] == undefined){
                         state.habits[index].stats[today] = {}
                         state.habits[index].stats[today].set_value = state.habits[index].set_value
+                        state.habits[index].value = 0;
                         state.habits[index].stats[today].value = state.habits[index].value
                         state.habits[index].stats[today].completed = false
                         updateHabit(uid,token,state.habits[index],habId)                         

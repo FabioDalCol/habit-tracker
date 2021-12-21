@@ -10,8 +10,7 @@ class HabitSerializer(serializers.Serializer):
     repeat_days = serializers.DictField(child = serializers.BooleanField())
     value = serializers.IntegerField(required=False)
     set_value = serializers.IntegerField(required=False)
-    countable = serializers.BooleanField()
-    completed = serializers.ListField(child = serializers.CharField(max_length=13))
+    countable = serializers.BooleanField()    
     stats = serializers.DictField(child = serializers.DictField(), required = False)
 
 class AccountSerializer(serializers.Serializer):
