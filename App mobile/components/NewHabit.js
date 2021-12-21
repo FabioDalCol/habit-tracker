@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, Text } from 'react-native'
+import { StyleSheet, View, Text, Platform, Button, Pressable } from 'react-native'
 import { Input, CheckBox} from 'react-native-elements';
 import { ScreenContainer } from 'react-native-screens';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -9,21 +9,114 @@ import { add } from 'react-native-reanimated';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import RNPickerSelect from 'react-native-picker-select';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { color } from 'react-native-elements/dist/helpers';
 
 
 const NewHabit = (props ) => {
-
   
-    
     const {newHabitForm, setNewHabitForm}=props.state;
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    const categories= ['Drink', 'Run', 'Diet', 'Sport', 'Walk', 'Health'];
+    const categories= ['Drink', 'Walk', 'Custom'];
+  
 
-    
-    categories.map((num) => ({'label': num, 'value': num}));
+    const onChange_start = (event, selectedDate) => {
+        const currentDate = selectedDate || newHabitForm.Date_start;
+        setNewHabitForm({...newHabitForm, Show_start:(Platform.OS === 'ios'), Date_start:currentDate}); 
+      };
 
 
-    console.log(newHabitForm);
+    const onChange_end = (event, selectedDate) => {
+        const currentDate = selectedDate || newHabitForm.Date_end;
+        setNewHabitForm({...newHabitForm, Show_end:(Platform.OS === 'ios'), Date_end:currentDate}); 
+      };
+
+
+    const showTimepicker_start = () => {
+        setNewHabitForm({...newHabitForm, Show_start:true, Mode:'time'});
+        };
+
+    const showTimepicker_end = () => {
+        setNewHabitForm({...newHabitForm, Show_end:true, Mode:'time'});
+        };
+
+    const makeTwoDigits = (time) => {
+            const timeString = `${time}`;
+            if (timeString.length === 2) return time
+            return `0${time}`
+          }
+
+    const renderSwitch = (param) => 
+            {
+            
+            switch(param) {
+                case 'Custom':
+                    return (<>                
+                            <Input value={newHabitForm.HabitName} onChangeText={(text)=> setNewHabitForm({...newHabitForm,HabitName:text})} inputContainerStyle={styles.inputTextBox.container}  style={styles.inputTextBox.box} placeholder="Habit name"/>
+                            <Input value={newHabitForm.Description} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Description:text})} inputContainerStyle={styles.inputTextBox.container}  style={styles.inputTextBox.box} maxLength={250} multiline = {true} placeholder="Description"/>
+                            {/* MORE CUSTOMIZZATION HABIT
+                            <RNPickerSelect
+                                containerStyle={styles.dropdown.container}
+                                useNativeAndroidPickerStyle={false}
+                                style={styles.dropdown}
+                                onValueChange={(value) => setNewHabitForm({...newHabitForm,Target_type:value})}
+                                items={[{'label': 'Yes or no', 'value': 'bool'}, {'label': 'Numeric', 'value': 'numeric'}]}
+                            /> 
+                            {newHabitForm.Target_type=='numeric' &&
+                            (<>
+                                <Input value={newHabitForm.Target_name} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Target_name:text})} inputContainerStyle={styles.inputTextBox.container}  style={styles.inputTextBox.box} maxLength={250} multiline = {true} placeholder="Target name es. steps, glass, km"/>
+                                <Input value={newHabitForm.Target} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Target:text})} inputContainerStyle={styles.inputTextBox.container}  style={styles.inputTextBox.box} keyboardType='number-pad' placeholder={"Insert target daily "+newHabitForm.Target_name}/>
+                            </>)} */}
+                            </>);
+                case 'Drink':
+                    //{setNewHabitForm({...newHabitForm, HabitName:param})};
+                    return (<>  
+                            <Input value={newHabitForm.Bicchieri} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Bicchieri:text})} inputContainerStyle={styles.inputTextBox.container}  style={styles.inputTextBox.box} keyboardType='number-pad' placeholder="Insert target daily glasses"/>
+                            <View style={{flex:8, justifyContent: "space-around", flexDirection: "row"}}>
+                                <View>
+                                    <Pressable style={styles.buttone} onPress={showTimepicker_start} title="Inserisci ora fine">
+                                        <Text style={styles.text}>Rise time</Text>
+                                        <Text style={styles.text, {color: 'white', fontWeight: 'bold',}}>{makeTwoDigits(newHabitForm.Date_start.getHours())+':'+makeTwoDigits(newHabitForm.Date_start.getMinutes())}</Text>
+                                    </Pressable>
+                                </View>
+                                {newHabitForm.Show_start && (
+                                    <DateTimePicker
+                                    testID="dateTimePicker"
+                                    value={newHabitForm.Date_start}
+                                    mode={newHabitForm.Mode}
+                                    is24Hour={true}
+                                    display="default"
+                                    onChange={onChange_start}
+                                    />     
+                                )}
+
+                                <View>
+                                    <Pressable style={styles.buttone} onPress={showTimepicker_end} title="Inserisci ora fine">
+                                        <Text style={styles.text}>Sleep time</Text>
+                                        <Text style={styles.text, {color: 'white', fontWeight: 'bold',}}>{makeTwoDigits(newHabitForm.Date_end.getHours())+':'+makeTwoDigits(newHabitForm.Date_end.getMinutes())}</Text>
+                                    </Pressable>
+                                </View>
+                                {newHabitForm.Show_end && (
+                                    <DateTimePicker
+                                    testID="dateTimePicker"
+                                    value={newHabitForm.Date_end}
+                                    mode={newHabitForm.Mode}
+                                    is24Hour={true}
+                                    display="default"
+                                    onChange={onChange_end}
+                                    />     
+                                )}
+                            </View>
+                            </>);
+                case 'Walk':
+                    //{setNewHabitForm({...newHabitForm, HabitName:param})};
+                    return (<>                
+                        <Input value={newHabitForm.Passi} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Passi:text})} inputContainerStyle={styles.inputTextBox.container}  style={styles.inputTextBox.box} keyboardType='number-pad' placeholder="Insert target daily steps"/>
+                        </>);   
+                default:
+                    return null;
+                }
+            }
 
 
     useEffect(() => {
@@ -46,12 +139,10 @@ const NewHabit = (props ) => {
                     containerStyle={styles.dropdown.container}
                     useNativeAndroidPickerStyle={false}
                     style={styles.dropdown}
-                    onValueChange={(value) => console.log(value)}
+                    onValueChange={(value) => setNewHabitForm({...newHabitForm,Picker_value:value})}
                     items={categories.map((num) => ({'label': num, 'value': num}))}
-
-                />
-                <Input value={newHabitForm.HabitName} onChangeText={(text)=> setNewHabitForm({...newHabitForm,HabitName:text})} inputContainerStyle={styles.inputTextBox.container}  style={styles.inputTextBox.box} placeholder="Habit name"/>
-                <Input inputContainerStyle={styles.inputTextBox.container}  style={styles.inputTextBox.box} maxLength={250} multiline = {true} placeholder="Description/Target"/>
+                />      
+                {renderSwitch(newHabitForm.Picker_value)}    
                 </View>
                 <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                     <View style={{justifyContent: 'center', flex: 1}}>

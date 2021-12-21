@@ -116,15 +116,15 @@ const styles =
     },
     inputTextBox:{
         box:{
-            width: 100,
-            height: 40,
             backgroundColor: '#fff',
             paddingVertical: 2,
             paddingHorizontal: 15,
             borderWidth: 0,
             borderBottomWidth: 0,
             borderRadius:9999, 
-            fontSize: 16
+            fontSize: 16,
+            alignSelf: 'center',
+            width: '95%'
             },
         container:{borderBottomWidth: 0}        
     },
@@ -171,7 +171,6 @@ const styles =
         {
               inputAndroid: {
                 color: 'black',
-                width: 278,
                 height: 40,
                 backgroundColor: '#fff',
                 paddingHorizontal: 15,
@@ -180,7 +179,10 @@ const styles =
                 borderRadius:9999, 
                 fontSize: 16,
                 marginBottom: 30,
-                marginLeft: 8
+                justifyContent: 'center', 
+                //flex: 1,
+                alignSelf: 'center',
+                width: '95%'
               },
               
               container:
@@ -188,6 +190,26 @@ const styles =
                 paddingBottom:50
               }
             },
+    
+    buttone: {
+
+                alignItems: 'center',
+                justifyContent: 'center',
+                paddingVertical: 10,
+                paddingHorizontal: 10,
+                borderRadius: 4,
+                elevation: 3,
+                backgroundColor: "#4263ec",
+                marginBottom: 20,
+              },
+
+    text: {
+                fontSize: 16,
+                lineHeight: 21,
+                fontWeight: 'bold',
+                letterSpacing: 0.25,
+                color: 'white',
+              }
     
 
 }

@@ -45,7 +45,7 @@ const HomeScreen = ({navigation}) => {
 }, [])
 
   const [showView, setShowView] = useState(false);   
-  const [newHabitForm, setNewHabitForm] = useState({Mon:false,Tue:false,Wed:false,Thu:false,Fri:false,Sat:false,Sun:false,Eve:false})
+  const [newHabitForm, setNewHabitForm] = useState({Target_name:'',Mode:'time',Date_start:new Date(1598051730000), Date_end:new Date(1598051730000), Show_end:false, Show_start:false, Picker_value:'vuoto',Mon:false,Tue:false,Wed:false,Thu:false,Fri:false,Sat:false,Sun:false,Eve:false})
   const [refreshing,setRefreshing] = useState(false); //pull down to refresh  
 
   const categories = {Drink:{icon:"cup-water", color:styleColors.water},
