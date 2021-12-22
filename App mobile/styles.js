@@ -123,7 +123,7 @@ const styles =
             borderBottomWidth: 0,
             borderRadius:9999, 
             fontSize: 16,
-            alignSelf: 'center',
+            //alignSelf: 'center',
             width: '95%'
             },
         container:{borderBottomWidth: 0}        
@@ -178,10 +178,9 @@ const styles =
                 borderBottomWidth: 0,
                 borderRadius:9999, 
                 fontSize: 16,
-                marginBottom: 30,
-                justifyContent: 'center', 
-                //flex: 1,
-                alignSelf: 'center',
+                //marginBottom: 30,
+                //justifyContent: 'center', 
+                //alignSelf: 'center',
                 width: '95%'
               },
               
@@ -190,6 +189,29 @@ const styles =
                 paddingBottom:50
               }
             },
+
+    dropdownCategory:
+    {
+            inputAndroid: {
+            color: 'black',
+            height: 40,
+            backgroundColor: '#fff',
+            paddingHorizontal: 15,
+            borderWidth: 0,
+            borderBottomWidth: 0,
+            borderRadius:9999, 
+            fontSize: 16,
+            marginBottom: 30,
+            justifyContent: 'center', 
+            alignSelf: 'center',
+            width: '95%'
+            },
+            
+            container:
+            {
+            paddingBottom:50
+            }
+        },
     
     buttone: {
 
