@@ -281,6 +281,15 @@ const NewHabit = (props ) => {
                         containerStyle={styles.checkBox.container}
                         />
                 </View>
+
+                <RNPickerSelect
+                                containerStyle={styles.dropdown.container}
+                                useNativeAndroidPickerStyle={false}
+                                style={styles.dropdown}
+                                onValueChange={(value) => setNewHabitForm({...newHabitForm,Target_type:value})}
+                                items={[1,2,3,4,6].map((num) => ({'label': num+" volte", 'value': num}))}
+                /> 
+
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', flex: 2}}>
                         <TouchableOpacity style={{flex: 1}}>
                             <MaterialCommunityIcons
