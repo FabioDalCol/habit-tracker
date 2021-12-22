@@ -52,6 +52,31 @@ export const habitSlice = createSlice({
                 updateHabit(uid,token,state.habits[index],id)        //add rollback if api write fails
             }
         }, 
+        setValue: (state, action) => {                                          //set without calling API update
+            id = action.payload.id;
+            value = action.payload.value            
+            var today = getDate(); 
+            const index = state.habits.findIndex( habit => habit.id == id);                    
+            state.habits[index].value = value;                            
+            state.habits[index].stats[today].value = state.habits[index].value;
+            if(state.habits[index].value < state.habits[index].set_value){                                                 
+                if (state.habits[index].stats[today].completed){
+                    state.habits[index].stats[today].completed = false
+                }
+            }
+            else {                                                  
+                if (!state.habits[index].stats[today].completed ){
+                    state.habits[index].stats[today].completed = true
+                } 
+            }          
+        },
+        pushValue: (state, action) => {                                          
+            id = action.payload.id;
+            uid = action.payload.uid;
+            token = action.payload.token;          
+            const index = state.habits.findIndex( habit => habit.id == id);                    
+            updateHabit(uid,token,state.habits[index],id)                     
+        }, 
         triggerCompleted: (state, action) => {
             id = action.payload.id;
             uid = action.payload.uid;           
@@ -90,7 +115,7 @@ export const habitSlice = createSlice({
     }
 })
 
-export const { setHabits, setRefreshing, incrementValue, decrementValue, triggerCompleted, initDay} = habitSlice.actions;
+export const { setHabits, setRefreshing, incrementValue, decrementValue, triggerCompleted, initDay, setValue, pushValue} = habitSlice.actions;
 
 export const selectHabits = (state) => state.hab.habits;
 export const selectRefreshing = (state) => state.hab.refreshing;
