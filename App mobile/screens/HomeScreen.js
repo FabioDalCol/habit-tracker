@@ -20,7 +20,7 @@ import {decrementValue, incrementValue, triggerCompleted, initDay, setValue  } f
 import clone from 'just-clone';
 import { useEffect } from "react";
 import { getDate } from "../Api";
-import { getTodayHabits } from "../Api";
+import { getTodayHabits, addHabit } from "../Api";
 import { colors } from "react-native-elements";
 import Habit from "../components/Habit";
 
@@ -47,7 +47,7 @@ const HomeScreen = ({navigation}) => {
     console.log("Got new habits")
 }, [])
   const [showView, setShowView] = useState(false);   
-  const [newHabitForm, setNewHabitForm] = useState({Target_name:'',Mode:'time',Date_start:new Date(1598051730000), Date_end:new Date(1598051730000), Show_end:false, Show_start:false, Picker_value:'vuoto',Mon:false,Tue:false,Wed:false,Thu:false,Fri:false,Sat:false,Sun:false,Eve:false})
+  const [newHabitForm, setNewHabitForm] = useState({Countable:false,Target_name:'',Mode:'time',Date_start:new Date(1598051730000), Date_end:new Date(1598051730000), Show_end:false, Show_start:false, Category:'',Mon:false,Tue:false,Wed:false,Thu:false,Fri:false,Sat:false,Sun:false,Eve:false})
   const [refreshing,setRefreshing] = useState(false); //pull down to refresh  
 
   const categories = {Drink:{icon:"cup-water", color:styleColors.water},
@@ -74,10 +74,10 @@ const HomeScreen = ({navigation}) => {
   var completedHabitsCount = countCompletedHabits(todayHabits,newhabits);  
   const dailyProgressColor = () => {
     console.log(completedHabitsCount/todayHabits.length)
-    if(completedHabitsCount/todayHabits.length<=1/3){
+    if(completedHabitsCount/todayHabits.length<=1/2){
       return {backgroundColor: styleColors.pbRed }
     }
-    if(completedHabitsCount/todayHabits.length<=1/2){
+    if(completedHabitsCount/todayHabits.length<1){
       return {backgroundColor: styleColors.pbOrange }
     }
     else{

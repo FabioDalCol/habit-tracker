@@ -11,13 +11,16 @@ import { useEffect } from 'react';
 import RNPickerSelect from 'react-native-picker-select';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { color } from 'react-native-elements/dist/helpers';
+import { addHabit, getDate} from "../Api";
 
 
 const NewHabit = (props ) => {
   
+    const uid ="6GsiMJsZgCjpinhQgyCD";
+    const api_token = "ciao";
     const {newHabitForm, setNewHabitForm}=props.state;
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    const categories= ['Drink', 'Walk', 'Custom'];
+    const categories= ['Drink', 'Walk', 'Custom'];  
   
 
     const onChange_start = (event, selectedDate) => {
@@ -46,6 +49,29 @@ const NewHabit = (props ) => {
             return `0${time}`
           }
 
+    const makeHabit = () => {
+        habit={
+            name: newHabitForm.HabitName ? newHabitForm.HabitName : 'vuota', 
+            desc: newHabitForm.Description ? newHabitForm.Description : 'vuota', 
+            category: newHabitForm.Category, 
+            created: new Date(), //getDate(), 
+            repeat_days: {
+                Thu: newHabitForm.Thu,
+                Fri: newHabitForm.Fri,
+                Sat: newHabitForm.Sat,
+                Wed: newHabitForm.Wed,
+                Sun: newHabitForm.Sun,
+                Tue: newHabitForm.Tue,
+                Mon: newHabitForm.Mon
+                },
+            value: 0,
+            countable: newHabitForm.Countable,
+            set_value: newHabitForm.Countable ? newHabitForm.Target : undefined,
+            completed: []
+            };  
+        return habit;
+    }  
+
     const renderSwitch = (param) => 
             {
             
@@ -54,6 +80,18 @@ const NewHabit = (props ) => {
                     return (<>                
                             <Input value={newHabitForm.HabitName} onChangeText={(text)=> setNewHabitForm({...newHabitForm,HabitName:text})} inputContainerStyle={styles.inputTextBox.container}  style={styles.inputTextBox.box} placeholder="Habit name"/>
                             <Input value={newHabitForm.Description} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Description:text})} inputContainerStyle={styles.inputTextBox.container}  style={styles.inputTextBox.box} maxLength={250} multiline = {true} placeholder="Description"/>
+                            <View style={{justifyContent: 'center',  flex: 1}}>
+                                <Text style={{alignSelf: 'center', fontWeight: 'bold'}}>Countable</Text>
+                                <CheckBox
+                                iconRight
+                                iconType='material'
+                                checked={newHabitForm.Countable}
+                                onPress={()=>setNewHabitForm({...newHabitForm,Countable:!newHabitForm.Countable})}
+                                checkedIcon='check-circle-outline'
+                                uncheckedIcon='radio-button-unchecked'
+                                containerStyle={styles.checkBoxDays.container}
+                                /> 
+                            </View>
                             {/* MORE CUSTOMIZZATION HABIT
                             <RNPickerSelect
                                 containerStyle={styles.dropdown.container}
@@ -70,8 +108,8 @@ const NewHabit = (props ) => {
                             </>);
                 case 'Drink':
                     //{setNewHabitForm({...newHabitForm, HabitName:param})};
-                    return (<>  
-                            <Input value={newHabitForm.Bicchieri} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Bicchieri:text})} inputContainerStyle={styles.inputTextBox.container}  style={styles.inputTextBox.box} keyboardType='number-pad' placeholder="Insert target daily glasses"/>
+                    return (<>                          
+                            <Input value={newHabitForm.Target} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Target:text})} inputContainerStyle={styles.inputTextBox.container}  style={styles.inputTextBox.box} keyboardType='number-pad' placeholder="Insert target daily glasses"/>
                             <View style={{flex:8, justifyContent: "space-around", flexDirection: "row"}}>
                                 <View>
                                     <Pressable style={styles.buttone} onPress={showTimepicker_start} title="Inserisci ora fine">
@@ -109,9 +147,9 @@ const NewHabit = (props ) => {
                             </View>
                             </>);
                 case 'Walk':
-                    //{setNewHabitForm({...newHabitForm, HabitName:param})};
+                    {/* {(param) => setNewHabitForm({...newHabitForm, HabitName:param})} */}
                     return (<>                
-                        <Input value={newHabitForm.Passi} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Passi:text})} inputContainerStyle={styles.inputTextBox.container}  style={styles.inputTextBox.box} keyboardType='number-pad' placeholder="Insert target daily steps"/>
+                        <Input value={newHabitForm.Target} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Target:text})} inputContainerStyle={styles.inputTextBox.container}  style={styles.inputTextBox.box} keyboardType='number-pad' placeholder="Insert target daily steps"/>
                         </>);   
                 default:
                     return null;
@@ -139,10 +177,10 @@ const NewHabit = (props ) => {
                     containerStyle={styles.dropdown.container}
                     useNativeAndroidPickerStyle={false}
                     style={styles.dropdown}
-                    onValueChange={(value) => setNewHabitForm({...newHabitForm,Picker_value:value})}
+                    onValueChange={(value) => setNewHabitForm({...newHabitForm,Category:value})}
                     items={categories.map((num) => ({'label': num, 'value': num}))}
                 />      
-                {renderSwitch(newHabitForm.Picker_value)}    
+                {renderSwitch(newHabitForm.Category)}    
                 </View>
                 <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                     <View style={{justifyContent: 'center', flex: 1}}>
@@ -258,14 +296,14 @@ const NewHabit = (props ) => {
                             />
                         </TouchableOpacity> 
                     
-                    
+                        
 
                         <TouchableOpacity style={{flex: 1}}>
                             <MaterialCommunityIcons
                                 name="send"
                                 size={30}
                                 style={{ color: '#4263ec'}} // da rivedere perchè non responsive 
-                                onPress={()=>add()}                
+                                onPress={() => addHabit(uid, api_token, makeHabit())}
                             />
                         </TouchableOpacity> 
                 </View>
