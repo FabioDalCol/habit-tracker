@@ -20,7 +20,7 @@ import {decrementValue, incrementValue, triggerCompleted, initDay, setValue  } f
 import clone from 'just-clone';
 import { useEffect } from "react";
 import { getDate } from "../Api";
-import { getTodayHabits, addHabit } from "../Api";
+import { getTodayHabits } from "../Api";
 import { colors } from "react-native-elements";
 import Habit from "../components/Habit";
 
@@ -47,7 +47,7 @@ const HomeScreen = ({navigation}) => {
     console.log("Got new habits")
 }, [])
   const [showView, setShowView] = useState(false);   
-  const [newHabitForm, setNewHabitForm] = useState({Countable:false,Target_name:'',Mode:'time',Date_start:new Date(1598051730000), Date_end:new Date(1598051730000), Show_end:false, Show_start:false, Category:'',Mon:false,Tue:false,Wed:false,Thu:false,Fri:false,Sat:false,Sun:false,Eve:false})
+  const [newHabitForm, setNewHabitForm] = useState({Target_name:'',Mode:'time',Date_start:new Date(1598051730000), Date_end:new Date(1598051730000), Show_end:false, Show_start:false, Picker_value:'vuoto',Mon:false,Tue:false,Wed:false,Thu:false,Fri:false,Sat:false,Sun:false,Eve:false})
   const [refreshing,setRefreshing] = useState(false); //pull down to refresh  
 
   const categories = {Drink:{icon:"cup-water", color:styleColors.water},
@@ -72,12 +72,11 @@ const HomeScreen = ({navigation}) => {
   
   var todayHabits = getTodayHabits(newhabits);
   var completedHabitsCount = countCompletedHabits(todayHabits,newhabits);  
-  const dailyProgressColor = () => {
-    console.log(completedHabitsCount/todayHabits.length)
-    if(completedHabitsCount/todayHabits.length<=1/2){
+  const dailyProgressColor = () => {    
+    if(completedHabitsCount/todayHabits.length<=1/3){
       return {backgroundColor: styleColors.pbRed }
     }
-    if(completedHabitsCount/todayHabits.length<1){
+    if(completedHabitsCount/todayHabits.length<=1/2){
       return {backgroundColor: styleColors.pbOrange }
     }
     else{
@@ -124,7 +123,7 @@ const HomeScreen = ({navigation}) => {
             <Text style={tailwind('text-2xl pb-4 ')}>Progress</Text>
             <View style={tailwind(" h-8 relative max-w-xl rounded-full overflow-hidden")}>
               <View style={tailwind("w-full h-full bg-gray-200 absolute")}>
-              <View style={[tailwind(" h-full absolute w-"+completedHabitsCount+"/"+todayHabits.length),dailyProgressColor()]}></View>
+              <View style={[tailwind(" h-full absolute"),dailyProgressColor(),{width: completedHabitsCount/todayHabits.length+"%"}]}></View>
               <View style={tailwind("flex-1 justify-center")}>
               <Text style={tailwind("text-center text-base font-semibold")}> {completedHabitsCount} of {todayHabits.length}</Text>
               </View>
