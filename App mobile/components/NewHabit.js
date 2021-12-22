@@ -54,7 +54,7 @@ const NewHabit = (props ) => {
             name: newHabitForm.HabitName ? newHabitForm.HabitName : 'vuota', 
             desc: newHabitForm.Description ? newHabitForm.Description : 'vuota', 
             category: newHabitForm.Category, 
-            created: new Date(), //getDate(), 
+            created: getDate(), 
             repeat_days: {
                 Thu: newHabitForm.Thu,
                 Fri: newHabitForm.Fri,
@@ -92,19 +92,14 @@ const NewHabit = (props ) => {
                                 containerStyle={styles.checkBoxDays.container}
                                 /> 
                             </View>
+
                             {/* MORE CUSTOMIZZATION HABIT
-                            <RNPickerSelect
-                                containerStyle={styles.dropdown.container}
-                                useNativeAndroidPickerStyle={false}
-                                style={styles.dropdown}
-                                onValueChange={(value) => setNewHabitForm({...newHabitForm,Target_type:value})}
-                                items={[{'label': 'Yes or no', 'value': 'bool'}, {'label': 'Numeric', 'value': 'numeric'}]}
-                            /> 
                             {newHabitForm.Target_type=='numeric' &&
                             (<>
                                 <Input value={newHabitForm.Target_name} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Target_name:text})} inputContainerStyle={styles.inputTextBox.container}  style={styles.inputTextBox.box} maxLength={250} multiline = {true} placeholder="Target name es. steps, glass, km"/>
                                 <Input value={newHabitForm.Target} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Target:text})} inputContainerStyle={styles.inputTextBox.container}  style={styles.inputTextBox.box} keyboardType='number-pad' placeholder={"Insert target daily "+newHabitForm.Target_name}/>
                             </>)} */}
+                            
                             </>);
                 case 'Drink':
                     //{setNewHabitForm({...newHabitForm, HabitName:param})};
