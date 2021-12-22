@@ -103,9 +103,16 @@ const NewHabit = (props ) => {
                             </>);
                 case 'Drink':
                     //{setNewHabitForm({...newHabitForm, HabitName:param})};
-                    return (<>                          
-                            <Input value={newHabitForm.Target} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Target:text})} inputContainerStyle={styles.inputTextBox.container}  style={styles.inputTextBox.box} keyboardType='number-pad' placeholder="Insert target daily glasses"/>
-                            <View style={{flex:8, justifyContent: "space-around", flexDirection: "row"}}>
+                    return (<>
+                            <View style={{flexDirection: 'row', flex:1, justifyContent: 'center', marginLeft:'auto'}}>  
+                                <View style={{flex:0.2}}>                         
+                                <Input inputContainerStyle={[styles.inputTextBox.container]}  style={styles.inputTextBox.box} value={newHabitForm.Target} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Target:text})} keyboardType='number-pad' placeholder="Insert daily"/>
+                                </View>
+                                <View style={{flex:0.5}}>
+                                <Text style={{fontSize: 16, marginTop:'7%', fontWeight: 'bold'}}>Glasses</Text> 
+                                </View>
+                            </View>
+                            {/* <View style={{flex:8, justifyContent: "space-around", flexDirection: "row"}}>
                                 <View>
                                     <Pressable style={styles.buttone} onPress={showTimepicker_start} title="Inserisci ora fine">
                                         <Text style={styles.text}>Rise time</Text>
@@ -139,7 +146,7 @@ const NewHabit = (props ) => {
                                     onChange={onChange_end}
                                     />     
                                 )}
-                            </View>
+                            </View> */}
                             </>);
                 case 'Walk':
                     {/* {(param) => setNewHabitForm({...newHabitForm, HabitName:param})} */}
@@ -150,7 +157,6 @@ const NewHabit = (props ) => {
                     return null;
                 }
             }
-
 
     useEffect(() => {
         var sum=true;
@@ -171,12 +177,17 @@ const NewHabit = (props ) => {
                 <RNPickerSelect
                     containerStyle={styles.dropdown.container}
                     useNativeAndroidPickerStyle={false}
-                    style={styles.dropdown}
+                    style={styles.dropdownCategory}
                     onValueChange={(value) => setNewHabitForm({...newHabitForm,Category:value})}
                     items={categories.map((num) => ({'label': num, 'value': num}))}
+                    placeholder={{
+                        label: 'Select a category',
+                        value: null,
+                    }}
                 />      
-                {renderSwitch(newHabitForm.Category)}    
+                {renderSwitch(newHabitForm.Category)}  
                 </View>
+                {newHabitForm.Category!=undefined && (<>
                 <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                     <View style={{justifyContent: 'center', flex: 1}}>
                         <Text style={{alignSelf: 'center', fontWeight: 'bold'}}>Mon</Text>
@@ -263,32 +274,57 @@ const NewHabit = (props ) => {
                         /> 
                     </View>
                 </View>
-                <View style={{alignItems: 'center'}}>
-                    <CheckBox
-                        title='Everyday'
+
+                <View style={{justifyContent: 'center', flex: 0.5}}>
+                        <Text style={{alignSelf: 'center', fontWeight: 'bold'}}>Everyday</Text>
+                        <CheckBox
+                            //title='Everyday'
+                            iconRight
+                            iconType='material'
+                            checked={newHabitForm.Eve}
+                            onPress={()=>{
+                                let diz={};                           
+                                for (var key of days) {
+                                    diz[key]=!newHabitForm['Eve'];                          
+                                    } 
+                                setNewHabitForm({...newHabitForm,...diz,Eve:!newHabitForm['Eve']});
+                            }}
+                            checkedIcon='check-circle-outline'
+                            uncheckedIcon='radio-button-unchecked'
+                            containerStyle={styles.checkBoxDays.container}
+                            />
+                </View> 
+
+                <View style={{flexDirection: 'row', flex:1, justifyContent: 'center'}}> 
+                    <View style={{justifyContent: 'center', flex: 0.5, flexDirection:'row'}}>
+                        <Text style={{alignSelf: 'center', fontWeight: 'bold', marginRight: '-8%'}}>Reminder</Text>
+                        <CheckBox
                         iconRight
                         iconType='material'
-                        checked={newHabitForm.Eve}
-                        onPress={()=>{
-                            let diz={};                           
-                            for (var key of days) {
-                                diz[key]=!newHabitForm['Eve'];                          
-                                } 
-                            setNewHabitForm({...newHabitForm,...diz,Eve:!newHabitForm['Eve']});
-                        }}
+                        checked={newHabitForm.Reminder}
+                        onPress={()=>setNewHabitForm({...newHabitForm,Reminder:!newHabitForm.Reminder})}
                         checkedIcon='check-circle-outline'
                         uncheckedIcon='radio-button-unchecked'
-                        containerStyle={styles.checkBox.container}
-                        />
-                </View>
+                        containerStyle={[styles.checkBoxDays.container]}
+                        /> 
+                    </View>
+                    {newHabitForm.Reminder &&(<View style={{flex: 0.4, marginLeft:'-8%', marginTop: '3%'}}>
+                    <RNPickerSelect
+                                    containerStyle={styles.dropdown.container}
+                                    useNativeAndroidPickerStyle={false}
+                                    style={styles.dropdown}
+                                    value={newHabitForm.Times}
+                                    onValueChange={(value) => setNewHabitForm({...newHabitForm,Times:value})}
+                                    items={[0,1,2,3,4,6].map((num) => ({'label': num+" volte", 'value': num}))}
+                                    placeholder={{
+                                        label: 'Number of daily reminders',
+                                        value: null,
+                                    }}
 
-                <RNPickerSelect
-                                containerStyle={styles.dropdown.container}
-                                useNativeAndroidPickerStyle={false}
-                                style={styles.dropdown}
-                                onValueChange={(value) => setNewHabitForm({...newHabitForm,Target_type:value})}
-                                items={[1,2,3,4,6].map((num) => ({'label': num+" volte", 'value': num}))}
-                /> 
+                    />
+                    </View>
+                    )}
+                </View>
 
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', flex: 2}}>
                         <TouchableOpacity style={{flex: 1}}>
@@ -299,9 +335,6 @@ const NewHabit = (props ) => {
                                 onPress={()=>props.setShow(false)}                
                             />
                         </TouchableOpacity> 
-                    
-                        
-
                         <TouchableOpacity style={{flex: 1}}>
                             <MaterialCommunityIcons
                                 name="send"
@@ -311,6 +344,7 @@ const NewHabit = (props ) => {
                             />
                         </TouchableOpacity> 
                 </View>
+                </>)}
         </View>
         )
     }   

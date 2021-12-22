@@ -98,7 +98,6 @@ export const habitSlice = createSlice({
                     state.habits[index].stats[today] = {};
                     state.habits[index].stats[today].completed = false;
                     if (state.habits[index].countable){
-                        
                             state.habits[index].stats[today].set_value = state.habits[index].set_value;
                             state.habits[index].value = 0;
                             state.habits[index].stats[today].value = state.habits[index].value;                      
