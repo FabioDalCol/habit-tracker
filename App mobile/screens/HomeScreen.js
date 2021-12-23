@@ -47,7 +47,7 @@ const HomeScreen = ({navigation}) => {
     console.log("Got new habits")
 }, [])
   const [showView, setShowView] = useState(false);   
-  const [newHabitForm, setNewHabitForm] = useState({Target:'10',Times:0,Reminder:false,Target_name:'',Mode:'time',Date_start:new Date(1598051730000), Date_end:new Date(1598051730000), Show_end:false, Show_start:false, Picker_value:'vuoto',Mon:false,Tue:false,Wed:false,Thu:false,Fri:false,Sat:false,Sun:false,Eve:false})
+  const [newHabitForm, setNewHabitForm] = useState({Walk_target:'10000',Drink_target:'10',Times:0,Reminder:false,Target_name:'',Mode:'time',Date_start:new Date(1598051730000), Date_end:new Date(1598051730000), Show_end:false, Show_start:false, Picker_value:'vuoto',Mon:false,Tue:false,Wed:false,Thu:false,Fri:false,Sat:false,Sun:false,Eve:false})
   const [refreshing,setRefreshing] = useState(false); //pull down to refresh  
 
   const categories = {Drink:{icon:"cup-water", color:styleColors.water},
@@ -163,7 +163,7 @@ const HomeScreen = ({navigation}) => {
         <NewHabit viewStyle = {styles.newHabit} show={showView} state={{newHabitForm,setNewHabitForm}} setShow={setNewHabitComp}/>                                             
        
         {newhabits?.map(habit => 
-         (getTodayHabits(newhabits).includes(habit.id) && (
+         (getTodayHabits(newhabits)?.includes(habit.id) && (
           <Habit
             key={habit.id} 
             id = {habit.id}             
