@@ -52,9 +52,18 @@ const styles =
 
     },
     header: {
-        padding: 16,
-        flexDirection: "row",
-        justifyContent: "space-between"
+        home:{
+            padding: 16,
+            flexDirection: "row",
+            justifyContent: "space-between"
+        },
+        default:{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            padding: 16,
+            paddingHorizontal: 16,
+        }
+        
     },
     infoBox: {        
         paddingHorizontal: 16,

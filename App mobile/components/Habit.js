@@ -7,6 +7,8 @@ import { MaterialCommunityIcons} from "@expo/vector-icons";
 import tailwind from 'tailwind-rn';
 import store from '../store';
 import { incrementValue, decrementValue, setValue, triggerCompleted,pushValue } from '../slices/habitSlice';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../slices/authSlice';
 
 
 const categories = {Drink:{icon:"cup-water", color:styleColors.water},     //MOVE CATEGORIES
@@ -14,10 +16,13 @@ const categories = {Drink:{icon:"cup-water", color:styleColors.water},     //MOV
                       Custom:{icon:"chess-queen",color:"gray"}
                       }
 
-const uid ="6GsiMJsZgCjpinhQgyCD";   // TO REPLACE -> PICK FROM STORE
-const api_token = "ciao";
+//const uid ="6GsiMJsZgCjpinhQgyCD";   // TO REPLACE -> PICK FROM STORE
 
-const Habit = ({ id, name, category, desc, countable, value = null, set_value = null, completeToday }) => {
+
+//const api_token = "ciao";
+
+const Habit = ({ id, name, category, desc, countable, value = null, set_value = null, completeToday, uid, api_token }) => {
+    
     return (
                                                   // If habits is completed shows green border 
       <View style={[styles.habit.main, completeToday ? {borderWidth: 2} : {}]}>  

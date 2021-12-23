@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, Text, StatusBar, RefreshControl } from "react-native";
+import { View, Text, RefreshControl, StatusBar } from "react-native";
 import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { useSelector } from "react-redux";
@@ -23,6 +23,7 @@ import { getDate } from "../Api";
 import { getTodayHabits } from "../Api";
 import { colors } from "react-native-elements";
 import Habit from "../components/Habit";
+import HomeHeader from "../components/HomeHeader";
 
 
 
@@ -39,6 +40,7 @@ const HomeScreen = ({navigation}) => {
 
   const user = useSelector(selectUser);
   const uid ="6GsiMJsZgCjpinhQgyCD";
+  //const uid = user.uid
   const api_token = "ciao";
    // const { user } = useAuth();
 
@@ -90,35 +92,13 @@ const HomeScreen = ({navigation}) => {
   
   return (
     <View style={[tailwind('flex-1'),{backgroundColor: styleColors.themeColor}]} >
-      <StatusBar barStyle="light-content" backgroundColor={styleColors.themeColor} />
-      <View style={{ backgroundColor: styleColors.themeColor }}>
-        <View style={styles.header}>
-          <TouchableOpacity onPress={()=> navigation.openDrawer() }>
-          <MaterialCommunityIcons
-            name="text"
-            size={30}
-            style={{ color: styleColors.white }}
-          />
-          </TouchableOpacity>
-          <View style={tailwind('flex-row')}>
-          <TouchableOpacity onPress={()=> {getHabits(uid,api_token,newhabits); console.log(newhabits)}} >
-            <MaterialCommunityIcons
-              name="bell-outline" //
-              size={30}
-              style={{ color: styleColors.white }}
-            />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={()=> {logout()}} >
-            <AntDesign name="user" size={30} style={{ color: styleColors.white }} />
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={tailwind('py-0 px-4')}>
-          <Text style={[tailwind('text-4xl'),{ color: styleColors.white}]}>
-            Hi,{"\n" + user?.fullname?.split(/(\s+)/)[0]}
-          </Text>          
-        </View>
-      </View>   
+      <StatusBar barStyle="light-content" backgroundColor={styleColors.themeColor} />      
+      <HomeHeader/>      
+      <View style={tailwind('py-0 px-4')}>
+        <Text style={[tailwind('text-4xl'),{ color: styleColors.white}]}>
+          Hi,{"\n" + user?.fullname?.split(/(\s+)/)[0]}
+        </Text>          
+      </View>         
       
       <View style={styles.infoBox} >
             <Text style={tailwind('text-2xl pb-4 ')}>Progress</Text>
@@ -174,7 +154,9 @@ const HomeScreen = ({navigation}) => {
             countable={habit.countable}
             value={habit.value}
             set_value={habit.set_value}
-            completeToday={habit.stats != undefined ? habit.stats[getDate()]?.completed : false}      
+            completeToday={habit.stats != undefined ? habit.stats[getDate()]?.completed : false}
+            uid={uid}
+            api_token={api_token}   
           />
          )        
          )

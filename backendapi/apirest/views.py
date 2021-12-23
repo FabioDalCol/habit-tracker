@@ -10,7 +10,7 @@ class HabitViewSet(viewsets.ViewSet):
     client = FirebaseClient() 
 
     def check_token(self, uid, token):
-        token_to_check= self.client._db.collection(u'users').document(f'{uid}').get().to_dict()['api_token']
+        token_to_check= self.client._db.collection(u'users_api_keys').document(f'{uid}').get().to_dict()['api_token']
         return token==token_to_check
 
     def create(self, request, *args, **kwargs):
@@ -27,7 +27,7 @@ class HabitViewSet(viewsets.ViewSet):
 
     def list(self, request, *args, **kwargs):
         if not self.check_token(kwargs.get("uid"), request.headers['Token']):
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
+            return Response(status=status.HTTP_401_UNAUTHORIZED)        
         self.client._collection = self.client._db.collection(u'users').document(f'{kwargs.get("uid")}').collection(u'habits')
         Habits = self.client.all()        
         serializer = HabitSerializer(Habits, many=True)
