@@ -141,7 +141,7 @@ const HomeScreen = ({navigation}) => {
                 }
           />}>
     
-        <NewHabit viewStyle = {styles.newHabit} show={showView} state={{newHabitForm,setNewHabitForm}} setShow={setNewHabitComp} uid={uid} api_token={api_token}/>                                             
+        <NewHabit viewStyle = {styles.newHabit} show={showView} state={{newHabitForm,setNewHabitForm}} setShow={setNewHabitComp} uid={uid} api_token={api_token} habits={newhabits}/>                                             
        
         {newhabits?.map(habit => 
          (getTodayHabits(newhabits)?.includes(habit.id) && (

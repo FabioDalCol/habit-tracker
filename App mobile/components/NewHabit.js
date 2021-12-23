@@ -11,13 +11,14 @@ import { useEffect } from 'react';
 import RNPickerSelect from 'react-native-picker-select';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { color } from 'react-native-elements/dist/helpers';
-import { addHabit, getDate} from "../Api";
+import getHabits, { addHabit, getDate} from "../Api";
 
 
 const NewHabit = (props ) => {
   
     const uid = props.uid;
     const api_token = props.api_token;
+    const habits = props.habits;
     const {newHabitForm, setNewHabitForm}=props.state;
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     const categories= ['Drink', 'Walk', 'Custom'];  
@@ -363,7 +364,7 @@ const NewHabit = (props ) => {
                                 name="send"
                                 size={30}
                                 style={{ color: '#4263ec'}} // da rivedere perchè non responsive 
-                                onPress={() => addHabit(uid, api_token, makeHabit())}
+                                onPress={() => {addHabit(uid, api_token, makeHabit()); props.setShow(false); getHabits(uid, api_token, habits)}}
                             />
                         </TouchableOpacity> 
                 </View>
