@@ -50,9 +50,9 @@ const NewHabit = (props ) => {
           }
 
     const makeHabit = () => {
-        habit={
-            name: newHabitForm.HabitName ? newHabitForm.HabitName : 'vuota', 
-            desc: newHabitForm.Description ? newHabitForm.Description : 'vuota', 
+        var habit={
+            name: newHabitForm.HabitName ? newHabitForm.HabitName : newHabitForm.Category, 
+            desc: newHabitForm.Description ? newHabitForm.Description : 'Default Habit', 
             category: newHabitForm.Category, 
             created: getDate(), 
             repeat_days: {
@@ -65,13 +65,29 @@ const NewHabit = (props ) => {
                 Mon: newHabitForm.Mon
                 },
             value: 0,
-            countable: newHabitForm.Countable,
-            set_value: newHabitForm.Countable ? newHabitForm.Target : undefined,
-            completed: []
+            countable: newHabitForm.Category!='Custom',
+            set_value: pickTarget(newHabitForm.Category),
+            reminder: newHabitForm.Times,
+            is_active: true,
             };  
         return habit;
     }  
 
+    const pickTarget = (param) => 
+            {
+                switch(param) {
+                    case 'Custom':
+                        return undefined;
+                    case 'Drink':
+                        return newHabitForm.Drink_target;
+                    case 'Walk':
+                        return newHabitForm.Walk_target;
+                    default:
+                        console.log('Category is undefined');
+                        return null;
+                }
+            }
+            
     const renderSwitch = (param) => 
             {
             
@@ -80,6 +96,8 @@ const NewHabit = (props ) => {
                     return (<>                
                             <Input value={newHabitForm.HabitName} onChangeText={(text)=> setNewHabitForm({...newHabitForm,HabitName:text})} inputContainerStyle={styles.inputTextBox.container}  style={styles.inputTextBox.box} placeholder="Habit name"/>
                             <Input value={newHabitForm.Description} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Description:text})} inputContainerStyle={styles.inputTextBox.container}  style={styles.inputTextBox.box} maxLength={250} multiline = {true} placeholder="Description"/>
+                            
+                            {/* MORE CUSTOMIZZATION HABIT
                             <View style={{justifyContent: 'center',  flex: 1}}>
                                 <Text style={{alignSelf: 'center', fontWeight: 'bold'}}>Countable</Text>
                                 <CheckBox
@@ -92,8 +110,7 @@ const NewHabit = (props ) => {
                                 containerStyle={styles.checkBoxDays.container}
                                 /> 
                             </View>
-
-                            {/* MORE CUSTOMIZZATION HABIT
+  
                             {newHabitForm.Target_type=='numeric' &&
                             (<>
                                 <Input value={newHabitForm.Target_name} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Target_name:text})} inputContainerStyle={styles.inputTextBox.container}  style={styles.inputTextBox.box} maxLength={250} multiline = {true} placeholder="Target name es. steps, glass, km"/>
@@ -106,7 +123,7 @@ const NewHabit = (props ) => {
                     return (<>
                             <View style={{flexDirection: 'row', flex:1, justifyContent: 'center', marginLeft:'auto'}}>  
                                 <View style={{flex:0.2}}>                         
-                                <Input inputContainerStyle={[styles.inputTextBox.container]}  style={styles.inputTextBox.box} value={newHabitForm.Target} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Target:text})} keyboardType='number-pad' placeholder="Insert daily"/>
+                                <Input inputContainerStyle={[styles.inputTextBox.container]}  style={styles.inputTextBox.box} value={newHabitForm.Drink_target} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Drink_target:text})} keyboardType='number-pad' placeholder="Insert daily"/>
                                 </View>
                                 <View style={{flex:0.5}}>
                                 <Text style={{fontSize: 16, marginTop:'7%', fontWeight: 'bold'}}>Glasses</Text> 
@@ -151,8 +168,14 @@ const NewHabit = (props ) => {
                 case 'Walk':
                     {/* {(param) => setNewHabitForm({...newHabitForm, HabitName:param})} */}
                     return (<>                
-                        <Input value={newHabitForm.Target} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Target:text})} inputContainerStyle={styles.inputTextBox.container}  style={styles.inputTextBox.box} keyboardType='number-pad' placeholder="Insert target daily steps"/>
-                        </>);   
+                            <View style={{flexDirection: 'row', flex:1, justifyContent: 'center', marginLeft:'auto'}}>  
+                                <View style={{flex:0.3}}>                         
+                                <Input inputContainerStyle={[styles.inputTextBox.container]}  style={styles.inputTextBox.box} value={newHabitForm.Walk_target} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Walk_target:text})} keyboardType='number-pad' placeholder="Insert daily"/>
+                                </View>
+                                <View style={{flex:0.5}}>
+                                <Text style={{fontSize: 16, marginTop:'7%', fontWeight: 'bold'}}>Steps</Text> 
+                                </View>
+                            </View></>);   
                 default:
                     return null;
                 }

@@ -28,7 +28,8 @@ const addHabit = async (uid,token,habit) => {
     console.log(habit);   
     const url = baseUrl + uid + '/habits/';       
     await axios.post(url,habit,{headers:{token: token, 'Content-Type': 'application/json'}})    
-    .catch(error =>{ alert(error.message)});    
+    .catch(error =>{ alert(error.message)}); 
+    alert('Habit aggiunto!');   
 };
 
 const removeHabit = async (uid,token,habit,id) => {      
