@@ -16,8 +16,8 @@ import { addHabit, getDate} from "../Api";
 
 const NewHabit = (props ) => {
   
-    const uid ="6GsiMJsZgCjpinhQgyCD";
-    const api_token = "ciao";
+    const uid = props.uid;
+    const api_token = props.api_token;
     const {newHabitForm, setNewHabitForm}=props.state;
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     const categories= ['Drink', 'Walk', 'Custom'];  

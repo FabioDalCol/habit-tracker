@@ -39,9 +39,9 @@ const HomeScreen = ({navigation}) => {
   }
 
   const user = useSelector(selectUser);
-  const uid ="6GsiMJsZgCjpinhQgyCD";
-  //const uid = user.uid
-  const api_token = "ciao";
+  //const uid ="6GsiMJsZgCjpinhQgyCD";
+  const uid = user.uid
+  const api_token = user.api_token;
    // const { user } = useAuth();
 
    useEffect(() => {
@@ -141,7 +141,7 @@ const HomeScreen = ({navigation}) => {
                 }
           />}>
     
-        <NewHabit viewStyle = {styles.newHabit} show={showView} state={{newHabitForm,setNewHabitForm}} setShow={setNewHabitComp}/>                                             
+        <NewHabit viewStyle = {styles.newHabit} show={showView} state={{newHabitForm,setNewHabitForm}} setShow={setNewHabitComp} uid={uid} api_token={api_token}/>                                             
        
         {newhabits?.map(habit => 
          (getTodayHabits(newhabits)?.includes(habit.id) && (
