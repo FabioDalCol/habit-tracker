@@ -96,7 +96,8 @@ const styles =
         header:{
             flex: 1, 
             alignItems: "center", 
-            justifyContent: "center"
+            justifyContent: "center",
+            paddingVertical: 20
         },
         sepLine:{
             height: 2, 
@@ -110,9 +111,11 @@ const styles =
 
     },
     profilePic:{
-        width: 120, 
-        height: 120, 
-        borderRadius: 40
+        width: 110, 
+        height: 110, 
+        borderRadius: 60,
+        borderWidth: 1,
+        borderColor:"#a4a4a4"
     },
     inputTextBox:{
         box:{

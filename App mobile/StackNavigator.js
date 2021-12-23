@@ -8,7 +8,7 @@ import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
 import RegistrationScreen from './screens/RegistrationScreen';
 
-import SettingsScreen from './screens/SettingsScreen';
+
 
 
 //Redux & auth

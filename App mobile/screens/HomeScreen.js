@@ -86,6 +86,7 @@ const HomeScreen = ({navigation}) => {
   //console.log(newhabits)   
   console.log(user.uid)
   console.log(user.api_token)
+
   
   return (
     <View style={[tailwind('flex-1'),{backgroundColor: styleColors.themeColor}]} >
@@ -123,7 +124,7 @@ const HomeScreen = ({navigation}) => {
             <Text style={tailwind('text-2xl pb-4 ')}>Progress</Text>
             <View style={tailwind(" h-8 relative max-w-xl rounded-full overflow-hidden")}>
               <View style={tailwind("w-full h-full bg-gray-200 absolute")}>
-              <View style={[tailwind(" h-full absolute"),dailyProgressColor(),{width: completedHabitsCount/todayHabits.length+"%"}]}></View>
+              <View style={[tailwind(" h-full absolute"),dailyProgressColor(),{width: completedHabitsCount/todayHabits.length*100+"%"}]}></View>
               <View style={tailwind("flex-1 justify-center")}>
               <Text style={tailwind("text-center text-base font-semibold")}> {completedHabitsCount} of {todayHabits.length}</Text>
               </View>

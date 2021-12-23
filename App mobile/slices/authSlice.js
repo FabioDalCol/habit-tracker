@@ -4,7 +4,8 @@ const initialState = {
     user: {
         fullname: null,
         uid:null,
-        api_token: null
+        api_token: null,
+        photo_url: null
     },
     loadingInit: true,
     loading: false    
