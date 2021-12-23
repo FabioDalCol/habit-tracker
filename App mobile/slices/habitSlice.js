@@ -92,19 +92,25 @@ export const habitSlice = createSlice({
             var today = getDate();                    
             for (var habId of getTodayHabits(state.habits)){
                 const index = state.habits.findIndex( habit => habit.id == habId);                    
-                if(state.habits[index].stats == undefined) 
-                    state.habits[index].stats = {};
-                if(state.habits[index].stats[today] == undefined){
-                    state.habits[index].stats[today] = {};
-                    state.habits[index].stats[today].completed = false;
-                    if (state.habits[index].countable){
-                            state.habits[index].stats[today].set_value = state.habits[index].set_value;
-                            state.habits[index].value = 0;
-                            state.habits[index].stats[today].value = state.habits[index].value;                      
-                        }
-                }         
-                updateHabit(uid,token,state.habits[index],habId)                                           
-            }                                                    
+                if(state.habits[index].stats == undefined) state.habits[index].stats = {};
+                if (state.habits[index].countable){
+                    if(state.habits[index].stats[today] == undefined){
+                        state.habits[index].stats[today] = {}
+                        state.habits[index].stats[today].set_value = state.habits[index].set_value
+                        state.habits[index].value = 0;
+                        state.habits[index].stats[today].value = state.habits[index].value
+                        state.habits[index].stats[today].completed = false
+                        updateHabit(uid,token,state.habits[index],habId)                         
+                    }
+                }
+                else {
+                    if(state.habits[index].stats[today] == undefined){
+                        state.habits[index].stats[today] = {}
+                        state.habits[index].stats[today].completed = false
+                        updateHabit(uid,token,state.habits[index],habId)                        
+                    }
+                }                            
+            }                         
         },      
     }
 })

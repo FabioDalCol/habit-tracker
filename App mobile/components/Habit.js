@@ -57,7 +57,7 @@ const Habit = ({ id, name, category, desc, countable, value = null, set_value = 
                   style={[styles.inputValueBox,{width:15+String(value).length*10}]} 
                   value={String(value)}
                   onChangeText={(text)=>store.dispatch(setValue({id:id,value:text}))}
-                  onEndEditing = {()=>store.dispatch(pushValue({id:id,uid:uid,token:api_token}))}
+                  onEndEditing = {()=>{store.dispatch(pushValue({id:id,uid:uid,token:api_token}))}}
                 />
               </View>              
               <Text style={[tailwind("text-center font-semibold"),{fontSize:18}]}>/{set_value}</Text>              
