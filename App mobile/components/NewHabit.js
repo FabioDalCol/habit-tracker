@@ -52,8 +52,8 @@ const NewHabit = (props ) => {
 
     const makeHabit = () => {
         var habit={
-            name: newHabitForm.HabitName ? newHabitForm.HabitName : newHabitForm.Category, 
-            desc: newHabitForm.Description ? newHabitForm.Description : 'Default Habit', 
+            name: newHabitForm.Category=='Custom' ? newHabitForm.HabitName : newHabitForm.Category, 
+            desc: newHabitForm.Category=='Custom' ? newHabitForm.Description : 'Default Habit', 
             category: newHabitForm.Category, 
             created: getDate(), 
             repeat_days: {
@@ -72,115 +72,121 @@ const NewHabit = (props ) => {
             is_active: true,
             };  
         return habit;
-    }  
+        }  
+
+    const fieldclear = () =>
+        {
+            //reset all fields
+            setNewHabitForm({Category:undefined,HabitName:'', desc:'',Walk_target:'10000',Drink_target:'10',Times:0,Reminder:false,Target_name:'',Mode:'time',Date_start:new Date(1598051730000), Date_end:new Date(1598051730000), Show_end:false, Show_start:false, Picker_value:'vuoto',Mon:false,Tue:false,Wed:false,Thu:false,Fri:false,Sat:false,Sun:false,Eve:false})
+        }
 
     const pickTarget = (param) => 
-            {
-                switch(param) {
-                    case 'Custom':
-                        return undefined;
-                    case 'Drink':
-                        return newHabitForm.Drink_target;
-                    case 'Walk':
-                        return newHabitForm.Walk_target;
-                    default:
-                        console.log('Category is undefined');
-                        return null;
-                }
-            }
-            
-    const renderSwitch = (param) => 
-            {
-            
+        {
             switch(param) {
                 case 'Custom':
-                    return (<>                
-                            <Input value={newHabitForm.HabitName} onChangeText={(text)=> setNewHabitForm({...newHabitForm,HabitName:text})} inputContainerStyle={styles.inputTextBox.container}  style={styles.inputTextBox.box} placeholder="Habit name"/>
-                            <Input value={newHabitForm.Description} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Description:text})} inputContainerStyle={styles.inputTextBox.container}  style={styles.inputTextBox.box} maxLength={250} multiline = {true} placeholder="Description"/>
-                            
-                            {/* MORE CUSTOMIZZATION HABIT
-                            <View style={{justifyContent: 'center',  flex: 1}}>
-                                <Text style={{alignSelf: 'center', fontWeight: 'bold'}}>Countable</Text>
-                                <CheckBox
-                                iconRight
-                                iconType='material'
-                                checked={newHabitForm.Countable}
-                                onPress={()=>setNewHabitForm({...newHabitForm,Countable:!newHabitForm.Countable})}
-                                checkedIcon='check-circle-outline'
-                                uncheckedIcon='radio-button-unchecked'
-                                containerStyle={styles.checkBoxDays.container}
-                                /> 
-                            </View>
-  
-                            {newHabitForm.Target_type=='numeric' &&
-                            (<>
-                                <Input value={newHabitForm.Target_name} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Target_name:text})} inputContainerStyle={styles.inputTextBox.container}  style={styles.inputTextBox.box} maxLength={250} multiline = {true} placeholder="Target name es. steps, glass, km"/>
-                                <Input value={newHabitForm.Target} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Target:text})} inputContainerStyle={styles.inputTextBox.container}  style={styles.inputTextBox.box} keyboardType='number-pad' placeholder={"Insert target daily "+newHabitForm.Target_name}/>
-                            </>)} */}
-                            
-                            </>);
+                    return undefined;
                 case 'Drink':
-                    //{setNewHabitForm({...newHabitForm, HabitName:param})};
-                    return (<>
-                            <View style={{flexDirection: 'row', flex:1, justifyContent: 'center', marginLeft:'auto'}}>  
-                                <View style={{flex:0.2}}>                         
-                                <Input inputContainerStyle={[styles.inputTextBox.container]}  style={styles.inputTextBox.box} value={newHabitForm.Drink_target} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Drink_target:text})} keyboardType='number-pad' placeholder="Insert daily"/>
-                                </View>
-                                <View style={{flex:0.5}}>
-                                <Text style={{fontSize: 16, marginTop:'7%', fontWeight: 'bold'}}>Glasses</Text> 
-                                </View>
-                            </View>
-                            {/* <View style={{flex:8, justifyContent: "space-around", flexDirection: "row"}}>
-                                <View>
-                                    <Pressable style={styles.buttone} onPress={showTimepicker_start} title="Inserisci ora fine">
-                                        <Text style={styles.text}>Rise time</Text>
-                                        <Text style={styles.text, {color: 'white', fontWeight: 'bold',}}>{makeTwoDigits(newHabitForm.Date_start.getHours())+':'+makeTwoDigits(newHabitForm.Date_start.getMinutes())}</Text>
-                                    </Pressable>
-                                </View>
-                                {newHabitForm.Show_start && (
-                                    <DateTimePicker
-                                    testID="dateTimePicker"
-                                    value={newHabitForm.Date_start}
-                                    mode={newHabitForm.Mode}
-                                    is24Hour={true}
-                                    display="default"
-                                    onChange={onChange_start}
-                                    />     
-                                )}
-
-                                <View>
-                                    <Pressable style={styles.buttone} onPress={showTimepicker_end} title="Inserisci ora fine">
-                                        <Text style={styles.text}>Sleep time</Text>
-                                        <Text style={styles.text, {color: 'white', fontWeight: 'bold',}}>{makeTwoDigits(newHabitForm.Date_end.getHours())+':'+makeTwoDigits(newHabitForm.Date_end.getMinutes())}</Text>
-                                    </Pressable>
-                                </View>
-                                {newHabitForm.Show_end && (
-                                    <DateTimePicker
-                                    testID="dateTimePicker"
-                                    value={newHabitForm.Date_end}
-                                    mode={newHabitForm.Mode}
-                                    is24Hour={true}
-                                    display="default"
-                                    onChange={onChange_end}
-                                    />     
-                                )}
-                            </View> */}
-                            </>);
+                    return newHabitForm.Drink_target;
                 case 'Walk':
-                    {/* {(param) => setNewHabitForm({...newHabitForm, HabitName:param})} */}
-                    return (<>                
-                            <View style={{flexDirection: 'row', flex:1, justifyContent: 'center', marginLeft:'auto'}}>  
-                                <View style={{flex:0.3}}>                         
-                                <Input inputContainerStyle={[styles.inputTextBox.container]}  style={styles.inputTextBox.box} value={newHabitForm.Walk_target} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Walk_target:text})} keyboardType='number-pad' placeholder="Insert daily"/>
-                                </View>
-                                <View style={{flex:0.5}}>
-                                <Text style={{fontSize: 16, marginTop:'7%', fontWeight: 'bold'}}>Steps</Text> 
-                                </View>
-                            </View></>);   
+                    return newHabitForm.Walk_target;
                 default:
+                    console.log('Category is undefined');
                     return null;
-                }
             }
+        }
+            
+    const renderSwitch = (param) => 
+        {
+        
+        switch(param) {
+            case 'Custom':
+                return (<>                
+                        <Input value={newHabitForm.HabitName} onChangeText={(text)=> setNewHabitForm({...newHabitForm,HabitName:text})} inputContainerStyle={styles.inputTextBox.container}  style={styles.inputTextBox.box} placeholder="Habit name"/>
+                        <Input value={newHabitForm.Description} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Description:text})} inputContainerStyle={styles.inputTextBox.container}  style={styles.inputTextBox.box} maxLength={250} multiline = {true} placeholder="Description"/>
+                        
+                        {/* MORE CUSTOMIZZATION HABIT
+                        <View style={{justifyContent: 'center',  flex: 1}}>
+                            <Text style={{alignSelf: 'center', fontWeight: 'bold'}}>Countable</Text>
+                            <CheckBox
+                            iconRight
+                            iconType='material'
+                            checked={newHabitForm.Countable}
+                            onPress={()=>setNewHabitForm({...newHabitForm,Countable:!newHabitForm.Countable})}
+                            checkedIcon='check-circle-outline'
+                            uncheckedIcon='radio-button-unchecked'
+                            containerStyle={styles.checkBoxDays.container}
+                            /> 
+                        </View>
+
+                        {newHabitForm.Target_type=='numeric' &&
+                        (<>
+                            <Input value={newHabitForm.Target_name} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Target_name:text})} inputContainerStyle={styles.inputTextBox.container}  style={styles.inputTextBox.box} maxLength={250} multiline = {true} placeholder="Target name es. steps, glass, km"/>
+                            <Input value={newHabitForm.Target} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Target:text})} inputContainerStyle={styles.inputTextBox.container}  style={styles.inputTextBox.box} keyboardType='number-pad' placeholder={"Insert target daily "+newHabitForm.Target_name}/>
+                        </>)} */}
+                        
+                        </>);
+            case 'Drink':
+                //{setNewHabitForm({...newHabitForm, HabitName:param})};
+                return (<>
+                        <View style={{flexDirection: 'row', flex:1, justifyContent: 'center', marginLeft:'auto'}}>  
+                            <View style={{flex:0.2}}>                         
+                            <Input inputContainerStyle={[styles.inputTextBox.container]}  style={styles.inputTextBox.box} value={newHabitForm.Drink_target} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Drink_target:text})} keyboardType='number-pad' placeholder="Insert daily"/>
+                            </View>
+                            <View style={{flex:0.5}}>
+                            <Text style={{fontSize: 16, marginTop:'7%', fontWeight: 'bold'}}>Glasses</Text> 
+                            </View>
+                        </View>
+                        {/* <View style={{flex:8, justifyContent: "space-around", flexDirection: "row"}}>
+                            <View>
+                                <Pressable style={styles.buttone} onPress={showTimepicker_start} title="Inserisci ora fine">
+                                    <Text style={styles.text}>Rise time</Text>
+                                    <Text style={styles.text, {color: 'white', fontWeight: 'bold',}}>{makeTwoDigits(newHabitForm.Date_start.getHours())+':'+makeTwoDigits(newHabitForm.Date_start.getMinutes())}</Text>
+                                </Pressable>
+                            </View>
+                            {newHabitForm.Show_start && (
+                                <DateTimePicker
+                                testID="dateTimePicker"
+                                value={newHabitForm.Date_start}
+                                mode={newHabitForm.Mode}
+                                is24Hour={true}
+                                display="default"
+                                onChange={onChange_start}
+                                />     
+                            )}
+
+                            <View>
+                                <Pressable style={styles.buttone} onPress={showTimepicker_end} title="Inserisci ora fine">
+                                    <Text style={styles.text}>Sleep time</Text>
+                                    <Text style={styles.text, {color: 'white', fontWeight: 'bold',}}>{makeTwoDigits(newHabitForm.Date_end.getHours())+':'+makeTwoDigits(newHabitForm.Date_end.getMinutes())}</Text>
+                                </Pressable>
+                            </View>
+                            {newHabitForm.Show_end && (
+                                <DateTimePicker
+                                testID="dateTimePicker"
+                                value={newHabitForm.Date_end}
+                                mode={newHabitForm.Mode}
+                                is24Hour={true}
+                                display="default"
+                                onChange={onChange_end}
+                                />     
+                            )}
+                        </View> */}
+                        </>);
+            case 'Walk':
+                {/* {(param) => setNewHabitForm({...newHabitForm, HabitName:param})} */}
+                return (<>                
+                        <View style={{flexDirection: 'row', flex:1, justifyContent: 'center', marginLeft:'auto'}}>  
+                            <View style={{flex:0.3}}>                         
+                            <Input inputContainerStyle={[styles.inputTextBox.container]}  style={styles.inputTextBox.box} value={newHabitForm.Walk_target} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Walk_target:text})} keyboardType='number-pad' placeholder="Insert daily"/>
+                            </View>
+                            <View style={{flex:0.5}}>
+                            <Text style={{fontSize: 16, marginTop:'7%', fontWeight: 'bold'}}>Steps</Text> 
+                            </View>
+                        </View></>);   
+            default:
+                return null;
+            }
+        }
 
     useEffect(() => {
         var sum=true;
@@ -364,7 +370,7 @@ const NewHabit = (props ) => {
                                 name="send"
                                 size={30}
                                 style={{ color: '#4263ec'}} // da rivedere perchè non responsive 
-                                onPress={() => {addHabit(uid, api_token, makeHabit()); props.setShow(false); getHabits(uid, api_token, habits)}}
+                                onPress={() => {addHabit(uid, api_token, makeHabit()); props.setShow(false); getHabits(uid, api_token, habits); fieldclear()}}
                             />
                         </TouchableOpacity> 
                 </View>

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, Text, RefreshControl, StatusBar } from "react-native";
+import { View, Text, RefreshControl, StatusBar, Platform } from "react-native";
 import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { useSelector } from "react-redux";
@@ -24,7 +24,8 @@ import { getTodayHabits } from "../Api";
 import { colors } from "react-native-elements";
 import Habit from "../components/Habit";
 import HomeHeader from "../components/HomeHeader";
-
+import NotificationHandler from "../NotificationHandler"
+import { scheduleNotificationAsync } from "expo-notifications";
 
 
 const HomeScreen = ({navigation}) => {
@@ -51,6 +52,7 @@ const HomeScreen = ({navigation}) => {
   const [showView, setShowView] = useState(false);   
   const [newHabitForm, setNewHabitForm] = useState({Walk_target:'10000',Drink_target:'10',Times:0,Reminder:false,Target_name:'',Mode:'time',Date_start:new Date(1598051730000), Date_end:new Date(1598051730000), Show_end:false, Show_start:false, Picker_value:'vuoto',Mon:false,Tue:false,Wed:false,Thu:false,Fri:false,Sat:false,Sun:false,Eve:false})
   const [refreshing,setRefreshing] = useState(false); //pull down to refresh  
+  const [note, setNote] = useState({expoPushToken:'',notification:false})
 
   const categories = {Drink:{icon:"cup-water", color:styleColors.water},
                       Walk:{icon:"walk",color:"brown"},
@@ -122,8 +124,21 @@ const HomeScreen = ({navigation}) => {
             name="plus" //
             size={40}
             style={[{color: styleColors.themeColor, backgroundColor: styleColors.white}, styles.plusButton]}
+            // onPress={async () => {
+            //   await schedulePushNotification(3);
+            // }}
           />
-        </TouchableOpacity>    
+        </TouchableOpacity>   
+
+        <TouchableOpacity onPress={()=>{
+            scheduleNotificationAsync(3)
+          }}> 
+          <MaterialCommunityIcons
+            name="plus" //
+            size={40}
+            style={[{color: styleColors.themeColor, backgroundColor: styleColors.white}, styles.plusButton]}
+          />
+        </TouchableOpacity>   
           
       </View>
     
@@ -141,8 +156,10 @@ const HomeScreen = ({navigation}) => {
                 }
           />}>
     
-        <NewHabit viewStyle = {styles.newHabit} show={showView} state={{newHabitForm,setNewHabitForm}} setShow={setNewHabitComp} uid={uid} api_token={api_token} habits={newhabits}/>                                             
-       
+        <NewHabit viewStyle = {styles.newHabit} show={showView} state={{newHabitForm,setNewHabitForm}} setShow={setNewHabitComp} uid={uid} api_token={api_token} habits={newhabits}/>
+
+        <NotificationHandler show={showView} state={{note,setNote}} setShow={setNewHabitComp}/>
+        
         {newhabits?.map(habit => 
          (getTodayHabits(newhabits)?.includes(habit.id) && (
           <Habit
