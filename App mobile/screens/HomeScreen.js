@@ -26,6 +26,8 @@ import Habit from "../components/Habit";
 import HomeHeader from "../components/HomeHeader";
 import NotificationHandler from "../NotificationHandler"
 import { scheduleNotificationAsync } from "expo-notifications";
+import { schedulePushNotification } from "../NotificationHandler";
+import { weekDays } from "../Api";
 
 
 const HomeScreen = ({navigation}) => {
@@ -87,6 +89,17 @@ const HomeScreen = ({navigation}) => {
       return {backgroundColor: styleColors.greenComp }
     }
   }
+
+  const repeatDays = (activeDays) => {
+    var days = ""
+    for(var day of weekDays){
+      if(activeDays[day]){
+        days = days + day + ","
+      }
+    }
+    days= days.slice(0, -1);
+    return days
+  }
   //console.log(newhabits)   
   console.log(user.uid)
   console.log(user.api_token)
@@ -129,9 +142,9 @@ const HomeScreen = ({navigation}) => {
             // }}
           />
         </TouchableOpacity>   
-
-        <TouchableOpacity onPress={()=>{
-            scheduleNotificationAsync(3)
+        {/*
+        <TouchableOpacity onPress={async () => {
+            await schedulePushNotification(3);
           }}> 
           <MaterialCommunityIcons
             name="plus" //
@@ -139,11 +152,11 @@ const HomeScreen = ({navigation}) => {
             style={[{color: styleColors.themeColor, backgroundColor: styleColors.white}, styles.plusButton]}
           />
         </TouchableOpacity>   
-          
+        */}
       </View>
     
       <ScrollView 
-        style={{backgroundColor: styleColors.background,marginHorizontal: 6}} //, borderBottomLeftRadius: 20, borderBottomRightRadius: 20, marginBottom: 20}}
+        style={styles.scrollView.home} //, borderBottomLeftRadius: 20, borderBottomRightRadius: 20, marginBottom: 20}}
         contentContainerStyle={{paddingBottom: 20}}
         ref={scrollRef}
         refreshControl={
@@ -158,7 +171,7 @@ const HomeScreen = ({navigation}) => {
     
         <NewHabit viewStyle = {styles.newHabit} show={showView} state={{newHabitForm,setNewHabitForm}} setShow={setNewHabitComp} uid={uid} api_token={api_token} habits={newhabits}/>
 
-        <NotificationHandler show={showView} state={{note,setNote}} setShow={setNewHabitComp}/>
+        <NotificationHandler state={{note,setNote}} />
         
         {newhabits?.map(habit => 
          (getTodayHabits(newhabits)?.includes(habit.id) && (
@@ -167,7 +180,7 @@ const HomeScreen = ({navigation}) => {
             id = {habit.id}             
             name={habit.name}
             category={habit.category}
-            desc={habit.desc}
+            desc={repeatDays(habit.repeat_days)}
             countable={habit.countable}
             value={habit.value}
             set_value={habit.set_value}

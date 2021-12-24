@@ -9,6 +9,9 @@ import store from '../store';
 import { incrementValue, decrementValue, setValue, triggerCompleted,pushValue } from '../slices/habitSlice';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../slices/authSlice';
+import { removeHabit } from '../Api';
+import { selectHabits } from '../slices/habitSlice';
+import getHabits from '../Api';
 
 
 const categories = {Drink:{icon:"cup-water", color:styleColors.water},     //MOVE CATEGORIES
@@ -21,8 +24,10 @@ const categories = {Drink:{icon:"cup-water", color:styleColors.water},     //MOV
 
 //const api_token = "ciao";
 
-const Habit = ({ id, name, category, desc, countable, value = null, set_value = null, completeToday, uid, api_token }) => {
-    
+const Habit = ({ id, name, category, desc, countable, value = null, set_value = null, completeToday, uid, api_token, manage_habits = false }) => {
+  const habits = useSelector(selectHabits);
+
+  if(!manage_habits){
     return (
                                                   // If habits is completed shows green border 
       <View style={[styles.habit.main, completeToday ? {borderWidth: 2} : {}]}>  
@@ -44,7 +49,7 @@ const Habit = ({ id, name, category, desc, countable, value = null, set_value = 
           />
           <View>
             <Text style={tailwind('text-base')}>{name}</Text>
-            <Text style={{ color: styleColors.greyish }}>{desc}</Text>
+            <Text style={{ fontSize: 13, color: styleColors.greyish }}>{desc}</Text>
           </View>
         </View>        
         <View>          
@@ -93,7 +98,43 @@ const Habit = ({ id, name, category, desc, countable, value = null, set_value = 
           </>)}        
       </View>
     </View>
-    );
-  };
+    )
+  }
+  else{
+    return (
+                                                  // If habits is completed shows green border 
+      <View style={styles.habit.main}>  
+             
+        <View style={styles.habit.container}>
+          <MaterialCommunityIcons
+            name={categories[category].icon}
+            size={30}
+            style={{ color: categories[category].color, marginRight: 5 }}
+          />
+          <View>
+            <Text style={tailwind('text-base')}>{name}</Text>
+            <Text style={{ color: styleColors.greyish }}>{desc}</Text>
+          </View>
+        </View>        
+        <View style={tailwind('flex-row')}>
+              <MaterialCommunityIcons
+                name="pencil"
+                size={30}
+                style={{ color: categories[category].color }}
+              />
+            <TouchableOpacity > 
+              <MaterialCommunityIcons
+                name="trash-can"
+                size={30}
+                style={{ color: categories[category].color, marginLeft: 5 }} 
+                onPress={()=>{removeHabit(uid,api_token,id); alert("habit rimosso"); getHabits(uid,api_token,habits) }}                
+              />
+              </TouchableOpacity> 
+            </View>
+    </View>
+    )
+    
+  }
+};
 
 export default Habit

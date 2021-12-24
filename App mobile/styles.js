@@ -65,6 +65,17 @@ const styles =
         }
         
     },
+    scrollView:{
+        home:{
+            backgroundColor: styleColors.background,
+            marginHorizontal: 6
+        },
+        manage:{
+            backgroundColor: styleColors.background,
+            marginHorizontal: 6,
+            paddingTop: 20        
+        }
+    },
     infoBox: {        
         paddingHorizontal: 16,
         paddingTop: 10,
