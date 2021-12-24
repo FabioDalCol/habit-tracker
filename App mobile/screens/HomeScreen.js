@@ -169,7 +169,7 @@ const HomeScreen = ({navigation}) => {
                 }
           />}>
     
-        <NewHabit viewStyle = {styles.newHabit} show={showView} state={{newHabitForm,setNewHabitForm}} setShow={setNewHabitComp} uid={uid} api_token={api_token} habits={newhabits}/>
+        <NewHabit viewStyle = {styles.newHabit} show={showView} state={{newHabitForm,setNewHabitForm}} setShow={setNewHabitComp} uid={uid} api_token={api_token} />
 
         <NotificationHandler state={{note,setNote}} />
         

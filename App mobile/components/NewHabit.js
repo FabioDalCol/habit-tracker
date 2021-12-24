@@ -12,13 +12,15 @@ import RNPickerSelect from 'react-native-picker-select';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { color } from 'react-native-elements/dist/helpers';
 import getHabits, { addHabit, getDate} from "../Api";
+import { selectHabits } from '../slices/habitSlice';
+import { useSelector } from 'react-redux';
 
 
 const NewHabit = (props ) => {
   
     const uid = props.uid;
     const api_token = props.api_token;
-    const habits = props.habits;
+    const habits = useSelector(selectHabits);
     const {newHabitForm, setNewHabitForm}=props.state;
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     const categories= ['Drink', 'Walk', 'Custom'];  
