@@ -45,13 +45,13 @@ const getDate = () => {
 
 const getTodayHabits = (habits) => {
     today = new Date ()
-    var ids = []
-  
-    for(var habit of habits){        
+    var ids = []   
+    if(habits == null ) return ids
+    for(var habit of habits){             
         if (habit.repeat_days[weekDays[today.getDay()]]){        //If today weekday is true
             ids.push(habit.id)
         }      
-    }     
+    }        
     return ids
 }
 
