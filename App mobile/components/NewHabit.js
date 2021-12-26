@@ -131,11 +131,11 @@ const NewHabit = (props ) => {
                 //{setNewHabitForm({...newHabitForm, HabitName:param})};
                 return (<>
                         <View style={{flexDirection: 'row', flex:1, justifyContent: 'center', marginLeft:'auto'}}>  
-                            <View style={{flex:0.2}}>                         
-                            <Input inputContainerStyle={[styles.inputTextBox.container]}  style={styles.inputTextBox.box} value={newHabitForm.Drink_target} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Drink_target:text})} keyboardType='number-pad' placeholder="Insert daily"/>
+                            <View style={{flex:0.5,}}>                         
+                            <Input inputContainerStyle={[styles.inputTextBox.container, { alignSelf: 'flex-end', width: 30+String(newHabitForm.Drink_target).length*10}]}  style={styles.inputTextBox.box} value={newHabitForm.Drink_target} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Drink_target:text})} keyboardType='number-pad' placeholder="Insert daily"/>
                             </View>
                             <View style={{flex:0.5}}>
-                            <Text style={{fontSize: 16, marginTop:'7%', fontWeight: 'bold'}}>Glasses</Text> 
+                            <Text style={{alignSelf: 'flex-start', fontSize: 16, marginTop:'7%', fontWeight: 'bold'}}>Glasses</Text> 
                             </View>
                         </View>
                         {/* <View style={{flex:8, justifyContent: "space-around", flexDirection: "row"}}>
@@ -178,13 +178,14 @@ const NewHabit = (props ) => {
                 {/* {(param) => setNewHabitForm({...newHabitForm, HabitName:param})} */}
                 return (<>                
                         <View style={{flexDirection: 'row', flex:1, justifyContent: 'center', marginLeft:'auto'}}>  
-                            <View style={{flex:0.3}}>                         
-                            <Input inputContainerStyle={[styles.inputTextBox.container]}  style={styles.inputTextBox.box} value={newHabitForm.Walk_target} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Walk_target:text})} keyboardType='number-pad' placeholder="Insert daily"/>
+                            <View style={{flex:0.5,}}>                         
+                            <Input inputContainerStyle={[styles.inputTextBox.container, { alignSelf: 'flex-end', width: 30+String(newHabitForm.Walk_target).length*10}]}  style={styles.inputTextBox.box} value={newHabitForm.Walk_target} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Walk_target:text})} keyboardType='number-pad' placeholder="Insert daily"/>
                             </View>
                             <View style={{flex:0.5}}>
-                            <Text style={{fontSize: 16, marginTop:'7%', fontWeight: 'bold'}}>Steps</Text> 
+                            <Text style={{alignSelf: 'flex-start', fontSize: 16, marginTop:'7%', fontWeight: 'bold'}}>Steps</Text> 
                             </View>
-                        </View></>);   
+                        </View>
+                        </>);   
             default:
                 return null;
             }
@@ -367,6 +368,7 @@ const NewHabit = (props ) => {
                                 onPress={()=>props.setShow(false)}                
                             />
                         </TouchableOpacity> 
+                        
                         <TouchableOpacity style={{flex: 1}}>
                             <MaterialCommunityIcons
                                 name="send"

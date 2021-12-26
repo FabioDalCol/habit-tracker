@@ -111,11 +111,21 @@ export const habitSlice = createSlice({
                     }
                 }                            
             }                         
-        },      
+        },  
+        setIsActive: (state, action) => {                                          //set without calling API update
+            id = action.payload.id;
+            uid = action.payload.uid;
+            token = action.payload.token;  
+            console.log('CI SONOOOOOOOOOOOOo');
+            const index = state.habits.findIndex( habit => habit.id == id);                    
+            state.habits[index].is_active = !state.habits[index].is_active;   
+            console.log(!state.habits[index].is_active);                        
+            updateHabit(uid,token,state.habits[index],id)                                           
+        }    
     }
 })
 
-export const { setHabits, setRefreshing, incrementValue, decrementValue, triggerCompleted, initDay, setValue, pushValue} = habitSlice.actions;
+export const { setIsActive, setHabits, setRefreshing, incrementValue, decrementValue, triggerCompleted, initDay, setValue, pushValue} = habitSlice.actions;
 
 export const selectHabits = (state) => state.hab.habits;
 export const selectRefreshing = (state) => state.hab.refreshing;
