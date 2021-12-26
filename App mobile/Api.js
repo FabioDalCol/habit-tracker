@@ -24,18 +24,24 @@ const updateHabit = async (uid,token,habit,id) => {
     .catch(error =>{ alert(error.message)});    
 };
 
-const addHabit = async (uid,token,habit) => { 
+const addHabit = async (uid,token,habit,habits) => { 
     console.log(habit);   
     const url = baseUrl + uid + '/habits/';       
     await axios.post(url,habit,{headers:{token: token, 'Content-Type': 'application/json'}})    
-    .catch(error =>{ alert(error.message)}); 
+    .catch(error =>{ alert(error.message)})
+    .finally(()=>
+        getHabits(uid, token, {})
+    ); 
     alert('Habit aggiunto!');   
 };
 
 const removeHabit = async (uid,token,id) => {      
     const url = baseUrl + uid + '/habits/' + id      
     await axios.delete(url,{headers:{token: token}})    
-    .catch(error =>{ alert(error.message)});    
+    .catch(error =>{ alert(error.message)})
+    .finally(()=>
+        getHabits(uid, token, {})
+    )    
 };
 
 const getDate = () => {

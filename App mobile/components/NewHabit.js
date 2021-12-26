@@ -374,7 +374,7 @@ const NewHabit = (props ) => {
                                 name="send"
                                 size={30}
                                 style={{ color: '#4263ec'}} // da rivedere perchè non responsive 
-                                onPress={() => {addHabit(uid, api_token, makeHabit()); props.setShow(false); getHabits(uid, api_token, habits); fieldclear()}}
+                                onPress={() => {addHabit(uid, api_token, makeHabit()); props.setShow(false); fieldclear()}}
                             />
                         </TouchableOpacity> 
                 </View>

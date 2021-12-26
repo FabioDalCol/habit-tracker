@@ -40,8 +40,7 @@ const deleteConfirm = () =>
         text: "Yes", 
         onPress: () => {
                           removeHabit(uid,api_token,id); 
-                          alert("habit rimosso"); 
-                          getHabits(uid,api_token,habits)
+                          alert("habit rimosso");                          
                         }
       }
     ]
