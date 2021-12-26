@@ -1,15 +1,15 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, Alert } from 'react-native'
 import { styles } from '../styles';
 import { styleColors } from '../colors';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import { MaterialCommunityIcons} from "@expo/vector-icons";
 import tailwind from 'tailwind-rn';
 import store from '../store';
-import { incrementValue, decrementValue, setValue, triggerCompleted,pushValue } from '../slices/habitSlice';
+import { incrementValue, decrementValue, setValue, triggerCompleted, pushValue, setIsActive } from '../slices/habitSlice';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../slices/authSlice';
-import { removeHabit } from '../Api';
+import { removeHabit, updateHabit } from '../Api';
 import { selectHabits } from '../slices/habitSlice';
 import getHabits from '../Api';
 
@@ -23,9 +23,30 @@ const categories = {Drink:{icon:"cup-water", color:styleColors.water},     //MOV
 
 
 //const api_token = "ciao";
+const Habit = ({ id, name, category, desc, countable, value = null, set_value = null, completeToday, uid, api_token, manage_habits = false, is_active, created, show=false,}) => {
+const habits = useSelector(selectHabits);
 
-const Habit = ({ id, name, category, desc, countable, value = null, set_value = null, completeToday, uid, api_token, manage_habits = false }) => {
-  const habits = useSelector(selectHabits);
+const deleteConfirm = () =>
+  Alert.alert(
+    "Remove Habit",
+    "Are you sure you want to delete this habit?",
+    [
+      {
+        text: "No",
+        onPress: () => console.log("Delete annullato"),
+        style: "cancel"
+      },
+      { 
+        text: "Yes", 
+        onPress: () => {
+                          removeHabit(uid,api_token,id); 
+                          alert("habit rimosso"); 
+                          getHabits(uid,api_token,habits)
+                        }
+      }
+    ]
+  );
+
 
   if(!manage_habits){
     return (
@@ -113,24 +134,68 @@ const Habit = ({ id, name, category, desc, countable, value = null, set_value = 
           />
           <View>
             <Text style={tailwind('text-base')}>{name}</Text>
-            <Text style={{ color: styleColors.greyish }}>{desc}</Text>
+            {category=='Drink' ?
+            (
+              <Text style={{ color: styleColors.greyish }}>{'Target daily glasses: '+set_value}</Text>)
+              :
+              (category=='Walk' ?
+              (<Text style={{ color: styleColors.greyish }}>{'Target daily steps: '+set_value}</Text>)
+              :
+              (<Text style={{ color: styleColors.greyish }}>{desc}</Text>)
+            )
+          }
+            <Text style={{ color: styleColors.greyish }}>{'Created: '+created}</Text>
+            
           </View>
         </View>        
         <View style={tailwind('flex-row')}>
+          {is_active ? 
+          (<>
+              <TouchableOpacity> 
+                <MaterialCommunityIcons
+                  name="stop"
+                  size={30}
+                  style={{ color: categories[category].color, marginRight:5 }} 
+                  onPress={()=>{store.dispatch(setIsActive({id:id,uid:uid,token:api_token})); alert("habit in pause"); getHabits(uid,api_token,habits) }}                
+                />
+              </TouchableOpacity> 
+            </>):
+            (<>
+              <TouchableOpacity> 
+                <MaterialCommunityIcons
+                  name="play"
+                  size={30}
+                  style={{ color: categories[category].color,  marginRight:5 }} 
+                  onPress={()=>{store.dispatch(setIsActive({id:id,uid:uid,token:api_token})); alert("habit in pause"); getHabits(uid,api_token,habits) }}                             
+                />
+              </TouchableOpacity> 
+            </>)}
+
+            <TouchableOpacity> 
               <MaterialCommunityIcons
-                name="pencil"
-                size={30}
-                style={{ color: categories[category].color }}
-              />
-            <TouchableOpacity > 
+                  name="pencil"
+                  size={30}
+                  style={{ color: categories[category].color }}
+                  onPress={()=>{show=true; console.log('SHOW IS '+ show);}}
+                />
+            </TouchableOpacity> 
+            {/* {console.log('qua invece '+ show)}
+            {true && (<>          
+            <View>
+            <Text style={tailwind('text-base')}>{name}</Text>
+            <Text style={{ fontSize: 13, color: styleColors.greyish }}>{desc}</Text>
+            </View>
+            </>)} */}
+
+            <TouchableOpacity> 
               <MaterialCommunityIcons
                 name="trash-can"
                 size={30}
                 style={{ color: categories[category].color, marginLeft: 5 }} 
-                onPress={()=>{removeHabit(uid,api_token,id); alert("habit rimosso"); getHabits(uid,api_token,habits) }}                
+                onPress={()=>{deleteConfirm()}}                
               />
-              </TouchableOpacity> 
-            </View>
+            </TouchableOpacity> 
+        </View>
     </View>
     )
     

@@ -94,10 +94,10 @@ const HomeScreen = ({navigation}) => {
     var days = ""
     for(var day of weekDays){
       if(activeDays[day]){
-        days = days + day + ","
+        days = days + day + ", "
       }
     }
-    days= days.slice(0, -1);
+    days= days.slice(0, -2);
     return days
   }
   //console.log(newhabits)   
@@ -180,7 +180,7 @@ const HomeScreen = ({navigation}) => {
             id = {habit.id}             
             name={habit.name}
             category={habit.category}
-            desc={repeatDays(habit.repeat_days)}
+            desc={(repeatDays(habit.repeat_days).split(',').length>6) ? 'Everyday':repeatDays(habit.repeat_days)}
             countable={habit.countable}
             value={habit.value}
             set_value={habit.set_value}

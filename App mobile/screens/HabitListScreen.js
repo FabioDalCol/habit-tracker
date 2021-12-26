@@ -57,7 +57,9 @@ const HabitListScreen = () => {
                         completeToday={habit.stats != undefined ? habit.stats[getDate()]?.completed : false}
                         uid={uid}
                         api_token={api_token}
-                        manage_habits={true}                       
+                        manage_habits={true}   
+                        is_active={habit.is_active}
+                        created={habit.created}                    
                     />                                
                     )}
                 </ScrollView>                   
