@@ -14,9 +14,10 @@ import { selectHabits } from '../slices/habitSlice';
 import getHabits from '../Api';
 import NewHabit from "../components/NewHabit";
 
+const customColors = ['gray', '#F4B400', '#0F9D58']
 const categories = {Drink:{icon:"cup-water", color:styleColors.water},     //MOVE CATEGORIES
                       Walk:{icon:"walk",color:"brown"},
-                      Custom:{icon:"chess-queen",color:"gray"}
+                      Custom:{icon:"chess-queen",color:customColors[Math.floor(Math.random()*customColors.length)]}
                       }
 
 //const uid ="6GsiMJsZgCjpinhQgyCD";   // TO REPLACE -> PICK FROM STORE
@@ -25,7 +26,7 @@ const categories = {Drink:{icon:"cup-water", color:styleColors.water},     //MOV
 //const api_token = "ciao";  
 const Habit = ({ id, name='Default', category, desc, countable, value = null, set_value = null, completeToday, uid, api_token, manage_habits = false, is_active, created, show=false, habitToEdit, setHabitToEdit, times, reminder, mon, tue, wed, thu, fri, sat, sun }) => {
 const habits = useSelector(selectHabits);
-console.log('SET VALUE PRIMA '+set_value);
+categories.Custom.color=customColors[Math.floor(Math.random()*customColors.length)];
 const [newHabitForm, setNewHabitForm] = useState({id: id, Habit_list: true, Description: desc, HabitName: name, Category: category, Walk_target: set_value, Drink_target: set_value,Times:times,Reminder:reminder, Mon:mon, Tue:tue,Wed:wed,Thu:thu,Fri:fri,Sat:sat,Sun:sun,Eve:false})
 const setShowView = (param) => {if(!param){setHabitToEdit(-1);}};
 const deleteConfirm = () =>
@@ -147,8 +148,7 @@ const deleteConfirm = () =>
                 (<Text style={{ color: styleColors.greyish }}>{desc}</Text>)
               )
             }
-              <Text style={{ color: styleColors.greyish }}>{'Created: '+created}</Text>
-            {console.log('SET VALUE DOPO '+set_value)}     
+              <Text style={{ color: styleColors.greyish }}>{'Created: '+created}</Text>    
             </View>
           </View>        
           <View style={tailwind('flex-row')}>
