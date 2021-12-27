@@ -60,6 +60,7 @@ const getTodayHabits = (habits) => {
     return ids
 }
 
+
 const countCompletedHabits = (habIds,habits) => {
     var completed = 0;
     var today = getDate();    

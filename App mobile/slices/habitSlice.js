@@ -22,53 +22,97 @@ export const habitSlice = createSlice({
             id = action.payload.id;
             uid = action.payload.uid;
             token = action.payload.token;
-            var today = getDate(); 
-            const index = state.habits.findIndex( habit => habit.id == id);            
-            state.habits[index].value++;
-            state.habits[index].stats[today].value = state.habits[index].value;
-            if(state.habits[index].value >= state.habits[index].set_value){    //if habit is completed add today (yyyy-mm--dd) to db
-                var today = getDate();                                
-                if (!state.habits[index].stats[today].completed ){
-                    state.habits[index].stats[today].completed = true
+            today = action.payload.date; 
+            const index = state.habits.findIndex( habit => habit.id == id); 
+            if(today==getDate())
+            {           
+                state.habits[index].value++;
+                state.habits[index].stats[today].value = state.habits[index].value;
+
+                if(state.habits[index].value >= state.habits[index].set_value){    //if habit is completed add today (yyyy-mm--dd) to db                               
+                    if (!state.habits[index].stats[today].completed ){
+                        state.habits[index].stats[today].completed = true
+                    }
                 }
             }
+            else
+            {
+                state.habits[index].stats[today].value++;
+                if(state.habits[index].stats[today].value >= state.habits[index].stats[today].set_value){    //if habit is completed add today (yyyy-mm--dd) to db                               
+                    if (!state.habits[index].stats[today].completed ){
+                        state.habits[index].stats[today].completed = true
+                    }
+                }
+            }
+
             updateHabit(uid,token,state.habits[index],id)    //add rollback if api write fails
         },   
         decrementValue: (state, action) => {
             id = action.payload.id;
             uid = action.payload.uid;
             token = action.payload.token;
-            var today = getDate(); 
+            today = action.payload.date; 
             const index = state.habits.findIndex( habit => habit.id == id);
-            if(state.habits[index].value>0){           
-                state.habits[index].value--;                            
+            if(today==getDate())
+            {          
+                if(state.habits[index].value>0){           
+                    state.habits[index].value--;                            
+                    state.habits[index].stats[today].value = state.habits[index].value;
+                    if(state.habits[index].value < state.habits[index].set_value){       //if Habit isn't completed removes it from the db for today                                 
+                        if (state.habits[index].stats[today].completed){
+                            state.habits[index].stats[today].completed = false
+                        }
+                    }
+                    updateHabit(uid,token,state.habits[index],id)        //add rollback if api write fails
+                }
+            }
+            else
+            {
+                if(state.habits[index].stats[today].value>0){                                           
+                    state.habits[index].stats[today].value--;
+                    if(state.habits[index].stats[today].value < state.habits[index].stats[today].set_value){       //if Habit isn't completed removes it from the db for today                                 
+                        if (state.habits[index].stats[today].completed){
+                            state.habits[index].stats[today].completed = false
+                        }
+                    }
+                    updateHabit(uid,token,state.habits[index],id)        //add rollback if api write fails
+                }
+            }            
+        }, 
+        setValue: (state, action) => {                                          //set without calling API update
+            id = action.payload.id;
+            value = action.payload.value;            
+            today = action.payload.date; 
+            const index = state.habits.findIndex( habit => habit.id == id); 
+            if(today==getDate())
+            {                   
+                state.habits[index].value = value;                            
                 state.habits[index].stats[today].value = state.habits[index].value;
-                if(state.habits[index].value < state.habits[index].set_value){       //if Habit isn't completed removes it from the db for today
-                    var today = getDate();                                   
+                if(state.habits[index].value < state.habits[index].set_value){                                                 
                     if (state.habits[index].stats[today].completed){
                         state.habits[index].stats[today].completed = false
                     }
                 }
-                updateHabit(uid,token,state.habits[index],id)        //add rollback if api write fails
-            }
-        }, 
-        setValue: (state, action) => {                                          //set without calling API update
-            id = action.payload.id;
-            value = action.payload.value            
-            var today = getDate(); 
-            const index = state.habits.findIndex( habit => habit.id == id);                    
-            state.habits[index].value = value;                            
-            state.habits[index].stats[today].value = state.habits[index].value;
-            if(state.habits[index].value < state.habits[index].set_value){                                                 
-                if (state.habits[index].stats[today].completed){
-                    state.habits[index].stats[today].completed = false
+                else {                                                  
+                    if (!state.habits[index].stats[today].completed ){
+                        state.habits[index].stats[today].completed = true
+                    } 
+                }  
+            }      
+            else
+            {                        
+                state.habits[index].stats[today].value = value;
+                if(state.habits[index].stats[today].value < state.habits[index].stats[today].set_value){                                                 
+                    if (state.habits[index].stats[today].completed){
+                        state.habits[index].stats[today].completed = false
+                    }
                 }
-            }
-            else {                                                  
-                if (!state.habits[index].stats[today].completed ){
-                    state.habits[index].stats[today].completed = true
+                else {                                                  
+                    if (!state.habits[index].stats[today].completed ){
+                        state.habits[index].stats[today].completed = true
+                    } 
                 } 
-            }          
+            }  
         },
         pushValue: (state, action) => {                                          
             id = action.payload.id;
@@ -82,7 +126,7 @@ export const habitSlice = createSlice({
             uid = action.payload.uid;           
             token = action.payload.token;
             const index = state.habits.findIndex( habit => habit.id == id);         
-            var today = getDate();           
+            today = action.payload.date;          
             state.habits[index].stats[today].completed = !state.habits[index].stats[today].completed;
             updateHabit(uid,token,state.habits[index],id)             
         },
@@ -116,7 +160,6 @@ export const habitSlice = createSlice({
             id = action.payload.id;
             uid = action.payload.uid;
             token = action.payload.token;  
-            console.log('CI SONOOOOOOOOOOOOo');
             const index = state.habits.findIndex( habit => habit.id == id);                    
             state.habits[index].is_active = !state.habits[index].is_active;   
             console.log(!state.habits[index].is_active);                        

@@ -55,7 +55,7 @@ const HomeScreen = ({navigation}) => {
   const [newHabitForm, setNewHabitForm] = useState({Walk_target:'10000',Drink_target:'10',Times:0,Reminder:false, HabitName:'Default',Target_name:'',Mode:'time',Date_start:new Date(1598051730000), Date_end:new Date(1598051730000), Show_end:false, Show_start:false, Picker_value:'vuoto',Mon:false,Tue:false,Wed:false,Thu:false,Fri:false,Sat:false,Sun:false,Eve:false})
   const [refreshing,setRefreshing] = useState(false); //pull down to refresh  
   const [note, setNote] = useState({expoPushToken:'',notification:false})
-
+  
   const categories = {Drink:{icon:"cup-water", color:styleColors.water},
                       Walk:{icon:"walk",color:"brown"},
                       Custom:{icon:"chess-queen",color:"gray"}
@@ -186,7 +186,8 @@ const HomeScreen = ({navigation}) => {
             set_value={habit.set_value}
             completeToday={habit.stats != undefined ? habit.stats[getDate()]?.completed : false}
             uid={uid}
-            api_token={api_token}   
+            api_token={api_token} 
+            date={getDate()}  
           />
          )        
          )

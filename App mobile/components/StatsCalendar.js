@@ -7,23 +7,73 @@ import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 import tailwind from 'tailwind-rn';
 import {Calendar, CalendarList, Agenda, LocaleConfig} from 'react-native-calendars';
 import {getDate} from '../Api'
+import moment from 'moment'
 
-const Calendario = () =>{   
+
+const StatsCalendar = ({habits, datepicked, setDate}) =>{  
+
+    const countCompleteFromDate = (date) =>
+    {
+        var completed=0;   
+        var total=0;
+        if(habits == null ) return 0;
+        for(var habit of habits){ 
+            console.log(habit);
+            console.log('STATS');  
+            console.log(habit.stats); 
+            if(habit.stats)
+            {          
+                if (habit.stats[date]){        //If today weekday is true
+                    total=total+1;
+                    completed=completed+habit.stats[date].completed;                
+                } 
+            }     
+        }  
+        return (total?completed/total:0);
+    }
+
+    const getDaysBetweenDates = (startDate, endDate) => {
+        var now = startDate.clone(), dates = [];
+        while (now.isSameOrBefore(endDate)) {
+            dates.push(now.format('YYYY-MM-DD'));
+            now.add(1, 'days');
+        }
+        return dates
+    };
+
+    //marker for general
+    const markDay = () =>
+    {
+        let dates=getDaysBetweenDates(moment('2021-12-01'), new Date());
+        var markerDates={};
+        for (var k of dates){
+            let progress=countCompleteFromDate(k);
+            if(progress<0.5)
+                markerDates[k]={selected: true, selectedColor: 'red'};
+            else
+            { 
+                if(progress<1)
+                    markerDates[k]={selected: true, selectedColor: 'orange'};
+                else
+                    markerDates[k]={selected: true, selectedColor: 'green'};
+            }
+        }            
+        return markerDates;
+    }
+
     return (
         <View>
             <Calendar
                 // Initially visible month. Default = now
-                current={'2021-12-27'}
+                current={getDate()}
                 // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
                 //minDate={'2012-05-10'}
                 // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
                 maxDate={getDate()}
                 // Handler which gets executed on day press. Default = undefined
-                onDayPress={(day) => {console.log('selected day', day)}}
+                onDayPress={(day) => {setDate(day.dateString);}}
                 // Handler which gets executed on day long press. Default = undefined
-                onDayLongPress={(day) => {console.log('selected day', day)}}
-                // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
-                monthFormat={'yyyy MM'}
+                //onDayLongPress={(day) => {console.log('selected day', day)}}
                 // Handler which gets executed when visible month changes in calendar. Default = undefined
                 onMonthChange={(month) => {console.log('month changed', month)}}
                 // Do not show days of other months in month page. Default = false
@@ -36,13 +86,16 @@ const Calendario = () =>{
                 onPressArrowRight={addMonth => addMonth()}
                 // Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates
                 disableAllTouchEventsForDisabledDays={true}
-                // Replace default month and year title with custom one. the function receive a date as parameter
-                // renderHeader={(date) => {return <TouchableOpacity onPress={() => console.log(date)}><Text>$date</Text></TouchableOpacity>}}
                 // Enable the option to swipe between months. Default = false
                 enableSwipeMonths={true}
+                //
+                markingType={'custom'}
+                //
+                markedDates={markDay()}
+                //
                 />          
         </View>
     )
 }
 
-export default Calendario
+export default StatsCalendar
