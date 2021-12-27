@@ -413,7 +413,7 @@ const NewHabit = (props ) => {
                                     name="send"
                                     size={30}
                                     style={{ color: '#4263ec'}} // da rivedere perchè non responsive 
-                                    onPress={() => {addHabit(uid, api_token, makeHabit()); props.setShow(false); getHabits(uid, api_token, habits); fieldclear()}}
+                                    onPress={() => {addHabit(uid, api_token, makeHabit()); props.setShow(false); fieldclear()}}
                                 />
                             </TouchableOpacity> 
                     </View>
@@ -571,7 +571,7 @@ const NewHabit = (props ) => {
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', flex: 2}}>
                             <TouchableOpacity style={{flex: 1}}>
                                 <MaterialCommunityIcons
-                                    name="trash-can"
+                                    name="window-minimize"
                                     size={30}
                                     style={{ color: 'red', marginLeft: 5 }} 
                                     onPress={()=>props.setShow(false)}                
@@ -583,7 +583,7 @@ const NewHabit = (props ) => {
                                     name="send"
                                     size={30}
                                     style={{ color: '#4263ec'}} // da rivedere perchè non responsive 
-                                    onPress={() => {updateHabit(uid, api_token, makeHabit(), newHabitForm.id); props.setShow(false); getHabits(uid, api_token, habits);}}
+                                    onPress={() => {updateHabit(uid, api_token, makeHabit(), newHabitForm.id); props.setShow(false);alert('Habit modificato!');}}
                                 />
                             </TouchableOpacity> 
                     </View>

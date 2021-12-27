@@ -23,11 +23,11 @@ const categories = {Drink:{icon:"cup-water", color:styleColors.water},     //MOV
 
 //var show= false;
 //const api_token = "ciao";  
-const Habit = ({ id, name='Default', category, desc, countable, value = null, set_value = null, completeToday, uid, api_token, manage_habits = false, is_active, created, show=false, setHabitToEdit, times, reminder, mon, tue, wed, thu, fri, sat, sun }) => {
+const Habit = ({ id, name='Default', category, desc, countable, value = null, set_value = null, completeToday, uid, api_token, manage_habits = false, is_active, created, show=false, habitToEdit, setHabitToEdit, times, reminder, mon, tue, wed, thu, fri, sat, sun }) => {
 const habits = useSelector(selectHabits);
 console.log('SET VALUE PRIMA '+set_value);
 const [newHabitForm, setNewHabitForm] = useState({id: id, Habit_list: true, Description: desc, HabitName: name, Category: category, Walk_target: set_value, Drink_target: set_value,Times:times,Reminder:reminder, Mon:mon, Tue:tue,Wed:wed,Thu:thu,Fri:fri,Sat:sat,Sun:sun,Eve:false})
-const setShowView = (param) => console.log('FUNZIONE INUTILE '+param);
+const setShowView = (param) => {if(!param){setHabitToEdit(-1);}};
 const deleteConfirm = () =>
   Alert.alert(
     "Remove Habit",
@@ -159,7 +159,7 @@ const deleteConfirm = () =>
                     name="stop"
                     size={30}
                     style={{ color: categories[category].color, marginRight:5 }} 
-                    onPress={()=>{store.dispatch(setIsActive({id:id,uid:uid,token:api_token})); alert("habit in pause"); getHabits(uid,api_token,habits) }}                
+                    onPress={()=>{store.dispatch(setIsActive({id:id,uid:uid,token:api_token})); alert("habit in pause")}}                
                   />
                 </TouchableOpacity> 
               </>):
@@ -169,7 +169,7 @@ const deleteConfirm = () =>
                     name="play"
                     size={30}
                     style={{ color: categories[category].color,  marginRight:5 }} 
-                    onPress={()=>{store.dispatch(setIsActive({id:id,uid:uid,token:api_token})); alert("habit in pause"); getHabits(uid,api_token,habits) }}                             
+                    onPress={()=>{store.dispatch(setIsActive({id:id,uid:uid,token:api_token})); alert("habit restored")}}                             
                   />
                 </TouchableOpacity> 
               </>)}
@@ -179,7 +179,7 @@ const deleteConfirm = () =>
                     name="pencil"
                     size={30}
                     style={{ color: categories[category].color }}
-                    onPress={()=>{setHabitToEdit(id)}}
+                    onPress={()=>{id==habitToEdit?setHabitToEdit(-1):setHabitToEdit(id)}}
                   />
               </TouchableOpacity> 
               <TouchableOpacity> 

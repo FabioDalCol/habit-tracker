@@ -62,7 +62,8 @@ const HabitListScreen = () => {
                         manage_habits={true}   
                         is_active={habit.is_active}
                         created={habit.created}  
-                        show={habit.id==habitToEdit}     
+                        show={habit.id==habitToEdit}    
+                        habitToEdit={habitToEdit} 
                         setHabitToEdit={setHabitToEdit}
                         times={habit.reminder}
                         reminder= {habit.reminder>0}   

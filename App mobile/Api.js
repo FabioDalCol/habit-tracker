@@ -21,8 +21,8 @@ const getHabits = async (uid,token,old,setRefreshing) => {
 const updateHabit = async (uid,token,habit,id) => {       
     const url = baseUrl + uid + '/habits/' + id;     
     await axios.put(url,habit,{headers:{token: token, 'Content-Type': 'application/json'}})    
-    .catch(error =>{ alert(error.message)});    
-    alert('Habit modificato!');  
+    .catch(error =>{ alert(error.message)})
+    .finally(() => getHabits(uid, token, {}));     
 };
 
 const addHabit = async (uid,token,habit,habits) => { 
@@ -30,9 +30,7 @@ const addHabit = async (uid,token,habit,habits) => {
     const url = baseUrl + uid + '/habits/';       
     await axios.post(url,habit,{headers:{token: token, 'Content-Type': 'application/json'}})    
     .catch(error =>{ alert(error.message)})
-    .finally(()=>
-        getHabits(uid, token, {})
-    ); 
+    .finally(() => getHabits(uid, token, {})); 
     alert('Habit aggiunto!');   
 };
 
