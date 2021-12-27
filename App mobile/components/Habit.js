@@ -16,9 +16,9 @@ import NewHabit from "../components/NewHabit";
 
 const customColors = ['gray', '#F4B400', '#0F9D58']
 const categories = {Drink:{icon:"cup-water", color:styleColors.water},     //MOVE CATEGORIES
-                      Walk:{icon:"walk",color:"brown"},
-                      Custom:{icon:"chess-queen",color:customColors[Math.floor(Math.random()*customColors.length)]}
-                      }
+                    Walk:{icon:"walk",color:"brown"},
+                    Custom:{icon:"chess-queen",color:customColors[Math.floor(Math.random()*customColors.length)]}
+                    }
 
 //const uid ="6GsiMJsZgCjpinhQgyCD";   // TO REPLACE -> PICK FROM STORE
 
