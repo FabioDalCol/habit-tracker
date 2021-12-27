@@ -17,7 +17,8 @@ import { selectUser } from '../slices/authSlice';
 
 
 const HabitListScreen = () => {
-    
+
+       
     const habitList = useSelector(selectHabits);
     const user = useSelector(selectUser);
     
@@ -25,7 +26,7 @@ const HabitListScreen = () => {
     const api_token = user.api_token;
 
     const [refreshing,setRefreshing] = useState(false); //pull down to refresh 
-    
+    const [habitToEdit, setHabitToEdit] = useState('');
     return (
         <View style={tw("flex-1")}>
             <DefaultHeader title="Manage Habits"/>
@@ -42,9 +43,10 @@ const HabitListScreen = () => {
                                 getHabits(uid,api_token,habitList,setRefreshing)
                             }
                             }/>}
-                >
-                                
-                    {habitList.map(habit =>                       
+                >       
+                {/* {Object.keys(habitList).forEach(key => console.log(habitList[key]))} */}
+                    {habitList.map(habit => 
+                    <>                      
                     <Habit
                         key={habit.id} 
                         id = {habit.id}             
@@ -59,8 +61,20 @@ const HabitListScreen = () => {
                         api_token={api_token}
                         manage_habits={true}   
                         is_active={habit.is_active}
-                        created={habit.created}                    
-                    />                                
+                        created={habit.created}  
+                        show={habit.id==habitToEdit}     
+                        setHabitToEdit={setHabitToEdit}
+                        times={habit.reminder}
+                        reminder= {habit.reminder>0}   
+                        mon= {habit.repeat_days.Mon}
+                        tue= {habit.repeat_days.Tue}
+                        wed= {habit.repeat_days.Wed}
+                        thu= {habit.repeat_days.Thu} 
+                        fri= {habit.repeat_days.Fri} 
+                        sat= {habit.repeat_days.Sat} 
+                        sun= {habit.repeat_days.Sun} 
+                    />     
+                    </>                           
                     )}
                 </ScrollView>                   
         </View>

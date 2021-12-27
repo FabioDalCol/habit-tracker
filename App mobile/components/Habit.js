@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { View, Text, Alert } from 'react-native'
 import { styles } from '../styles';
 import { styleColors } from '../colors';
@@ -12,7 +12,7 @@ import { selectUser } from '../slices/authSlice';
 import { removeHabit, updateHabit } from '../Api';
 import { selectHabits } from '../slices/habitSlice';
 import getHabits from '../Api';
-
+import NewHabit from "../components/NewHabit";
 
 const categories = {Drink:{icon:"cup-water", color:styleColors.water},     //MOVE CATEGORIES
                       Walk:{icon:"walk",color:"brown"},
@@ -21,11 +21,13 @@ const categories = {Drink:{icon:"cup-water", color:styleColors.water},     //MOV
 
 //const uid ="6GsiMJsZgCjpinhQgyCD";   // TO REPLACE -> PICK FROM STORE
 
-
-//const api_token = "ciao";
-const Habit = ({ id, name, category, desc, countable, value = null, set_value = null, completeToday, uid, api_token, manage_habits = false, is_active, created, show=false,}) => {
+//var show= false;
+//const api_token = "ciao";  
+const Habit = ({ id, name='Default', category, desc, countable, value = null, set_value = null, completeToday, uid, api_token, manage_habits = false, is_active, created, show=false, setHabitToEdit, times, reminder, mon, tue, wed, thu, fri, sat, sun }) => {
 const habits = useSelector(selectHabits);
-
+console.log('SET VALUE PRIMA '+set_value);
+const [newHabitForm, setNewHabitForm] = useState({id: id, Habit_list: true, Description: desc, HabitName: name, Category: category, Walk_target: set_value, Drink_target: set_value,Times:times,Reminder:reminder, Mon:mon, Tue:tue,Wed:wed,Thu:thu,Fri:fri,Sat:sat,Sun:sun,Eve:false})
+const setShowView = (param) => console.log('FUNZIONE INUTILE '+param);
 const deleteConfirm = () =>
   Alert.alert(
     "Remove Habit",
@@ -47,7 +49,7 @@ const deleteConfirm = () =>
     ]
   );
 
-
+  
   if(!manage_habits){
     return (
                                                   // If habits is completed shows green border 
@@ -123,79 +125,78 @@ const deleteConfirm = () =>
   }
   else{
     return (
-                                                  // If habits is completed shows green border 
-      <View style={styles.habit.main}>  
-             
-        <View style={styles.habit.container}>
-          <MaterialCommunityIcons
-            name={categories[category].icon}
-            size={30}
-            style={{ color: categories[category].color, marginRight: 5 }}
-          />
-          <View>
-            <Text style={tailwind('text-base')}>{name}</Text>
-            {category=='Drink' ?
-            (
-              <Text style={{ color: styleColors.greyish }}>{'Target daily glasses: '+set_value}</Text>)
-              :
-              (category=='Walk' ?
-              (<Text style={{ color: styleColors.greyish }}>{'Target daily steps: '+set_value}</Text>)
-              :
-              (<Text style={{ color: styleColors.greyish }}>{desc}</Text>)
-            )
-          }
-            <Text style={{ color: styleColors.greyish }}>{'Created: '+created}</Text>
-            
-          </View>
-        </View>        
-        <View style={tailwind('flex-row')}>
-          {is_active ? 
-          (<>
-              <TouchableOpacity> 
-                <MaterialCommunityIcons
-                  name="stop"
-                  size={30}
-                  style={{ color: categories[category].color, marginRight:5 }} 
-                  onPress={()=>{store.dispatch(setIsActive({id:id,uid:uid,token:api_token})); alert("habit in pause"); getHabits(uid,api_token,habits) }}                
-                />
-              </TouchableOpacity> 
-            </>):
-            (<>
-              <TouchableOpacity> 
-                <MaterialCommunityIcons
-                  name="play"
-                  size={30}
-                  style={{ color: categories[category].color,  marginRight:5 }} 
-                  onPress={()=>{store.dispatch(setIsActive({id:id,uid:uid,token:api_token})); alert("habit in pause"); getHabits(uid,api_token,habits) }}                             
-                />
-              </TouchableOpacity> 
-            </>)}
 
-            <TouchableOpacity> 
-              <MaterialCommunityIcons
-                  name="pencil"
-                  size={30}
-                  style={{ color: categories[category].color }}
-                  onPress={()=>{show=true; console.log('SHOW IS '+ show);}}
-                />
-            </TouchableOpacity> 
-            {/* {console.log('qua invece '+ show)}
-            {true && (<>          
+      <View>   
+                                              
+        <View style={styles.habit.main}>  
+              
+          <View style={styles.habit.container}>
+            <MaterialCommunityIcons
+              name={categories[category].icon}
+              size={30}
+              style={{ color: categories[category].color, marginRight: 5 }}
+            />
             <View>
-            <Text style={tailwind('text-base')}>{name}</Text>
-            <Text style={{ fontSize: 13, color: styleColors.greyish }}>{desc}</Text>
+              <Text style={tailwind('text-base')}>{name}</Text>
+              {category=='Drink' ?
+              (
+                <Text style={{ color: styleColors.greyish }}>{'Target: '+set_value+' glasses'}</Text>)
+                :
+                (category=='Walk' ?
+                (<Text style={{ color: styleColors.greyish }}>{'Target: '+set_value+' steps'}</Text>)
+                :
+                (<Text style={{ color: styleColors.greyish }}>{desc}</Text>)
+              )
+            }
+              <Text style={{ color: styleColors.greyish }}>{'Created: '+created}</Text>
+            {console.log('SET VALUE DOPO '+set_value)}     
             </View>
-            </>)} */}
+          </View>        
+          <View style={tailwind('flex-row')}>
+            {is_active ? 
+            (<>
+                <TouchableOpacity> 
+                  <MaterialCommunityIcons
+                    name="stop"
+                    size={30}
+                    style={{ color: categories[category].color, marginRight:5 }} 
+                    onPress={()=>{store.dispatch(setIsActive({id:id,uid:uid,token:api_token})); alert("habit in pause"); getHabits(uid,api_token,habits) }}                
+                  />
+                </TouchableOpacity> 
+              </>):
+              (<>
+                <TouchableOpacity> 
+                  <MaterialCommunityIcons
+                    name="play"
+                    size={30}
+                    style={{ color: categories[category].color,  marginRight:5 }} 
+                    onPress={()=>{store.dispatch(setIsActive({id:id,uid:uid,token:api_token})); alert("habit in pause"); getHabits(uid,api_token,habits) }}                             
+                  />
+                </TouchableOpacity> 
+              </>)}
 
-            <TouchableOpacity> 
-              <MaterialCommunityIcons
-                name="trash-can"
-                size={30}
-                style={{ color: categories[category].color, marginLeft: 5 }} 
-                onPress={()=>{deleteConfirm()}}                
-              />
-            </TouchableOpacity> 
-        </View>
+              <TouchableOpacity> 
+                <MaterialCommunityIcons
+                    name="pencil"
+                    size={30}
+                    style={{ color: categories[category].color }}
+                    onPress={()=>{setHabitToEdit(id)}}
+                  />
+              </TouchableOpacity> 
+              <TouchableOpacity> 
+                <MaterialCommunityIcons
+                  name="trash-can"
+                  size={30}
+                  style={{ color: categories[category].color, marginLeft: 5 }} 
+                  onPress={()=>{deleteConfirm()}}                
+                />
+              </TouchableOpacity> 
+          </View>
+      </View>
+    {show && 
+    (<>                 
+      <NewHabit show={true} setShow={setShowView} viewStyle = {styles.newHabit} state={{newHabitForm,setNewHabitForm}} uid={uid} api_token={api_token} />
+    </>)}
     </View>
     )
     

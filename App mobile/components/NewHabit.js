@@ -11,7 +11,7 @@ import { useEffect } from 'react';
 import RNPickerSelect from 'react-native-picker-select';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { color } from 'react-native-elements/dist/helpers';
-import getHabits, { addHabit, getDate} from "../Api";
+import getHabits, { addHabit, getDate, updateHabit} from "../Api";
 import { selectHabits } from '../slices/habitSlice';
 import { useSelector } from 'react-redux';
 
@@ -132,7 +132,7 @@ const NewHabit = (props ) => {
                 return (<>
                         <View style={{flexDirection: 'row', flex:1, justifyContent: 'center', marginLeft:'auto'}}>  
                             <View style={{flex:0.5,}}>                         
-                            <Input inputContainerStyle={[styles.inputTextBox.container, { alignSelf: 'flex-end', width: 30+String(newHabitForm.Drink_target).length*10}]}  style={styles.inputTextBox.box} value={newHabitForm.Drink_target} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Drink_target:text})} keyboardType='number-pad' placeholder="Insert daily"/>
+                            <Input inputContainerStyle={[styles.inputTextBox.container, { alignSelf: 'flex-end', width: 30+String(newHabitForm.Drink_target).length*10}]}  style={styles.inputTextBox.box} value={newHabitForm.Drink_target} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Drink_target:text})} keyboardType='number-pad'/>
                             </View>
                             <View style={{flex:0.5}}>
                             <Text style={{alignSelf: 'flex-start', fontSize: 16, marginTop:'7%', fontWeight: 'bold'}}>Glasses</Text> 
@@ -179,7 +179,44 @@ const NewHabit = (props ) => {
                 return (<>                
                         <View style={{flexDirection: 'row', flex:1, justifyContent: 'center', marginLeft:'auto'}}>  
                             <View style={{flex:0.5,}}>                         
-                            <Input inputContainerStyle={[styles.inputTextBox.container, { alignSelf: 'flex-end', width: 30+String(newHabitForm.Walk_target).length*10}]}  style={styles.inputTextBox.box} value={newHabitForm.Walk_target} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Walk_target:text})} keyboardType='number-pad' placeholder="Insert daily"/>
+                            <Input inputContainerStyle={[styles.inputTextBox.container, { alignSelf: 'flex-end', width: 30+String(newHabitForm.Walk_target).length*10}]}  style={styles.inputTextBox.box} value={newHabitForm.Walk_target} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Walk_target:text})} keyboardType='number-pad'/>
+                            </View>
+                            <View style={{flex:0.5}}>
+                            <Text style={{alignSelf: 'flex-start', fontSize: 16, marginTop:'7%', fontWeight: 'bold'}}>Steps</Text> 
+                            </View>
+                        </View>
+                        </>);   
+            default:
+                return null;
+            }
+        }
+
+        const renderSwitchCompiled = (param) => 
+        {
+        
+        switch(param) {
+            case 'Custom':
+                return (<>                
+                        <Input value={newHabitForm.HabitName} onChangeText={(text)=> setNewHabitForm({...newHabitForm,HabitName:text})} inputContainerStyle={styles.inputTextBox.container}  style={styles.inputTextBox.box} placeholder={newHabitForm.HabitName}/>
+                        <Input value={newHabitForm.Description} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Description:text})} inputContainerStyle={styles.inputTextBox.container}  style={styles.inputTextBox.box} maxLength={250} multiline = {true} placeholder="Description"/>                      
+                        </>);
+            case 'Drink':
+                return (<>
+                        <View style={{flexDirection: 'row', flex:1, justifyContent: 'center', marginLeft:'auto'}}>  
+                            <View style={{flex:0.5,}}>                         
+                            <Input inputContainerStyle={[styles.inputTextBox.container, { alignSelf: 'flex-end', width: 30+String(newHabitForm.Drink_target).length*10}]}  style={styles.inputTextBox.box} value={newHabitForm.Drink_target.toString()} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Drink_target:text})} keyboardType='number-pad'/>
+                            </View>
+                            <View style={{flex:0.5}}>
+                            <Text style={{alignSelf: 'flex-start', fontSize: 16, marginTop:'7%', fontWeight: 'bold'}}>Glasses</Text> 
+                            </View>
+                        </View>
+                        </>);
+            case 'Walk':
+                return (<>                
+                        <View style={{flexDirection: 'row', flex:1, justifyContent: 'center', marginLeft:'auto'}}>  
+                            <View style={{flex:0.5,}}> 
+                            {console.log(newHabitForm.Walk_target)}                        
+                            <Input inputContainerStyle={[styles.inputTextBox.container, { alignSelf: 'flex-end', width: 30+String(newHabitForm.Walk_target).length*10}]}  style={styles.inputTextBox.box} value={newHabitForm.Walk_target.toString()} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Walk_target:text})} keyboardType='number-pad'/>
                             </View>
                             <View style={{flex:0.5}}>
                             <Text style={{alignSelf: 'flex-start', fontSize: 16, marginTop:'7%', fontWeight: 'bold'}}>Steps</Text> 
@@ -204,184 +241,357 @@ const NewHabit = (props ) => {
     }
 
     else { //add Habit save 
-        return (
-            <View style={props.viewStyle}>
-                <View style={{justifyContent: 'center'}}>
-                <RNPickerSelect
-                    containerStyle={styles.dropdown.container}
-                    useNativeAndroidPickerStyle={false}
-                    style={styles.dropdownCategory}
-                    onValueChange={(value) => setNewHabitForm({...newHabitForm,Category:value})}
-                    items={categories.map((num) => ({'label': num, 'value': num}))}
-                    placeholder={{
-                        label: 'Select a category',
-                        value: null,
-                    }}
-                />      
-                {renderSwitch(newHabitForm.Category)}  
-                </View>
-                {newHabitForm.Category!=undefined && (<>
-                <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-                    <View style={{justifyContent: 'center', flex: 1}}>
-                        <Text style={{alignSelf: 'center', fontWeight: 'bold'}}>Mon</Text>
-                        <CheckBox
-                        iconRight
-                        iconType='material'
-                        checked={newHabitForm.Mon}
-                        onPress={()=>setNewHabitForm({...newHabitForm,Mon:!newHabitForm.Mon})}                        
-                        checkedIcon='check-circle-outline'
-                        uncheckedIcon='radio-button-unchecked'
-                        containerStyle={styles.checkBoxDays.container}
-                        />                        
+        if(!newHabitForm.Habit_list)
+        {
+            return (
+                <View style={props.viewStyle}>
+                    <View style={{justifyContent: 'center'}}>
+                    <RNPickerSelect
+                        containerStyle={styles.dropdown.container}
+                        useNativeAndroidPickerStyle={false}
+                        style={styles.dropdownCategory}
+                        onValueChange={(value) => setNewHabitForm({...newHabitForm,Category:value})}
+                        items={categories.map((num) => ({'label': num, 'value': num}))}
+                        placeholder={{
+                            label: 'Select a category',
+                            value: null,
+                        }}
+                    />      
+                    {renderSwitch(newHabitForm.Category)}  
                     </View>
-                    <View style={{justifyContent: 'center',  flex: 1}}>
-                        <Text style={{alignSelf: 'center', fontWeight: 'bold'}}>Tue</Text>
-                        <CheckBox
-                        iconRight
-                        iconType='material'
-                        checked={newHabitForm.Tue}
-                        onPress={()=>setNewHabitForm({...newHabitForm,Tue:!newHabitForm.Tue})}
-                        checkedIcon='check-circle-outline'
-                        uncheckedIcon='radio-button-unchecked'
-                        containerStyle={styles.checkBoxDays.container}
-                        /> 
-                    </View>
-                    <View style={{justifyContent: 'center', alignItems: 'baseline', flex: 1}}>
-                        <Text style={{alignSelf: 'center', fontWeight: 'bold'}}>Wed</Text>
-                        <CheckBox
-                        iconRight
-                        iconType='material'
-                        checked={newHabitForm.Wed}
-                        onPress={()=>setNewHabitForm({...newHabitForm,Wed:!newHabitForm.Wed})}
-                        checkedIcon='check-circle-outline'
-                        uncheckedIcon='radio-button-unchecked'
-                        containerStyle={styles.checkBoxDays.container}
-                        /> 
-                    </View>
-                    <View style={{justifyContent: 'center', alignItems: 'baseline', flex: 1}}>
-                        <Text style={{alignSelf: 'center', fontWeight: 'bold'}}>Thu</Text>
-                        <CheckBox
-                        iconRight
-                        iconType='material'
-                        checked={newHabitForm.Thu}
-                        onPress={()=>setNewHabitForm({...newHabitForm,Thu:!newHabitForm.Thu})}
-                        checkedIcon='check-circle-outline'
-                        uncheckedIcon='radio-button-unchecked'
-                        containerStyle={styles.checkBoxDays.container}
-                        /> 
-                    </View>
-                    <View style={{justifyContent: 'center', alignItems: 'baseline', flex: 1}}>
-                        <Text style={{alignSelf: 'center', fontWeight: 'bold'}}>Fri</Text>
-                        <CheckBox
-                        iconRight
-                        iconType='material'
-                        checked={newHabitForm.Fri}
-                        onPress={()=>setNewHabitForm({...newHabitForm,Fri:!newHabitForm.Fri})}
-                        checkedIcon='check-circle-outline'
-                        uncheckedIcon='radio-button-unchecked'
-                        containerStyle={styles.checkBoxDays.container}
-                        /> 
-                    </View>
-                    <View style={{justifyContent: 'center', alignItems: 'baseline', flex: 1}}>
-                        <Text style={{alignSelf: 'center', fontWeight: 'bold'}}>Sat</Text>
-                        <CheckBox
-                        iconRight
-                        iconType='material'
-                        checked={newHabitForm.Sat}
-                        onPress={()=>setNewHabitForm({...newHabitForm,Sat:!newHabitForm.Sat})}
-                        checkedIcon='check-circle-outline'
-                        uncheckedIcon='radio-button-unchecked'
-                        containerStyle={styles.checkBoxDays.container}
-                        /> 
-                    </View>
-                    <View style={{justifyContent: 'center', alignItems: 'baseline', flex: 1}}>
-                        <Text style={{alignSelf: 'center', fontWeight: 'bold'}}>Sun</Text>
-                        <CheckBox
-                        iconRight
-                        iconType='material'
-                        checked={newHabitForm.Sun}
-                        onPress={()=>setNewHabitForm({...newHabitForm,Sun:!newHabitForm.Sun})}
-                        checkedIcon='check-circle-outline'
-                        uncheckedIcon='radio-button-unchecked'
-                        containerStyle={styles.checkBoxDays.container}
-                        /> 
-                    </View>
-                </View>
-
-                <View style={{justifyContent: 'center', flex: 0.5}}>
-                        <Text style={{alignSelf: 'center', fontWeight: 'bold'}}>Everyday</Text>
-                        <CheckBox
-                            //title='Everyday'
+                    {newHabitForm.Category!=undefined && (<>
+                    <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                        <View style={{justifyContent: 'center', flex: 1}}>
+                            <Text style={{alignSelf: 'center', fontWeight: 'bold'}}>Mon</Text>
+                            <CheckBox
                             iconRight
                             iconType='material'
-                            checked={newHabitForm.Eve}
-                            onPress={()=>{
-                                let diz={};                           
-                                for (var key of days) {
-                                    diz[key]=!newHabitForm['Eve'];                          
-                                    } 
-                                setNewHabitForm({...newHabitForm,...diz,Eve:!newHabitForm['Eve']});
-                            }}
+                            checked={newHabitForm.Mon}
+                            onPress={()=>setNewHabitForm({...newHabitForm,Mon:!newHabitForm.Mon})}                        
                             checkedIcon='check-circle-outline'
                             uncheckedIcon='radio-button-unchecked'
                             containerStyle={styles.checkBoxDays.container}
-                            />
-                </View> 
-
-                <View style={{flexDirection: 'row', flex:1, justifyContent: 'center'}}> 
-                    <View style={{justifyContent: 'center', flex: 0.5, flexDirection:'row'}}>
-                        <Text style={{alignSelf: 'center', fontWeight: 'bold', marginRight: '-8%'}}>Reminder</Text>
-                        <CheckBox
-                        iconRight
-                        iconType='material'
-                        checked={newHabitForm.Reminder}
-                        onPress={()=>setNewHabitForm({...newHabitForm,Reminder:!newHabitForm.Reminder})}
-                        checkedIcon='check-circle-outline'
-                        uncheckedIcon='radio-button-unchecked'
-                        containerStyle={[styles.checkBoxDays.container]}
-                        /> 
+                            />                        
+                        </View>
+                        <View style={{justifyContent: 'center',  flex: 1}}>
+                            <Text style={{alignSelf: 'center', fontWeight: 'bold'}}>Tue</Text>
+                            <CheckBox
+                            iconRight
+                            iconType='material'
+                            checked={newHabitForm.Tue}
+                            onPress={()=>setNewHabitForm({...newHabitForm,Tue:!newHabitForm.Tue})}
+                            checkedIcon='check-circle-outline'
+                            uncheckedIcon='radio-button-unchecked'
+                            containerStyle={styles.checkBoxDays.container}
+                            /> 
+                        </View>
+                        <View style={{justifyContent: 'center', alignItems: 'baseline', flex: 1}}>
+                            <Text style={{alignSelf: 'center', fontWeight: 'bold'}}>Wed</Text>
+                            <CheckBox
+                            iconRight
+                            iconType='material'
+                            checked={newHabitForm.Wed}
+                            onPress={()=>setNewHabitForm({...newHabitForm,Wed:!newHabitForm.Wed})}
+                            checkedIcon='check-circle-outline'
+                            uncheckedIcon='radio-button-unchecked'
+                            containerStyle={styles.checkBoxDays.container}
+                            /> 
+                        </View>
+                        <View style={{justifyContent: 'center', alignItems: 'baseline', flex: 1}}>
+                            <Text style={{alignSelf: 'center', fontWeight: 'bold'}}>Thu</Text>
+                            <CheckBox
+                            iconRight
+                            iconType='material'
+                            checked={newHabitForm.Thu}
+                            onPress={()=>setNewHabitForm({...newHabitForm,Thu:!newHabitForm.Thu})}
+                            checkedIcon='check-circle-outline'
+                            uncheckedIcon='radio-button-unchecked'
+                            containerStyle={styles.checkBoxDays.container}
+                            /> 
+                        </View>
+                        <View style={{justifyContent: 'center', alignItems: 'baseline', flex: 1}}>
+                            <Text style={{alignSelf: 'center', fontWeight: 'bold'}}>Fri</Text>
+                            <CheckBox
+                            iconRight
+                            iconType='material'
+                            checked={newHabitForm.Fri}
+                            onPress={()=>setNewHabitForm({...newHabitForm,Fri:!newHabitForm.Fri})}
+                            checkedIcon='check-circle-outline'
+                            uncheckedIcon='radio-button-unchecked'
+                            containerStyle={styles.checkBoxDays.container}
+                            /> 
+                        </View>
+                        <View style={{justifyContent: 'center', alignItems: 'baseline', flex: 1}}>
+                            <Text style={{alignSelf: 'center', fontWeight: 'bold'}}>Sat</Text>
+                            <CheckBox
+                            iconRight
+                            iconType='material'
+                            checked={newHabitForm.Sat}
+                            onPress={()=>setNewHabitForm({...newHabitForm,Sat:!newHabitForm.Sat})}
+                            checkedIcon='check-circle-outline'
+                            uncheckedIcon='radio-button-unchecked'
+                            containerStyle={styles.checkBoxDays.container}
+                            /> 
+                        </View>
+                        <View style={{justifyContent: 'center', alignItems: 'baseline', flex: 1}}>
+                            <Text style={{alignSelf: 'center', fontWeight: 'bold'}}>Sun</Text>
+                            <CheckBox
+                            iconRight
+                            iconType='material'
+                            checked={newHabitForm.Sun}
+                            onPress={()=>setNewHabitForm({...newHabitForm,Sun:!newHabitForm.Sun})}
+                            checkedIcon='check-circle-outline'
+                            uncheckedIcon='radio-button-unchecked'
+                            containerStyle={styles.checkBoxDays.container}
+                            /> 
+                        </View>
                     </View>
-                    {newHabitForm.Reminder &&(<View style={{flex: 0.4, marginLeft:'-8%', marginTop: '3%'}}>
-                    <RNPickerSelect
-                                    containerStyle={styles.dropdown.container}
-                                    useNativeAndroidPickerStyle={false}
-                                    style={styles.dropdown}
-                                    value={newHabitForm.Times}
-                                    onValueChange={(value) => setNewHabitForm({...newHabitForm,Times:value})}
-                                    items={[0,1,2,3,4,6].map((num) => ({'label': num+" volte", 'value': num}))}
-                                    placeholder={{
-                                        label: 'Number of daily reminders',
-                                        value: null,
-                                    }}
 
-                    />
+                    <View style={{justifyContent: 'center', flex: 0.5}}>
+                            <Text style={{alignSelf: 'center', fontWeight: 'bold'}}>Everyday</Text>
+                            <CheckBox
+                                //title='Everyday'
+                                iconRight
+                                iconType='material'
+                                checked={newHabitForm.Eve}
+                                onPress={()=>{
+                                    let diz={};                           
+                                    for (var key of days) {
+                                        diz[key]=!newHabitForm['Eve'];                          
+                                        } 
+                                    setNewHabitForm({...newHabitForm,...diz,Eve:!newHabitForm['Eve']});
+                                }}
+                                checkedIcon='check-circle-outline'
+                                uncheckedIcon='radio-button-unchecked'
+                                containerStyle={styles.checkBoxDays.container}
+                                />
+                    </View> 
+
+                    <View style={{flexDirection: 'row', flex:1, justifyContent: 'center'}}> 
+                        <View style={{justifyContent: 'center', flex: 0.5, flexDirection:'row'}}>
+                            <Text style={{alignSelf: 'center', fontWeight: 'bold', marginRight: '-8%'}}>Reminder</Text>
+                            <CheckBox
+                            iconRight
+                            iconType='material'
+                            checked={newHabitForm.Reminder}
+                            onPress={()=>setNewHabitForm({...newHabitForm,Reminder:!newHabitForm.Reminder})}
+                            checkedIcon='check-circle-outline'
+                            uncheckedIcon='radio-button-unchecked'
+                            containerStyle={[styles.checkBoxDays.container]}
+                            /> 
+                        </View>
+                        {newHabitForm.Reminder &&(<View style={{flex: 0.4, marginLeft:'-8%', marginTop: '3%'}}>
+                        <RNPickerSelect
+                                        containerStyle={styles.dropdown.container}
+                                        useNativeAndroidPickerStyle={false}
+                                        style={styles.dropdown}
+                                        value={newHabitForm.Times}
+                                        onValueChange={(value) => setNewHabitForm({...newHabitForm,Times:value})}
+                                        items={[0,1,2,3,4,6].map((num) => ({'label': num+" volte", 'value': num}))}
+                                        placeholder={{
+                                            label: 'Number of daily reminders',
+                                            value: null,
+                                        }}
+
+                        />
+                        </View>
+                        )}
                     </View>
-                    )}
-                </View>
 
-                <View style={{flexDirection: 'row', justifyContent: 'space-between', flex: 2}}>
-                        <TouchableOpacity style={{flex: 1}}>
-                            <MaterialCommunityIcons
-                                name="trash-can"
-                                size={30}
-                                style={{ color: 'red', marginLeft: 5 }} 
-                                onPress={()=>props.setShow(false)}                
-                            />
-                        </TouchableOpacity> 
-                        
-                        <TouchableOpacity style={{flex: 1}}>
-                            <MaterialCommunityIcons
-                                name="send"
-                                size={30}
-                                style={{ color: '#4263ec'}} // da rivedere perchè non responsive 
-                                onPress={() => {addHabit(uid, api_token, makeHabit()); props.setShow(false); getHabits(uid, api_token, habits); fieldclear()}}
-                            />
-                        </TouchableOpacity> 
-                </View>
-                </>)}
-        </View>
-        )
-    }   
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', flex: 2}}>
+                            <TouchableOpacity style={{flex: 1}}>
+                                <MaterialCommunityIcons
+                                    name="trash-can"
+                                    size={30}
+                                    style={{ color: 'red', marginLeft: 5 }} 
+                                    onPress={()=>props.setShow(false)}                
+                                />
+                            </TouchableOpacity> 
+
+                            <TouchableOpacity style={{flex: 1}}>
+                                <MaterialCommunityIcons
+                                    name="send"
+                                    size={30}
+                                    style={{ color: '#4263ec'}} // da rivedere perchè non responsive 
+                                    onPress={() => {addHabit(uid, api_token, makeHabit()); props.setShow(false); getHabits(uid, api_token, habits); fieldclear()}}
+                                />
+                            </TouchableOpacity> 
+                    </View>
+                    </>)}
+            </View>
+            )
+        } 
+
+
+        else
+        {
+            return (
+                <View style={props.viewStyle}>
+                    <View style={{justifyContent: 'center'}}>  
+                    {renderSwitchCompiled(newHabitForm.Category)}  
+                    </View>
+                    {newHabitForm.Category!=undefined && (<>
+                    <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                        <View style={{justifyContent: 'center', flex: 1}}>
+                            <Text style={{alignSelf: 'center', fontWeight: 'bold'}}>Mon</Text>
+                            <CheckBox
+                            iconRight
+                            iconType='material'
+                            checked={newHabitForm.Mon}
+                            onPress={()=>setNewHabitForm({...newHabitForm,Mon:!newHabitForm.Mon})}                        
+                            checkedIcon='check-circle-outline'
+                            uncheckedIcon='radio-button-unchecked'
+                            containerStyle={styles.checkBoxDays.container}
+                            />                        
+                        </View>
+                        <View style={{justifyContent: 'center',  flex: 1}}>
+                            <Text style={{alignSelf: 'center', fontWeight: 'bold'}}>Tue</Text>
+                            <CheckBox
+                            iconRight
+                            iconType='material'
+                            checked={newHabitForm.Tue}
+                            onPress={()=>setNewHabitForm({...newHabitForm,Tue:!newHabitForm.Tue})}
+                            checkedIcon='check-circle-outline'
+                            uncheckedIcon='radio-button-unchecked'
+                            containerStyle={styles.checkBoxDays.container}
+                            /> 
+                        </View>
+                        <View style={{justifyContent: 'center', alignItems: 'baseline', flex: 1}}>
+                            <Text style={{alignSelf: 'center', fontWeight: 'bold'}}>Wed</Text>
+                            <CheckBox
+                            iconRight
+                            iconType='material'
+                            checked={newHabitForm.Wed}
+                            onPress={()=>setNewHabitForm({...newHabitForm,Wed:!newHabitForm.Wed})}
+                            checkedIcon='check-circle-outline'
+                            uncheckedIcon='radio-button-unchecked'
+                            containerStyle={styles.checkBoxDays.container}
+                            /> 
+                        </View>
+                        <View style={{justifyContent: 'center', alignItems: 'baseline', flex: 1}}>
+                            <Text style={{alignSelf: 'center', fontWeight: 'bold'}}>Thu</Text>
+                            <CheckBox
+                            iconRight
+                            iconType='material'
+                            checked={newHabitForm.Thu}
+                            onPress={()=>setNewHabitForm({...newHabitForm,Thu:!newHabitForm.Thu})}
+                            checkedIcon='check-circle-outline'
+                            uncheckedIcon='radio-button-unchecked'
+                            containerStyle={styles.checkBoxDays.container}
+                            /> 
+                        </View>
+                        <View style={{justifyContent: 'center', alignItems: 'baseline', flex: 1}}>
+                            <Text style={{alignSelf: 'center', fontWeight: 'bold'}}>Fri</Text>
+                            <CheckBox
+                            iconRight
+                            iconType='material'
+                            checked={newHabitForm.Fri}
+                            onPress={()=>setNewHabitForm({...newHabitForm,Fri:!newHabitForm.Fri})}
+                            checkedIcon='check-circle-outline'
+                            uncheckedIcon='radio-button-unchecked'
+                            containerStyle={styles.checkBoxDays.container}
+                            /> 
+                        </View>
+                        <View style={{justifyContent: 'center', alignItems: 'baseline', flex: 1}}>
+                            <Text style={{alignSelf: 'center', fontWeight: 'bold'}}>Sat</Text>
+                            <CheckBox
+                            iconRight
+                            iconType='material'
+                            checked={newHabitForm.Sat}
+                            onPress={()=>setNewHabitForm({...newHabitForm,Sat:!newHabitForm.Sat})}
+                            checkedIcon='check-circle-outline'
+                            uncheckedIcon='radio-button-unchecked'
+                            containerStyle={styles.checkBoxDays.container}
+                            /> 
+                        </View>
+                        <View style={{justifyContent: 'center', alignItems: 'baseline', flex: 1}}>
+                            <Text style={{alignSelf: 'center', fontWeight: 'bold'}}>Sun</Text>
+                            <CheckBox
+                            iconRight
+                            iconType='material'
+                            checked={newHabitForm.Sun}
+                            onPress={()=>setNewHabitForm({...newHabitForm,Sun:!newHabitForm.Sun})}
+                            checkedIcon='check-circle-outline'
+                            uncheckedIcon='radio-button-unchecked'
+                            containerStyle={styles.checkBoxDays.container}
+                            /> 
+                        </View>
+                    </View>
+                    <View style={{justifyContent: 'center', flex: 0.5}}>
+                            <Text style={{alignSelf: 'center', fontWeight: 'bold'}}>Everyday</Text>
+                            <CheckBox
+                                //title='Everyday'
+                                iconRight
+                                iconType='material'
+                                checked={newHabitForm.Eve}
+                                onPress={()=>{
+                                    let diz={};                           
+                                    for (var key of days) {
+                                        diz[key]=!newHabitForm['Eve'];                          
+                                        } 
+                                    setNewHabitForm({...newHabitForm,...diz,Eve:!newHabitForm['Eve']});
+                                }}
+                                checkedIcon='check-circle-outline'
+                                uncheckedIcon='radio-button-unchecked'
+                                containerStyle={styles.checkBoxDays.container}
+                                />
+                    </View> 
+
+                    <View style={{flexDirection: 'row', flex:1, justifyContent: 'center'}}> 
+                        <View style={{justifyContent: 'center', flex: 0.5, flexDirection:'row'}}>
+                            <Text style={{alignSelf: 'center', fontWeight: 'bold', marginRight: '-8%'}}>Reminder</Text>
+                            <CheckBox
+                            iconRight
+                            iconType='material'
+                            checked={newHabitForm.Reminder}
+                            onPress={()=>setNewHabitForm({...newHabitForm,Reminder:!newHabitForm.Reminder})}
+                            checkedIcon='check-circle-outline'
+                            uncheckedIcon='radio-button-unchecked'
+                            containerStyle={[styles.checkBoxDays.container]}
+                            /> 
+                        </View>
+                        {newHabitForm.Reminder &&(<View style={{flex: 0.4, marginLeft:'-8%', marginTop: '3%'}}>
+                        <RNPickerSelect
+                                        containerStyle={styles.dropdown.container}
+                                        useNativeAndroidPickerStyle={false}
+                                        style={styles.dropdown}
+                                        value={newHabitForm.Times}
+                                        onValueChange={(value) => setNewHabitForm({...newHabitForm,Times:value})}
+                                        items={[0,1,2,3,4,6].map((num) => ({'label': num+" volte", 'value': num}))}
+                                        placeholder={{
+                                            label: 'Number of daily reminders',
+                                            value: null,
+                                        }}
+
+                        />
+                        </View>
+                        )}
+                    </View>
+
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', flex: 2}}>
+                            <TouchableOpacity style={{flex: 1}}>
+                                <MaterialCommunityIcons
+                                    name="trash-can"
+                                    size={30}
+                                    style={{ color: 'red', marginLeft: 5 }} 
+                                    onPress={()=>props.setShow(false)}                
+                                />
+                            </TouchableOpacity> 
+
+                            <TouchableOpacity style={{flex: 1}}>
+                                <MaterialCommunityIcons
+                                    name="send"
+                                    size={30}
+                                    style={{ color: '#4263ec'}} // da rivedere perchè non responsive 
+                                    onPress={() => {updateHabit(uid, api_token, makeHabit(), newHabitForm.id); props.setShow(false); getHabits(uid, api_token, habits);}}
+                                />
+                            </TouchableOpacity> 
+                    </View>
+                    </>)}
+            </View>
+            )
+        } 
+    }
 }
 
 export default NewHabit

@@ -22,6 +22,7 @@ const updateHabit = async (uid,token,habit,id) => {
     const url = baseUrl + uid + '/habits/' + id;     
     await axios.put(url,habit,{headers:{token: token, 'Content-Type': 'application/json'}})    
     .catch(error =>{ alert(error.message)});    
+    alert('Habit modificato!');  
 };
 
 const addHabit = async (uid,token,habit) => { 
