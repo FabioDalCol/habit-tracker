@@ -17,9 +17,9 @@ const DetailCalendar = ({habit, datepicked, setDate}) =>{
         var markerDates={};
         for (var k of Object.keys(habit.stats)){
             if(habit.stats[k].completed)
-                markerDates[k]={ marked: true, dotColor: 'green',  };
+                markerDates[k]={ marked: true, dotColor: 'green', customStyles : {text:{color:'black'}}};
             else
-                markerDates[k]={ marked: true, dotColor: 'red',  };
+                markerDates[k]={ marked: true, dotColor: 'red', customStyles : {text:{color:'black'}}};
             if(k==selectedDate){
                     markerDates[k].selected = true
                     markerDates[k].customStyles = {
@@ -33,8 +33,9 @@ const DetailCalendar = ({habit, datepicked, setDate}) =>{
                       }
             }
         }
-        if(selectedDate!=getDate())
-        markerDates[getDate()]={customStyles:{text: {color: 'black'}}};
+        if(markerDates[getDate()]){           
+            markerDates[getDate()].customStyles.text.color = 'black';
+        } 
 
         return markerDates;
     }

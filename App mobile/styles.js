@@ -189,7 +189,10 @@ const styles =
         }
     
     },
-
+    recapIcon:{
+        position:"absolute", 
+        marginLeft:"85%"
+    },
     dropdown:
         {
               inputAndroid: {

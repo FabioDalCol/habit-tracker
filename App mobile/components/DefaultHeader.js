@@ -8,7 +8,7 @@ import tailwind from 'tailwind-rn';
 import { logout } from '../hooks/useAuth';
 import { useNavigation } from '@react-navigation/native';
 
-const DefaultHeader = ({title}) => {
+const DefaultHeader = ({title,recap=false}) => {
     const navigation = useNavigation();
     
     return (
@@ -28,6 +28,17 @@ const DefaultHeader = ({title}) => {
                             {title}
                     </Text>                    
                 </View> 
+                {recap && (
+                <View style= {styles.recapIcon}>
+                <TouchableOpacity onPress={()=> navigation.navigate('Recap')}>
+                        <MaterialCommunityIcons
+                            name="star-box-multiple-outline"
+                            size={30}
+                            style={{ color: styleColors.white }}
+                        />
+                </TouchableOpacity>
+                </View> 
+               ) }
             </View>  
             
         </View>

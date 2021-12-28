@@ -31,7 +31,7 @@ const DetailScreen = ({route, navigation}) => {
     const api_token = user.api_token;
     const habits= useSelector(selectHabits);
     const index = habits.findIndex( habit => habit.id == id);
-    habit=habits[index];
+    const habit=habits[index];
     const [date, setDate]= useState(getDate())
     console.log(habit);
 

@@ -15,10 +15,9 @@ import getHabits from '../Api';
 import NewHabit from "../components/NewHabit";
 import { useNavigation } from '@react-navigation/native';
 
-const customColors = ['gray', '#F4B400', '#0F9D58']
 const categories = {Drink:{icon:"cup-water", color:styleColors.water},     //MOVE CATEGORIES
                     Walk:{icon:"walk",color:"brown"},
-                    Custom:{icon:"chess-queen",color:customColors[Math.floor(Math.random()*customColors.length)]}
+                    Custom:{icon:"chess-queen",color:styleColors.custom[Math.floor(Math.random()*styleColors.custom.length)]}
                     }
 
 //const uid ="6GsiMJsZgCjpinhQgyCD";   // TO REPLACE -> PICK FROM STORE
@@ -58,7 +57,7 @@ const deleteConfirm = () =>
   if(!manage_habits){
     return (
       
-      <TouchableOpacity onPress={()=> navigation.navigate('Detail', {id: id})}>
+      
       <View style={[styles.habit.main, completeToday ? {borderWidth: 2} : {}]} >  
         {completeToday && (
           <View style={tailwind('absolute')}>
@@ -77,7 +76,9 @@ const deleteConfirm = () =>
             style={{ color: categories[category].color, marginRight: 5 }}
           />
           <View>
-            <Text style={tailwind('text-base')}>{name}</Text>
+            <TouchableOpacity onPress={()=> navigation.navigate('Detail', {id: id})}>
+              <Text style={tailwind('text-base')}>{name}</Text>
+            </TouchableOpacity>
             <Text style={{ fontSize: 13, color: styleColors.greyish }}>{desc}</Text>
           </View>
         </View>        
@@ -127,7 +128,7 @@ const deleteConfirm = () =>
           </>)}        
       </View>
     </View>
-    </TouchableOpacity>
+   
     )
   }
   else{

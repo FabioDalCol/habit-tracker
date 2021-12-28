@@ -46,10 +46,8 @@ const RecapScreen = () => {
 
     const total = getMonthlyRecap(habits)
     const randomColor = () =>{ 
-            var num = Math.floor(Math.random()*16777215).toString(16); 
-            const color = "#" + num                           
-            return color 
-                                }
+        return styleColors.custom[Math.floor(Math.random()*styleColors.custom.length)]
+    }
     
     return (<>
         <View>
@@ -65,9 +63,9 @@ const RecapScreen = () => {
             <Text style={tailwind("text-4xl font-semibold pt-8 pl-2")} >This month... </Text>
         </View>
         
-            <View style={tailwind("flex-1 pt-8 ")}>
+            <View style={tailwind("flex-1 pt-8 pl-2")}>
                 {total.Walk && (            
-                    <View style={tailwind("flex-row justify-center ")}>
+                    <View style={tailwind("flex-row")}>
                         <Image source={require("../images/man-running.png")} 
                             style={{ width: 40, height: 40 }}
                         />
@@ -77,7 +75,7 @@ const RecapScreen = () => {
                     </View>
                 )}
                 {total.Drink && (
-                <View style={tailwind("flex-row justify-center pt-4 ")}>
+                <View style={tailwind("flex-row  pt-4 ")}>
                     <Image source={require("../images/glass-of-water.png")} 
                             style={{ width: 30, height: 30 }}
                         />
@@ -87,14 +85,14 @@ const RecapScreen = () => {
                     </View>
                 )}
                 <View >
-                    <Text style={tailwind("text-2xl font-semibold pt-8 pl-2")} >You also completed... </Text>
+                    <Text style={tailwind("text-2xl font-semibold pt-8 ")} >You also completed... </Text>
                 </View>
-                <View style={tailwind("justify-center ")}>
+                <View >
                 {Object.keys(total.Custom).map(key => 
-                    <View style={tailwind("flex-row justify-center pt-4 ")}>
-                        <Text style={[tailwind("text-2xl font-bold"),{color: randomColor()}]}>{key}</Text>
+                    <View key={key} style={tailwind("flex-row  pt-4  ")}>                        
                         <Text style={tailwind("text-2xl font-bold")}> {total.Custom[key]} </Text>
-                        <Text style={tailwind("text-2xl")}>times</Text>
+                        <Text style={tailwind("text-2xl")}>{total.Custom[key]>1?"times":"time"}</Text>
+                        <Text style={[tailwind("text-2xl font-bold"),{color: randomColor()}]}> {key}</Text>
                     </View>
                 )}
                 </View>

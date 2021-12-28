@@ -58,13 +58,13 @@ const StatsCalendar = ({habits, datepicked, setDate}) =>{
             let progress=countCompleteFromDate(k);
             if (progress == undefined) continue;
             if(progress<0.5)
-                markerDates[k]={ marked: true, dotColor: 'red',  };
+                markerDates[k]={ marked: true, dotColor: 'red', customStyles : {text:{color:'black'}}};
             else
             { 
                 if(progress<1)
-                    markerDates[k]={ marked: true, dotColor: 'orange'};
+                    markerDates[k]={ marked: true, dotColor: 'orange', customStyles : {text:{color:'black'}}};
                 else
-                    markerDates[k]={ marked: true, dotColor: 'green'};
+                    markerDates[k]={ marked: true, dotColor: 'green', customStyles : {text:{color:'black'}}};
             }
             if(k==selectedDate){
                 markerDates[k].selected = true
@@ -77,10 +77,12 @@ const StatsCalendar = ({habits, datepicked, setDate}) =>{
                       color: 'black'
                     }
                   }
-            }
-        }
-        if(selectedDate!=getDate())
-        markerDates[getDate()]={customStyles:{text: {color: 'black'}}};            
+            }           
+        }  
+        if(markerDates[getDate()]){           
+            markerDates[getDate()].customStyles.text.color = 'black';
+        }      
+                        
         return markerDates;
     }
     

@@ -7,7 +7,8 @@ export const styleColors = {
     water: "#00BFFF",
     greenComp: '#22C55E',
     pbOrange: "#f97316",
-    pbRed: "#ef4444"
+    pbRed: "#ef4444",
+    custom: ["#FF7F11","#88ab75","#2d93ad","#7d7c84","#de8f6e"]
 
   };
 

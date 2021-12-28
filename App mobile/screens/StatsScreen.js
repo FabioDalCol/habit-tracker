@@ -52,12 +52,9 @@ const StatsScreen = () => {
 
     return (<>
         <View>
-            <DefaultHeader title="Stats"/>
+            <DefaultHeader title="Stats" recap={true}/>
         </View>
-        <View style={{flex:1}}>
-            <TouchableOpacity onPress={()=> navigation.navigate('Recap')}>
-                <Text >Recap month</Text>
-            </TouchableOpacity>
+        <View style={{flex:1}}>          
             
             <StatsCalendar habits={habits} datepicked={date} setDate={setDate} />
             <ScrollView 
