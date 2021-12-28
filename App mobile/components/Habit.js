@@ -13,6 +13,7 @@ import { getDate, removeHabit, updateHabit } from '../Api';
 import { selectHabits } from '../slices/habitSlice';
 import getHabits from '../Api';
 import NewHabit from "../components/NewHabit";
+import { useNavigation } from '@react-navigation/native';
 
 const customColors = ['gray', '#F4B400', '#0F9D58']
 const categories = {Drink:{icon:"cup-water", color:styleColors.water},     //MOVE CATEGORIES
@@ -27,6 +28,7 @@ const categories = {Drink:{icon:"cup-water", color:styleColors.water},     //MOV
 const Habit = ({ id, name='Default', date, category, desc, countable, value = null, set_value = null, completeToday, manage_habits = false, is_active, created, show=false, habitToEdit, setHabitToEdit, times, reminder, mon, tue, wed, thu, fri, sat, sun }) => {
 const habits = useSelector(selectHabits);
 const user = useSelector(selectUser);
+const navigation = useNavigation();
 const uid = user.uid
 const api_token = user.api_token;
 //categories.Custom.color=customColors[Math.floor(Math.random()*customColors.length)];
@@ -55,8 +57,9 @@ const deleteConfirm = () =>
   
   if(!manage_habits){
     return (
-                                                  // If habits is completed shows green border 
-      <View style={[styles.habit.main, completeToday ? {borderWidth: 2} : {}]}>  
+      
+      <TouchableOpacity onPress={()=> navigation.navigate('Detail', {id: id})}>
+      <View style={[styles.habit.main, completeToday ? {borderWidth: 2} : {}]} >  
         {completeToday && (
           <View style={tailwind('absolute')}>
             <MaterialCommunityIcons
@@ -124,6 +127,7 @@ const deleteConfirm = () =>
           </>)}        
       </View>
     </View>
+    </TouchableOpacity>
     )
   }
   else{

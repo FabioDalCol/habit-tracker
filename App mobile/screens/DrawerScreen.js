@@ -6,6 +6,7 @@ import ProfileScreen from './ProfileScreen';
 import CustomDrawer from './CustomDrawer';
 import HabitListScreen from './HabitListScreen';
 import StatsScreen from './StatsScreen';
+import DetailScreen from './DetailScreen';
 
 const DrawerScreen = () => {
     const Drawer = createDrawerNavigator();

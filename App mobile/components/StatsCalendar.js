@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text } from 'react-native'
 import { styles } from '../styles';
 import { styleColors } from '../colors';
@@ -8,7 +8,7 @@ import tailwind from 'tailwind-rn';
 import {Calendar, CalendarList, Agenda, LocaleConfig} from 'react-native-calendars';
 import {getDate} from '../Api'
 import moment from 'moment'
-import { useState } from 'react';
+
 
 
 const StatsCalendar = ({habits, datepicked, setDate}) =>{  
@@ -78,7 +78,9 @@ const StatsCalendar = ({habits, datepicked, setDate}) =>{
                     }
                   }
             }
-        }            
+        }
+        if(selectedDate!=getDate())
+        markerDates[getDate()]={customStyles:{text: {color: 'black'}}};            
         return markerDates;
     }
     
