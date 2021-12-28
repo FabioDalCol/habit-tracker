@@ -20,6 +20,7 @@ import store from "../store";
 import {decrementValue, incrementValue, triggerCompleted, initDay, setValue  } from "../slices/habitSlice";
 import { colors } from "react-native-elements";
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import moment from 'moment'
 
 
 
@@ -43,12 +44,32 @@ const DetailScreen = ({route, navigation}) => {
         return dates
     };
 
-    const getNum= () => {
-        var now = startDate.clone(), dates = [];
-        dates=getDaysBetweenDates();
-        habit.stats[date];
-        return 10;
+    const getRecapHabit= () => {
+        const month = moment(getDate()).month();      
+        var total = 0;
+        if(habit.stats)    
+            for(var date of Object.keys(habit.stats)){                
+                if(moment(date).month()==month){
+                    if(habit.countable){                        
+                        total = total+ parseInt(habit.stats[date].value);                        
+                        }
+                        else{
+                            total++;
+                        }
+                    }
+                }       
+        return total
+    }
 
+    const renderRecap= () => {
+        switch(habit.category){
+            case 'Drink':
+                return <Text style={{alignSelf:'center', fontSize:16, marginBottom:'5%', fontWeight: 'bold'}}>This month {getRecapHabit()} glasses of water drinked </Text>
+            case 'Walk':
+                return <Text style={{alignSelf:'center', fontSize:16, marginBottom:'5%', fontWeight: 'bold'}}>This month {getRecapHabit()} steps done </Text>
+            case 'Custom':
+                return <Text style={{alignSelf:'center', fontSize:15, marginBottom:'5%', fontWeight: 'bold'}}>This month you have completed {habit.name} {getRecapHabit()} times</Text>
+        }
     }
     
 
@@ -62,7 +83,7 @@ const DetailScreen = ({route, navigation}) => {
                 style={styles.scrollView.manage}
                 contentContainerStyle={{paddingBottom: 20}}>
                  {habit.stats[date] &&(<>
-                <Text style={{alignSelf:'center', fontSize:16, marginBottom:'5%', fontWeight: 'bold'}}>This month {getNum()} glasses of water drinked </Text>
+                {renderRecap()}
                 <Habit
                     key={habit.id} 
                     id = {habit.id}             

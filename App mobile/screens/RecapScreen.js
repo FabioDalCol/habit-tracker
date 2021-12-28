@@ -18,19 +18,20 @@ export const getMonthlyRecap = (habits) => {
     const month = moment(getDate()).month()      
     var total = {}
     for(var habit of habits){
-        for(var date of Object.keys(habit.stats)){                
-            if(moment(date).month()==month){
-                if(habit.countable){                        
-                    if(total[habit.category] == undefined) total[habit.category]=0;
-                    total[habit.category] = total[habit.category] + parseInt(habit.stats[date].value);                        
-                }
-                else{
-                    if(total[habit.category] == undefined) total[habit.category]={}
-                    if(total[habit.category][habit.name] == undefined) total[habit.category][habit.name]=0
-                    total[habit.category][habit.name] ++;
+        if(habit.stats)    
+            for(var date of Object.keys(habit.stats)){                
+                if(moment(date).month()==month){
+                    if(habit.countable){                        
+                        if(total[habit.category] == undefined) total[habit.category]=0;
+                        total[habit.category] = total[habit.category] + parseInt(habit.stats[date].value);                        
+                    }
+                    else{
+                        if(total[habit.category] == undefined) total[habit.category]={}
+                        if(total[habit.category][habit.name] == undefined) total[habit.category][habit.name]=0
+                        total[habit.category][habit.name] ++;
+                    }
                 }
             }
-        }
     }        
     return total
 }
