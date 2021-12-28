@@ -19,6 +19,8 @@ import { auth} from './firebase';
 import darkColors from 'react-native-elements/dist/config/colorsDark';
 import DrawerScreen from './screens/DrawerScreen';
 import DetailScreen from './screens/DetailScreen';
+import RecapScreen from './screens/RecapScreen';
+
 
 
 
@@ -56,6 +58,7 @@ const StackNavigator = () => {
                 <>
                 <Stack.Screen name="Root" component={DrawerScreen} options={{ headerShown: false }}/>   
                 <Stack.Screen name="Detail" component={DetailScreen}/>             
+                <Stack.Screen name="Recap" component={RecapScreen} options={{ headerShown: false }}/>               
                 </>
             ) : ( 
                 <>              

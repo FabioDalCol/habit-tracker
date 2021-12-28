@@ -20,6 +20,9 @@ import store from "../store";
 import {decrementValue, incrementValue, triggerCompleted, initDay, setValue  } from "../slices/habitSlice";
 import { colors } from "react-native-elements";
 import HomeHeader from "../components/HomeHeader";
+import { Button } from 'react-native-elements/dist/buttons/Button';
+import { useNavigation } from '@react-navigation/native';
+
 
 
 
@@ -30,6 +33,7 @@ const StatsScreen = () => {
     const api_token = user.api_token;
     const habits= useSelector(selectHabits);
     const [date, setDate]= useState(getDate())
+    const navigation = useNavigation();
 
     const getHabitsFromDate = (date) =>
     {
@@ -51,6 +55,10 @@ const StatsScreen = () => {
             <DefaultHeader title="Stats"/>
         </View>
         <View style={{flex:1}}>
+            <TouchableOpacity onPress={()=> navigation.navigate('Recap')}>
+                <Text >Recap month</Text>
+            </TouchableOpacity>
+            
             <StatsCalendar habits={habits} datepicked={date} setDate={setDate} />
             <ScrollView 
                 style={styles.scrollView.manage}
