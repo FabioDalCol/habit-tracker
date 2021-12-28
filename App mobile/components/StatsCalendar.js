@@ -14,12 +14,20 @@ import { useState } from 'react';
 const StatsCalendar = ({habits, datepicked, setDate}) =>{  
 
     const [selectedDate, setSelectedDate] = useState(getDate())
+    
+    const getFirstDate = () => {
+        var dates = [];
+        for(var habit of habits) {
+            dates.push(habit.created)
+        }
+        return dates.sort()[0]
+    }
 
     const countCompleteFromDate = (date) =>
     {
         var completed=0;   
         var total=0;
-        if(habits == null ) return 0;
+        if(habits == null ) return undefined;
         for(var habit of habits){             
             if(habit.stats)
             {          
@@ -29,7 +37,7 @@ const StatsCalendar = ({habits, datepicked, setDate}) =>{
                 } 
             }     
         }  
-        return (total?completed/total:0);
+        return (total?completed/total:undefined);
     }
 
     const getDaysBetweenDates = (startDate, endDate) => {
@@ -44,10 +52,11 @@ const StatsCalendar = ({habits, datepicked, setDate}) =>{
     //marker for general
     const markDay = () =>
     {
-        let dates=getDaysBetweenDates(moment('2021-12-01'), new Date());
+        let dates=getDaysBetweenDates(moment(getFirstDate()), new Date());
         var markerDates={};
         for (var k of dates){
             let progress=countCompleteFromDate(k);
+            if (progress == undefined) continue;
             if(progress<0.5)
                 markerDates[k]={ marked: true, dotColor: 'red',  };
             else
@@ -73,6 +82,7 @@ const StatsCalendar = ({habits, datepicked, setDate}) =>{
         return markerDates;
     }
     
+    getFirstDate();
     return (
         
         <View>
