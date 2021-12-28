@@ -18,6 +18,7 @@ import { onAuthStateChanged} from "@firebase/auth";
 import { auth} from './firebase';
 import darkColors from 'react-native-elements/dist/config/colorsDark';
 import DrawerScreen from './screens/DrawerScreen';
+import RecapScreen from './screens/RecapScreen';
 
 
 
@@ -53,7 +54,8 @@ const StackNavigator = () => {
         <Stack.Navigator screenOptions={{headerShown:false }}>
             {user ? (
                 <>
-                <Stack.Screen name="Root" component={DrawerScreen} options={{ headerShown: false }}/>                
+                <Stack.Screen name="Root" component={DrawerScreen} options={{ headerShown: false }}/> 
+                <Stack.Screen name="Recap" component={RecapScreen} options={{ headerShown: false }}/>               
                 </>
             ) : ( 
                 <>              

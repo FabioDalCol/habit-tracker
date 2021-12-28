@@ -13,7 +13,7 @@ import { useState } from 'react';
 
 const StatsCalendar = ({habits, datepicked, setDate}) =>{  
 
-    const [selectedDate, setSelectedDate] = useState(getDate())
+    const [selectedDate, setSelectedDate] = useState(getDate())    
     
     const getFirstDate = () => {
         var dates = [];
