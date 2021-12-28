@@ -46,7 +46,7 @@ const HabitListScreen = () => {
                 >       
                 {/* {Object.keys(habitList).forEach(key => console.log(habitList[key]))} */}
                     {habitList.map(habit => 
-                    <>                      
+                                      
                     <Habit
                         key={habit.id} 
                         id = {habit.id}             
@@ -55,10 +55,7 @@ const HabitListScreen = () => {
                         desc={habit.desc}
                         countable={habit.countable}
                         value={habit.value}
-                        set_value={habit.set_value}
-                        completeToday={habit.stats != undefined ? habit.stats[getDate()]?.completed : false}
-                        uid={uid}
-                        api_token={api_token}
+                        set_value={habit.set_value}                       
                         manage_habits={true}   
                         is_active={habit.is_active}
                         created={habit.created}  
@@ -75,7 +72,7 @@ const HabitListScreen = () => {
                         sat= {habit.repeat_days.Sat} 
                         sun= {habit.repeat_days.Sun} 
                     />     
-                    </>                           
+                                              
                     )}
                 </ScrollView>                   
         </View>

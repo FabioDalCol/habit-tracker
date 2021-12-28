@@ -24,8 +24,11 @@ const categories = {Drink:{icon:"cup-water", color:styleColors.water},     //MOV
 
 //var show= false;
 //const api_token = "ciao";  
-const Habit = ({ id, name='Default', date, category, desc, countable, value = null, set_value = null, completeToday, uid, api_token, manage_habits = false, is_active, created, show=false, habitToEdit, setHabitToEdit, times, reminder, mon, tue, wed, thu, fri, sat, sun }) => {
+const Habit = ({ id, name='Default', date, category, desc, countable, value = null, set_value = null, completeToday, manage_habits = false, is_active, created, show=false, habitToEdit, setHabitToEdit, times, reminder, mon, tue, wed, thu, fri, sat, sun }) => {
 const habits = useSelector(selectHabits);
+const user = useSelector(selectUser);
+const uid = user.uid
+const api_token = user.api_token;
 //categories.Custom.color=customColors[Math.floor(Math.random()*customColors.length)];
 const [newHabitForm, setNewHabitForm] = useState({id: id, Habit_list: true, Description: desc, HabitName: name, Category: category, Walk_target: set_value, Drink_target: set_value,Times:times,Reminder:reminder, Mon:mon, Tue:tue,Wed:wed,Thu:thu,Fri:fri,Sat:sat,Sun:sun,Eve:false})
 const setShowView = (param) => {if(!param){setHabitToEdit(-1);}};

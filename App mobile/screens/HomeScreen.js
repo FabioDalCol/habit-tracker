@@ -184,9 +184,7 @@ const HomeScreen = ({navigation}) => {
             countable={habit.countable}
             value={habit.value}
             set_value={habit.set_value}
-            completeToday={habit.stats != undefined ? habit.stats[getDate()]?.completed : false}
-            uid={uid}
-            api_token={api_token} 
+            completeToday={habit.stats != undefined ? habit.stats[getDate()]?.completed : false}           
             date={getDate()}  
           />
          )        

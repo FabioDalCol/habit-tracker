@@ -8,19 +8,19 @@ import tailwind from 'tailwind-rn';
 import {Calendar, CalendarList, Agenda, LocaleConfig} from 'react-native-calendars';
 import {getDate} from '../Api'
 import moment from 'moment'
+import { useState } from 'react';
 
 
 const StatsCalendar = ({habits, datepicked, setDate}) =>{  
+
+    const [selectedDate, setSelectedDate] = useState(getDate())
 
     const countCompleteFromDate = (date) =>
     {
         var completed=0;   
         var total=0;
         if(habits == null ) return 0;
-        for(var habit of habits){ 
-            console.log(habit);
-            console.log('STATS');  
-            console.log(habit.stats); 
+        for(var habit of habits){             
             if(habit.stats)
             {          
                 if (habit.stats[date]){        //If today weekday is true
@@ -49,19 +49,20 @@ const StatsCalendar = ({habits, datepicked, setDate}) =>{
         for (var k of dates){
             let progress=countCompleteFromDate(k);
             if(progress<0.5)
-                markerDates[k]={selected: true, selectedColor: 'red'};
+                markerDates[k]={ selected: k==selectedDate, marked: true, dotColor: 'red'};
             else
             { 
                 if(progress<1)
-                    markerDates[k]={selected: true, selectedColor: 'orange'};
+                    markerDates[k]={selected: k==selectedDate, marked: true, dotColor: 'orange'};
                 else
-                    markerDates[k]={selected: true, selectedColor: 'green'};
+                    markerDates[k]={selected: k==selectedDate, marked: true, dotColor: 'green'};
             }
         }            
         return markerDates;
     }
-
+    
     return (
+        
         <View>
             <Calendar
                 // Initially visible month. Default = now
@@ -71,7 +72,7 @@ const StatsCalendar = ({habits, datepicked, setDate}) =>{
                 // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
                 maxDate={getDate()}
                 // Handler which gets executed on day press. Default = undefined
-                onDayPress={(day) => {setDate(day.dateString);}}
+                onDayPress={(day) => {setDate(day.dateString);setSelectedDate(day.dateString)}}
                 // Handler which gets executed on day long press. Default = undefined
                 //onDayLongPress={(day) => {console.log('selected day', day)}}
                 // Handler which gets executed when visible month changes in calendar. Default = undefined
@@ -89,7 +90,7 @@ const StatsCalendar = ({habits, datepicked, setDate}) =>{
                 // Enable the option to swipe between months. Default = false
                 enableSwipeMonths={true}
                 //
-                markingType={'custom'}
+                
                 //
                 markedDates={markDay()}
                 //

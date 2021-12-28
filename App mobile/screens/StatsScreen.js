@@ -50,7 +50,7 @@ const StatsScreen = () => {
         <View>
             <DefaultHeader title="Stats"/>
         </View>
-        <View>
+        <View style={{flex:1}}>
             <StatsCalendar habits={habits} datepicked={date} setDate={setDate} />
             <ScrollView 
                 style={styles.scrollView.manage}
