@@ -49,13 +49,25 @@ const StatsCalendar = ({habits, datepicked, setDate}) =>{
         for (var k of dates){
             let progress=countCompleteFromDate(k);
             if(progress<0.5)
-                markerDates[k]={ selected: k==selectedDate, marked: true, dotColor: 'red'};
+                markerDates[k]={ marked: true, dotColor: 'red',  };
             else
             { 
                 if(progress<1)
-                    markerDates[k]={selected: k==selectedDate, marked: true, dotColor: 'orange'};
+                    markerDates[k]={ marked: true, dotColor: 'orange'};
                 else
-                    markerDates[k]={selected: k==selectedDate, marked: true, dotColor: 'green'};
+                    markerDates[k]={ marked: true, dotColor: 'green'};
+            }
+            if(k==selectedDate){
+                markerDates[k].selected = true
+                markerDates[k].customStyles = {
+                    container: {
+                      backgroundColor: 'white',
+                      elevation: 2
+                    },
+                    text: {
+                      color: 'black'
+                    }
+                  }
             }
         }            
         return markerDates;
@@ -90,7 +102,7 @@ const StatsCalendar = ({habits, datepicked, setDate}) =>{
                 // Enable the option to swipe between months. Default = false
                 enableSwipeMonths={true}
                 //
-                
+                markingType={'custom'}
                 //
                 markedDates={markDay()}
                 //
