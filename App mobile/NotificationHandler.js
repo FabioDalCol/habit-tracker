@@ -1,107 +1,109 @@
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
+import store from './store';
+import { useSelector } from 'react-redux';
+import { selectProfile } from './slices/authSlice';
 import React, { useState, useEffect, useRef } from 'react';
 import { Text, View, Button, Platform } from 'react-native';
+import moment from 'moment'
+import { getDate, getTodayHabits } from './Api';
+import { useDispatch } from 'react-redux';
+import { initNotifDb,setNotifIds } from './slices/habitSlice';
+import { weekDays } from './Api';
 
-async function schedulePushNotification(times) {
+//var notifDB ={habId:{ids:[],date:""}}
+var notifDB ={}
 
-  console.log('I AM HEREEEEEEEE');
-
-  let rise = Number(('08:30').split(':')[0]); //da sostituire con note.rise
-  let sleep = Number(('01:30').split(':')[0]); //da sostituire con note.sleep
-  if(sleep<rise){
-  sleep=sleep+24;
+const getNotifContent = (habit) => {
+  var title = "";
+  var content = "";  
+  switch(habit.category){
+    case "Drink": {
+      title=habit.category
+      content="It's time to Drink"
+      break;
+    }
+    case "Walk":{
+      title=habit.category
+      content="It's time to Walk"
+      break;
+    }
+    case "Custom":{
+      title=habit.name
+      content="Have you achieved your habit?"
+      break;
+    }    
   }
-
-  const hoursForNotifications=4; //parseInt((sleep-rise)/times);
-  var startDate= new Date(Date.now());
-  //startDate.setHours(rise);
-  startDate.setMinutes(0);
-  startDate.setSeconds(0);
-
-
-  for (let i = 0; i < times; i++)
-  {
-    var trigger = new Date(Date.now() + (i+1) * hoursForNotifications * 1000);
-    //var trigger = startDate.setHours(rise + 1 +hoursForNotifications*i); versione finale
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: "Drink ",
-        body: 'It\' time to drink!',
-        data: { data: 'goes here' },
-      },
-      trigger,
-    });
-  }
+  var data = [title,content]
+  return data
 }
 
-async function registerForPushNotificationsAsync() {
-  let token;
-  if (Constants.isDevice) {
-    const { status: existingStatus } = await Notifications.getPermissionsAsync();
-    let finalStatus = existingStatus;
-    if (existingStatus !== 'granted') {
-      const { status } = await Notifications.requestPermissionsAsync();
-      finalStatus = status;
-    }
-    if (finalStatus !== 'granted') {
-      alert('Failed to get push token for push notification!');
-      return;
-    }
-    token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log(token);
-  } else {
-    alert('Must use physical device for Push Notifications');
-  }
+async function schedulePushNotification(rise_time,sleep_time,habit) {
 
-  if (Platform.OS === 'android') {
-    Notifications.setNotificationChannelAsync('default', {
-      name: 'default',
-      importance: Notifications.AndroidImportance.MAX,
-      vibrationPattern: [0, 250, 250, 250],
-      lightColor: '#FF231F7C',
-    });
-  }
-
-  return token;
-}
-
-
-const NotificationHandler = (props ) => {
-    
   Notifications.setNotificationHandler({
     handleNotification: async () => ({
       shouldShowAlert: true,
-      shouldPlaySound: false,
-      shouldSetBadge: false,
+      shouldPlaySound: true,
+      shouldSetBadge: true,
     }),
   });
 
+  console.log('I AM HEREEEEEEEE'); 
+  var notifData = getNotifContent(habit);
+  var notifIds = [];
+  let rise = Number((rise_time).split(':')[0]); 
+  let sleep = Number((sleep_time).split(':')[0]);   
+  if(sleep<rise){
+  sleep=sleep+24;
+  }  
+  const hoursForNotifications=parseInt((sleep-rise)/habit.reminder);
+  var startDate= new Date(Date.now());  
+  for (let d=0; d<7; d++){
 
-    const {note, setNote} = props.state;
-    const notificationListener = useRef();
-    const responseListener = useRef();
+    if (habit.repeat_days[weekDays[startDate.getDay()]]){        
+      startDate.setHours(rise);
+      startDate.setMinutes(0);
+      startDate.setSeconds(0);  
 
-    useEffect(() => {
-      registerForPushNotificationsAsync().then(token => setNote({...note, expoPushToken:token}));
-
-      notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-        setNote({...note, notification:notification});
-      });
-
-      responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-        console.log(response);
-      });
-
-      return () => {
-        Notifications.removeNotificationSubscription(notificationListener.current);
-        Notifications.removeNotificationSubscription(responseListener.current);
-      };
-    }, []);
-
-    return null;
-     
+      for (let i = 0; i < habit.reminder; i++){   
+        var trigger = startDate.setMinutes(rise + 1 +hoursForNotifications*i);     
+        await Notifications.scheduleNotificationAsync({
+          content: {
+            title: notifData[0],
+            body: notifData[1],
+            data: { data: 'goes here' },
+          },
+          trigger,
+        })
+        .then((scheduleId)=>{
+          notifIds.push(scheduleId);        
+        });    
+      }
+    }
+    startDate.setDate(startDate.getDate() + 1);  
+  }
+  console.log(notifIds);
+  store.dispatch(setNotifIds({id:habit.id,not_ids:notifIds}));
 }
 
-export default NotificationHandler
-export {schedulePushNotification,registerForPushNotificationsAsync}
+
+async function scheduleHabitNotification(habit,rise_time,sleep_time,notifDB)
+{
+  today = new Date(Date.now());
+  if (notifDB == undefined) store.dispatch(initNotifDb());
+  if (notifDB[habit.id]==undefined){
+    await schedulePushNotification(rise_time,sleep_time,habit);
+  }
+  else{      
+    last_date = moment(notifDB[habit.id].date)     
+    if(today.diff(last_date,'days')>=3 ){
+      for (let notId of notifDB[habit.id].ids){
+        Notifications.cancelScheduledNotificationAsync(notId)
+      }
+      await schedulePushNotification(rise_time,sleep_time,habit)   
+    }
+  }
+}
+
+
+export {schedulePushNotification,scheduleHabitNotification}

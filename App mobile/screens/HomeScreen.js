@@ -3,7 +3,7 @@ import { View, Text, RefreshControl, StatusBar, Platform } from "react-native";
 import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { useSelector } from "react-redux";
-import { selectUser } from "../slices/authSlice";
+import { selectUser, selectProfile } from "../slices/authSlice";
 import tailwind from "tailwind-rn";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { logout } from "../hooks/useAuth";
@@ -13,7 +13,7 @@ import { useRef } from 'react';
 import { styles } from "../styles";
 import { styleColors } from '../colors'
 import getHabits, { countCompletedHabits } from "../Api";
-import { selectHabits, selectRefreshing} from "../slices/habitSlice";
+import { selectHabits, selectNotifDB, selectRefreshing} from "../slices/habitSlice";
 import { TextInput } from "react-native-gesture-handler";
 import store from "../store";
 import {decrementValue, incrementValue, triggerCompleted, initDay, setValue  } from "../slices/habitSlice";
@@ -24,7 +24,7 @@ import { getTodayHabits } from "../Api";
 import { colors } from "react-native-elements";
 import Habit from "../components/Habit";
 import HomeHeader from "../components/HomeHeader";
-import NotificationHandler from "../NotificationHandler"
+import NotificationHandler, { deleteChannel, scheduleHabitNotification, stacca } from "../NotificationHandler"
 import { scheduleNotificationAsync } from "expo-notifications";
 import { schedulePushNotification } from "../NotificationHandler";
 import { weekDays } from "../Api";
@@ -42,15 +42,19 @@ const HomeScreen = ({navigation}) => {
   }
 
   const user = useSelector(selectUser);
-  //const uid ="6GsiMJsZgCjpinhQgyCD";
+ 
   const uid = user.uid
   const api_token = user.api_token;
-   // const { user } = useAuth();
+ 
+  const profile = useSelector(selectProfile);
 
-   useEffect(() => {
-    getHabits(uid,api_token,{})
-    console.log("Got new habits")
-}, [])
+  const notifDB = useSelector(selectNotifDB)
+
+  
+  useEffect(() => {   
+  getHabits(uid,api_token,{})
+  //console.log("Got new habits")
+  }, [])
   const [showView, setShowView] = useState(false);   
   const [newHabitForm, setNewHabitForm] = useState({Walk_target:'10000',Drink_target:'10',Times:0,Reminder:false, HabitName:'Default',Target_name:'',Mode:'time',Date_start:new Date(1598051730000), Date_end:new Date(1598051730000), Show_end:false, Show_start:false, Picker_value:'vuoto',Mon:false,Tue:false,Wed:false,Thu:false,Fri:false,Sat:false,Sun:false,Eve:false})
   const [refreshing,setRefreshing] = useState(false); //pull down to refresh  
@@ -71,8 +75,13 @@ const HomeScreen = ({navigation}) => {
 
   useEffect(() => {
     if (newhabits != undefined){
-      store.dispatch(initDay({uid:uid,token:api_token}))     
-    
+      store.dispatch(initDay({uid:uid,token:api_token}))
+      for(let habit of newhabits){
+        if(habit.reminder>0){     
+          scheduleHabitNotification(habit,profile.rise_time,profile.sleep_time,notifDB);
+          console.log("habit con reminder");
+        }
+      }
     }
   }, [newhabits])
   
@@ -90,6 +99,8 @@ const HomeScreen = ({navigation}) => {
     }
   }
 
+  console.log(notifDB);
+
   const repeatDays = (activeDays) => {
     var days = ""
     for(var day of weekDays){
@@ -100,9 +111,7 @@ const HomeScreen = ({navigation}) => {
     days= days.slice(0, -2);
     return days
   }
-  //console.log(newhabits)   
-  console.log(user.uid)
-  console.log(user.api_token)
+  //console.log(newhabits)  
 
   
   return (
@@ -142,9 +151,9 @@ const HomeScreen = ({navigation}) => {
             // }}
           />
         </TouchableOpacity>   
-        {/*
+        
         <TouchableOpacity onPress={async () => {
-            await schedulePushNotification(3);
+            await schedulePushNotification(3,profile.rise_time,profile.sleep_time);
           }}> 
           <MaterialCommunityIcons
             name="plus" //
@@ -152,7 +161,25 @@ const HomeScreen = ({navigation}) => {
             style={[{color: styleColors.themeColor, backgroundColor: styleColors.white}, styles.plusButton]}
           />
         </TouchableOpacity>   
-        */}
+        <TouchableOpacity onPress={async () => {
+            await deleteChannel();
+          }}> 
+          <MaterialCommunityIcons
+            name="minus" //
+            size={40}
+            style={[{color: styleColors.themeColor, backgroundColor: styleColors.white}, styles.plusButton]}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={async () => {
+            await stacca();
+          }}> 
+          <MaterialCommunityIcons
+            name="account" //
+            size={40}
+            style={[{color: styleColors.themeColor, backgroundColor: styleColors.white}, styles.plusButton]}
+          />
+        </TouchableOpacity>
+        
       </View>
     
       <ScrollView 
@@ -171,7 +198,7 @@ const HomeScreen = ({navigation}) => {
     
         <NewHabit viewStyle = {styles.newHabit} show={showView} state={{newHabitForm,setNewHabitForm}} setShow={setNewHabitComp} uid={uid} api_token={api_token} />
 
-        <NotificationHandler state={{note,setNote}} />
+        
         
         {newhabits?.map(habit => 
          (getTodayHabits(newhabits)?.includes(habit.id) && (

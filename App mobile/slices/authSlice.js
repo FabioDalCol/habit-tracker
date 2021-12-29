@@ -7,6 +7,14 @@ const initialState = {
         api_token: null,
         photo_url: null
     },
+    profile: {
+        name: "pippo",
+        weight: "65",
+        height: "173",
+        rise_time: "07:30",
+        sleep_time: "23:30",
+    },
+
     loadingInit: true,
     loading: false    
 }
@@ -23,15 +31,20 @@ export const authSlice = createSlice({
         },
         setLoading: (state, action) => {
             state.loading = action.payload;
-        },       
+        },
+        setProfile: (state, action) => {
+            state.profile = action.payload;
+        },  
+             
     }
 })
 
-export const { setUser, setLoadingInit, setLoading } = authSlice.actions;
+export const { setUser, setLoadingInit, setLoading, setProfile } = authSlice.actions;
 
 export const selectUser = (state) => state.auth1.user;
 export const selectLoadingInit = (state) => state.auth1.loadingInit;
 export const selectLoading = (state) => state.auth1.loading;
+export const selectProfile = (state) => state.auth1.profile;
 
 
 export default authSlice.reducer;

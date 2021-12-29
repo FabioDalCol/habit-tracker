@@ -5,7 +5,8 @@ import { updateHabit, getDate, getTodayHabits } from '../Api';
 
 const initialState = {
     habits: null,
-    refreshing: false       
+    refreshing: false,
+    notifDB:{},       
 }
 
 export const habitSlice = createSlice({
@@ -164,14 +165,30 @@ export const habitSlice = createSlice({
             state.habits[index].is_active = !state.habits[index].is_active;   
             console.log(!state.habits[index].is_active);                        
             updateHabit(uid,token,state.habits[index],id)                                           
-        }    
+        }, 
+
+        initNotifDb: (state) => {                
+                                                    
+            state.notifDB = {};                                    
+        }, 
+
+        setNotifIds: (state, action) => {                                          
+            id = action.payload.id;
+            not_ids = action.payload.not_ids;
+            if(state.notifDB[id]==undefined) state.notifDB[id] = {ids:[],date:"2020-11-11"};         //initialization date                      
+            state.notifDB[id].ids = not_ids;
+            state.notifDB[id].date = getDate();                                         
+        },        
+        
+
     }
 })
 
-export const { setIsActive, setHabits, setRefreshing, incrementValue, decrementValue, triggerCompleted, initDay, setValue, pushValue} = habitSlice.actions;
+export const { setIsActive, setHabits, setRefreshing, incrementValue, decrementValue, triggerCompleted, initDay, setValue, pushValue, initNotifDb, setNotifIds} = habitSlice.actions;
 
 export const selectHabits = (state) => state.hab.habits;
 export const selectRefreshing = (state) => state.hab.refreshing;
+export const selectNotifDB = (state) => state.hab.notifDB;
 
 
 export default habitSlice.reducer;
