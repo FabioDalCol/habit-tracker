@@ -51,8 +51,8 @@ async function schedulePushNotification(rise_time,sleep_time,habit) {
   console.log('I AM HEREEEEEEEE'); 
   var notifData = getNotifContent(habit);
   var notifIds = [];
-  let rise = Number((rise_time).split(':')[0]); 
-  let sleep = Number((sleep_time).split(':')[0]);   
+  let rise = Number((rise_time).split(':')[0])+1; 
+  let sleep = Number((sleep_time).split(':')[0])+1;   
   if(sleep<rise){
   sleep=sleep+24;
   }  
@@ -63,10 +63,11 @@ async function schedulePushNotification(rise_time,sleep_time,habit) {
     if (habit.repeat_days[weekDays[startDate.getDay()]]){        
       startDate.setHours(rise);
       startDate.setMinutes(0);
-      startDate.setSeconds(0);  
+      startDate.setSeconds(0);       
 
       for (let i = 0; i < habit.reminder; i++){   
-        var trigger = startDate.setMinutes(rise + 1 +hoursForNotifications*i);     
+        var trigger = startDate.setHours(rise + 1 +hoursForNotifications*i);     
+        
         await Notifications.scheduleNotificationAsync({
           content: {
             title: notifData[0],
@@ -76,7 +77,8 @@ async function schedulePushNotification(rise_time,sleep_time,habit) {
           trigger,
         })
         .then((scheduleId)=>{
-          notifIds.push(scheduleId);        
+          notifIds.push(scheduleId); 
+                 
         });    
       }
     }
@@ -105,5 +107,18 @@ async function scheduleHabitNotification(habit,rise_time,sleep_time,notifDB)
   }
 }
 
+async function getNotification (){
+  Notifications.getAllScheduledNotificationsAsync()
+  .then(
+    (prom)=> 
+    console.log((Object.keys(prom)).length));  
+}
 
-export {schedulePushNotification,scheduleHabitNotification}
+async function cancel (){
+  Notifications.cancelAllScheduledNotificationsAsync();  
+  store.dispatch(initNotifDb())
+}
+
+
+
+export {schedulePushNotification,scheduleHabitNotification,getNotification,cancel}

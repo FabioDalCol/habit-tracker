@@ -24,7 +24,7 @@ import { getTodayHabits } from "../Api";
 import { colors } from "react-native-elements";
 import Habit from "../components/Habit";
 import HomeHeader from "../components/HomeHeader";
-import NotificationHandler, { deleteChannel, scheduleHabitNotification, stacca } from "../NotificationHandler"
+import NotificationHandler, { cancel, deleteChannel, getNotification, scheduleHabitNotification, stacca } from "../NotificationHandler"
 import { scheduleNotificationAsync } from "expo-notifications";
 import { schedulePushNotification } from "../NotificationHandler";
 import { weekDays } from "../Api";
@@ -122,7 +122,9 @@ const HomeScreen = ({navigation}) => {
         <Text style={[tailwind('text-4xl'),{ color: styleColors.white}]}>
           Hi,{"\n" + user?.fullname?.split(/(\s+)/)[0]}
         </Text>          
-      </View>         
+      </View>     
+
+          
       
       <View style={styles.infoBox} >
             <Text style={tailwind('text-2xl pb-4 ')}>Progress</Text>
@@ -160,9 +162,10 @@ const HomeScreen = ({navigation}) => {
             size={40}
             style={[{color: styleColors.themeColor, backgroundColor: styleColors.white}, styles.plusButton]}
           />
-        </TouchableOpacity>   
+        </TouchableOpacity>  
+
         <TouchableOpacity onPress={async () => {
-            await deleteChannel();
+            await cancel();
           }}> 
           <MaterialCommunityIcons
             name="minus" //
@@ -171,14 +174,15 @@ const HomeScreen = ({navigation}) => {
           />
         </TouchableOpacity>
         <TouchableOpacity onPress={async () => {
-            await stacca();
+            await getNotification();
           }}> 
           <MaterialCommunityIcons
             name="account" //
             size={40}
             style={[{color: styleColors.themeColor, backgroundColor: styleColors.white}, styles.plusButton]}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> 
+        
         
       </View>
     
