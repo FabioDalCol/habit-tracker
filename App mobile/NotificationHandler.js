@@ -89,7 +89,7 @@ async function schedulePushNotification(rise_time,sleep_time,habit) {
 
 async function scheduleHabitNotification(habit,rise_time,sleep_time,notifDB)
 {
-  today = new Date(Date.now());
+  today = moment(getDate());
   if (notifDB == undefined) store.dispatch(initNotifDb());
   if (notifDB[habit.id]==undefined){
     await schedulePushNotification(rise_time,sleep_time,habit);
