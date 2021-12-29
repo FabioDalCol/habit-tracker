@@ -24,17 +24,20 @@ const DetailCalendar = ({habit, datepicked, setDate}) =>{
                     markerDates[k].selected = true
                     markerDates[k].customStyles = {
                         container: {
-                          backgroundColor: 'white',
+                          backgroundColor: styleColors.greyish,
                           elevation: 2
                         },
                         text: {
-                          color: 'black'
+                          color: 'white'
                         }
                       }
             }
         }
-        if(markerDates[getDate()]){           
-            markerDates[getDate()].customStyles.text.color = 'black';
+        if(markerDates[getDate()]){    
+            if(markerDates[getDate()].selected)  
+                markerDates[getDate()].customStyles.text.color = 'white';
+            else     
+                markerDates[getDate()].customStyles.text.color = 'black';
         } 
 
         return markerDates;
