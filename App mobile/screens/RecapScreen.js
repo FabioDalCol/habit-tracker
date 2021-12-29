@@ -99,7 +99,7 @@ const RecapScreen = () => {
                 </View>
                 <View >
                 {Object.keys(total.Custom).map(key => 
-                    <View key={key} style={[tailwind("flex-row  pt-4 ")]}>
+                    <View key={key} style={[tailwind("flex-row  pt-4 pl-2")]}>
                          <Image source={require("../images/star.png")} 
                             style={{ width: 35, height: 35 }}
                         />  
