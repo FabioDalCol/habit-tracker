@@ -189,36 +189,34 @@ const styles =
         }
     
     },
+
     recapIcon:{
         position:"absolute", 
         marginLeft:"85%"
     },
-    dropdown:
-        {
-              inputAndroid: {
-                color: 'black',
-                height: 40,
-                backgroundColor: '#fff',
-                paddingHorizontal: 15,
-                borderWidth: 0,
-                borderBottomWidth: 0,
-                borderRadius:9999, 
-                fontSize: 16,
-                //marginBottom: 30,
-                //justifyContent: 'center', 
-                //alignSelf: 'center',
-                width: '95%'
-              },
-              
-              container:
-              {
-                paddingBottom:50
-              }
-            },
 
-    dropdownCategory:
-    {
-            inputAndroid: {
+    dropdown:{
+        inputAndroid: {
+            color: 'black',
+            height: 40,
+            backgroundColor: '#fff',
+            paddingHorizontal: 15,
+            borderWidth: 0,
+            borderBottomWidth: 0,
+            borderRadius:9999, 
+            fontSize: 16,
+            //marginBottom: 30,
+            //justifyContent: 'center', 
+            //alignSelf: 'center',
+            width: '95%'
+        },        
+        container:{
+            paddingBottom:50
+        }
+    },
+
+    dropdownCategory:{
+        inputAndroid: {
             color: 'black',
             height: 40,
             backgroundColor: '#fff',
@@ -231,34 +229,37 @@ const styles =
             justifyContent: 'center', 
             alignSelf: 'center',
             width: '95%'
-            },
-            
-            container:
-            {
+        },        
+        container:{
             paddingBottom:50
-            }
+        }
+    },
+    
+    timeButton:{
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 10,
+        paddingHorizontal: 10,
+        borderRadius: 4,
+        elevation: 3,
+        backgroundColor: "#4263ec",
+        marginBottom: 20,
+    },
+
+    text:{
+        fontSize: 16,
+        lineHeight: 21,
+        fontWeight: 'bold',
+        letterSpacing: 0.25,
+        color: 'white',
         },
     
-    buttone: {
-
-                alignItems: 'center',
-                justifyContent: 'center',
-                paddingVertical: 10,
-                paddingHorizontal: 10,
-                borderRadius: 4,
-                elevation: 3,
-                backgroundColor: "#4263ec",
-                marginBottom: 20,
-              },
-
-    text: {
-                fontSize: 16,
-                lineHeight: 21,
-                fontWeight: 'bold',
-                letterSpacing: 0.25,
-                color: 'white',
-              }
-    
+    detailRecap: {
+        alignSelf:'center', 
+        fontSize:16, 
+        marginBottom:'5%', 
+        fontWeight: 'bold'
+    }     
 
 }
 

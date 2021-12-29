@@ -54,45 +54,60 @@ const RecapScreen = () => {
             <DefaultHeader title="Monthly Recap"/>
         </View>
         <View style={{flex: 1}}>
-        <View style={tailwind("flex-row pt-8")}>
-            <Text style={[tailwind("text-4xl font-semibold pl-2 "),{color: styleColors.themeColor}]} >Good job, </Text>
-            <Text style={[tailwind("text-4xl font-bold "),{color: styleColors.themeColor}]} >{user?.fullname?.split(/(\s+)/)[0]}</Text>
-            <Text style={[tailwind("text-4xl font-semibold "),{color: styleColors.themeColor}]} >! </Text>            
-        </View>
-        <View >
-            <Text style={tailwind("text-4xl font-semibold pt-8 pl-2")} >This month... </Text>
-        </View>
-        
-            <View style={tailwind("flex-1 pt-8 pl-2")}>
-                {total.Walk && (            
-                    <View style={tailwind("flex-row")}>
-                        <Image source={require("../images/man-running.png")} 
-                            style={{ width: 40, height: 40 }}
+        <View style={tailwind("flex-row pt-8 pl-2")}>
+            <Image source={require("../images/rocket.png")} 
+                            style={{ width: 48, height: 48 }}
                         />
-                        <Text style={tailwind("text-xl")} > You've done </Text>
-                        <Text style={[tailwind("text-xl font-bold"),{color: "brown"}]} >{total.Walk}</Text>
-                        <Text style={tailwind("text-xl")} > steps</Text>
+            <View style={tailwind("flex-row  self-center")}>
+                <Text style={[tailwind("text-4xl font-semibold pl-2 "),{color: styleColors.themeColor}]} >Good job, </Text>
+                <Text style={[tailwind("text-4xl font-bold "),{color: styleColors.themeColor}]} >{user?.fullname?.split(/(\s+)/)[0]}</Text>
+                <Text style={[tailwind("text-4xl font-semibold "),{color: styleColors.themeColor}]} >! </Text>            
+            </View>
+        </View>    
+        
+            <View style={[tailwind("flex-1"),{width:"95%",borderWidth:0, alignSelf: "center"}]}>
+                <View >
+                    <Text style={[tailwind("font-semibold pt-8 pb-4 "),{fontSize:26}]} >This month...</Text>
+                </View>
+                {total.Walk && (            
+                    <View style={tailwind("flex-row  ")}>
+                        <Image source={require("../images/man-running.png")} 
+                            style={{ width: 50, height: 50 }}
+                        />
+                        <View style={[tailwind("flex-row flex-wrap flex-1 self-center "),{position:'absolute', marginLeft:"15%"}]}>
+                            <Text style={{fontSize:24}} >You've done </Text>
+                            <Text style={{fontSize: 24,color: "brown", fontWeight: '700'}} >{total.Walk}</Text>
+                            <Text style={{fontSize:24}} > steps</Text>
+                        </View>
                     </View>
                 )}
                 {total.Drink && (
-                <View style={tailwind("flex-row  pt-4 ")}>
-                    <Image source={require("../images/glass-of-water.png")} 
-                            style={{ width: 30, height: 30 }}
+                <View style={[tailwind("flex-row  pt-4 "),{marginLeft:-4}]}>
+                    <Image source={require("../images/cup.png")} 
+                            style={{ width: 50, height: 50 }}
                         />
-                        <Text style={tailwind("text-xl")} > You drank </Text>
-                        <Text style={[tailwind("text-xl font-bold "),{color: styleColors.water}]} >{total.Drink}</Text> 
-                        <Text style={tailwind("text-xl")} > glasses of water</Text>     
+                        <View style={[tailwind("flex-row flex-wrap flex-1 self-center "),{position:'absolute', marginLeft:"15%"}]}>
+                            <Text style={{fontSize:24}} >You drank </Text>
+                            <Text style={{fontSize: 24,color: styleColors.water, fontWeight: '700'}} >{total.Drink}</Text> 
+                            <Text style={{fontSize:24}} > glasses </Text>  
+                            <Text style={{fontSize:24}} >of water</Text>    
+                        </View>
                     </View>
                 )}
                 <View >
-                    <Text style={tailwind("text-2xl font-semibold pt-8 ")} >You also completed... </Text>
+                    <Text style={[tailwind("font-semibold pt-8 "),{fontSize:26}]} >You also completed... </Text>
                 </View>
                 <View >
                 {Object.keys(total.Custom).map(key => 
-                    <View key={key} style={tailwind("flex-row  pt-4  ")}>                        
-                        <Text style={tailwind("text-2xl font-bold")}> {total.Custom[key]} </Text>
-                        <Text style={tailwind("text-2xl")}>{total.Custom[key]>1?"times":"time"}</Text>
-                        <Text style={[tailwind("text-2xl font-bold"),{color: randomColor()}]}> {key}</Text>
+                    <View key={key} style={[tailwind("flex-row  pt-4 ")]}>
+                         <Image source={require("../images/star.png")} 
+                            style={{ width: 35, height: 35 }}
+                        />  
+                    <View style={[tailwind("flex-row  self-center"),{marginLeft:"2%"}]}>                                                                     
+                        <Text style={{fontSize: 24, fontWeight: '700', color: randomColor()}} > {total.Custom[key]} </Text>
+                        <Text style={{fontSize:24}} >{total.Custom[key]>1?"times":"time"}</Text>
+                        <Text style={{color: randomColor(), fontSize: 24, fontWeight: '700'}}> {key}</Text>
+                    </View>
                     </View>
                 )}
                 </View>

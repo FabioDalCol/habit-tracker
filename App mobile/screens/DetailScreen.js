@@ -44,35 +44,47 @@ const DetailScreen = ({route, navigation}) => {
         return dates
     };
 
-    const getRecapHabit= () => {
-        const month = moment(getDate()).month();      
-        var total = 0;
-        if(habit.stats)    
-            for(var date of Object.keys(habit.stats)){                
-                if(moment(date).month()==month){
-                    if(habit.countable){                        
-                        total = total+ parseInt(habit.stats[date].value);                        
-                        }
-                        else{
-                            total++;
-                        }
-                    }
-                }       
-        return total
-    }
+    // const getRecapHabit= () => {                
+    //     const month = moment(getDate()).month();      
+    //     var total = [0,0];        
+    //     if(habit.stats)    
+    //         for(var date of Object.keys(habit.stats)){                
+    //             if(moment(date).month()==month){
+    //                 if(habit.countable){                        
+    //                     total[0] = total[0] + parseInt(habit.stats[date].value); 
+    //                     total[1] = total[1] + parseInt(habit.stats[date].set_value);                                             
+    //                 }
+    //                 else{
+    //                     if(habit.stats[date].completed) total[0]++;
+    //                     total[1]++;
+    //                 }
+    //             }
+    //             }   
+    //     console.log(total)    
+    //     return total
+    // }
 
-    const renderRecap= () => {
-        switch(habit.category){
-            case 'Drink':
-                return <Text style={{alignSelf:'center', fontSize:16, marginBottom:'5%', fontWeight: 'bold'}}>This month {getRecapHabit()} glasses of water drinked </Text>
-            case 'Walk':
-                return <Text style={{alignSelf:'center', fontSize:16, marginBottom:'5%', fontWeight: 'bold'}}>This month {getRecapHabit()} steps done </Text>
-            case 'Custom':
-                return <Text style={{alignSelf:'center', fontSize:15, marginBottom:'5%', fontWeight: 'bold'}}>This month you have completed {habit.name} {getRecapHabit()} times</Text>
+    const getRecapHabit= () => {                
+        const month = moment(getDate()).month();      
+        var total = [0,0];        
+        if(habit.stats){    
+            for(var date of Object.keys(habit.stats)){                
+                if(moment(date).month()==month){                    
+                    if(habit.stats[date].completed) total[0]++;
+                    total[1]++;
+                }    
+            }           
+        return total
         }
     }
-    
 
+    const renderRecap = () => {
+        const value = getRecapHabit()[0];
+        const setValue = getRecapHabit()[1];        
+        return <Text style={styles.detailRecap}>Monthly progress: {value}/{setValue}</Text>
+    }
+
+    
     return (<>
         <View>
             <DefaultHeader title="Detail"/>

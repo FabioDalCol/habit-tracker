@@ -140,7 +140,7 @@ const NewHabit = (props ) => {
                         </View>
                         {/* <View style={{flex:8, justifyContent: "space-around", flexDirection: "row"}}>
                             <View>
-                                <Pressable style={styles.buttone} onPress={showTimepicker_start} title="Inserisci ora fine">
+                                <Pressable style={styles.timeButton} onPress={showTimepicker_start} title="Inserisci ora fine">
                                     <Text style={styles.text}>Rise time</Text>
                                     <Text style={styles.text, {color: 'white', fontWeight: 'bold',}}>{makeTwoDigits(newHabitForm.Date_start.getHours())+':'+makeTwoDigits(newHabitForm.Date_start.getMinutes())}</Text>
                                 </Pressable>
@@ -157,7 +157,7 @@ const NewHabit = (props ) => {
                             )}
 
                             <View>
-                                <Pressable style={styles.buttone} onPress={showTimepicker_end} title="Inserisci ora fine">
+                                <Pressable style={styles.timeButton} onPress={showTimepicker_end} title="Inserisci ora fine">
                                     <Text style={styles.text}>Sleep time</Text>
                                     <Text style={styles.text, {color: 'white', fontWeight: 'bold',}}>{makeTwoDigits(newHabitForm.Date_end.getHours())+':'+makeTwoDigits(newHabitForm.Date_end.getMinutes())}</Text>
                                 </Pressable>
