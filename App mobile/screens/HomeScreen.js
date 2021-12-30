@@ -28,6 +28,7 @@ import NotificationHandler, { cancel, deleteChannel, getNotification, scheduleHa
 import { scheduleNotificationAsync } from "expo-notifications";
 import { schedulePushNotification } from "../NotificationHandler";
 import { weekDays } from "../Api";
+import { get } from "react-native/Libraries/Utilities/PixelRatio";
 
 
 const HomeScreen = ({navigation}) => {
@@ -77,9 +78,9 @@ const HomeScreen = ({navigation}) => {
     if (newhabits != undefined){
       store.dispatch(initDay({uid:uid,token:api_token}))
       for(let habit of newhabits){
-        if(habit.reminder>0){     
-          scheduleHabitNotification(habit,profile.rise_time,profile.sleep_time,notifDB);
-          console.log("habit con reminder");
+        if(habit.reminder>0 && habit.stats[getDate()].completed != undefined){
+          console.log(habit.id)     
+          scheduleHabitNotification(habit,profile.rise_time,profile.sleep_time,notifDB);          
         }
       }
     }
@@ -98,9 +99,7 @@ const HomeScreen = ({navigation}) => {
       return {backgroundColor: styleColors.greenComp }
     }
   }
-
-  console.log(notifDB);
-
+ 
   const repeatDays = (activeDays) => {
     var days = ""
     for(var day of weekDays){

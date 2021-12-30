@@ -84,7 +84,7 @@ async function schedulePushNotification(rise_time,sleep_time,habit) {
     }
     startDate.setDate(startDate.getDate() + 1);  
   }
-  console.log(notifIds);
+  console.log("imposto notifiche")
   store.dispatch(setNotifIds({id:habit.id,not_ids:notifIds}));
 }
 
@@ -92,18 +92,23 @@ async function schedulePushNotification(rise_time,sleep_time,habit) {
 async function scheduleHabitNotification(habit,rise_time,sleep_time,notifDB)
 {
   today = moment(getDate());
+  
   if (notifDB == undefined) store.dispatch(initNotifDb());
-  if (notifDB[habit.id]==undefined){
+ 
+  if (notifDB[habit.id]==undefined){    
+    console.log("è und")
     await schedulePushNotification(rise_time,sleep_time,habit);
   }
   else{      
     last_date = moment(notifDB[habit.id].date)     
     if(today.diff(last_date,'days')>=3 ){
+      console.log(today.diff(last_date,'days'))
       for (let notId of notifDB[habit.id].ids){
         Notifications.cancelScheduledNotificationAsync(notId)
       }
       await schedulePushNotification(rise_time,sleep_time,habit)   
     }
+    console.log("non è und");
   }
 }
 
