@@ -84,15 +84,27 @@ const styles =
             paddingTop: 20        
         }
     },
-    profileCard:{
-        
-        backgroundColor: styleColors.background,
-        marginHorizontal: 6,
-        paddingTop: 20   ,
-        backgroundColor: styleColors.themeColor,
-        borderRadius: 20,   
-        width: "95%",
-        height: "40%"
+    profilePage:{
+        profileCard:{
+            
+            backgroundColor: styleColors.background,
+            marginHorizontal: 6,
+            paddingTop: 5   ,
+            backgroundColor: styleColors.themeColor,
+            borderRadius: 20,
+            borderTopLeftRadius:0,
+            borderTopRightRadius:0,   
+            width: "100%",
+            height: "40%",    
+            alignItems: "center",
+            //justifyContent: "flex-start",
+        },
+        container: {
+            flex: 1,
+            alignItems: "center",
+            //justifyContent: "center",
+            //padding: 10,        
+        }, 
         
     },
     infoBox: {        
@@ -158,11 +170,12 @@ const styles =
     },
 
     profilePicBig:{
-        width: 180, 
-        height: 180, 
+        width: 160, 
+        height: 160, 
         borderRadius: 99,
-        borderWidth: 1,
-        borderColor:"#a4a4a4"
+        borderWidth: 1,        
+        borderColor:"#a4a4a4",
+        paddingBottom: 10
     },
     inputTextBox:{
         box:{
