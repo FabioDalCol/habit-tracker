@@ -153,18 +153,18 @@ const RootProfile = () => {
                 <DotsSlider/>                
                 {activePage==0? (<>
                     <Text style={{fontSize:32,fontWeight:"700", textAlign: "center", paddingBottom:30}} >How should I call you?</Text>             
-                    <Input style={{textAlign: "center"}} placeholder="Name" value={name} onChangeText={(text)=> setName(text)}/>
-                    <Button buttonStyle={styles.button} TouchableComponent={TouchableOpacity} onPress = {()=>{ setActivePage(activePage+1)}} title="Next"/>     
+                    <Input style={{textAlign: "center"}}  placeholder="Name" value={name} onChangeText={(text)=> setName(text)}/>
+                    <Button buttonStyle={styles.button} disabled={name.length<2} disabledStyle={{backgroundColor: styleColors.background}} TouchableComponent={TouchableOpacity} onPress = {()=>{ setActivePage(activePage+1)}} title="Next"/>     
                 </>)
                 :activePage==1?(<>
                     <Text style={{fontSize:32,fontWeight:"700", textAlign: "center", paddingBottom:30}} >How old are you?</Text>             
                     <Input keyboardType="numeric" style={{textAlign: "center"}} placeholder="Age" value={String(age)} onChangeText={(text)=> setAge(text)}/>
-                    <Button buttonStyle={styles.button} TouchableComponent={TouchableOpacity} onPress = {()=>{ setActivePage(activePage+1)}} title="Next"/>     
+                    <Button buttonStyle={styles.button} disabled={age<12} disabledStyle={{backgroundColor: styleColors.background}} TouchableComponent={TouchableOpacity} onPress = {()=>{ setActivePage(activePage+1)}} title="Next"/>     
                 </>)
                 :activePage==2?(<>
                     <Text style={{fontSize:32,fontWeight:"700", textAlign: "center", paddingBottom:30}} >How tall are you?</Text>             
                     <Input style={{textAlign: "center"}} placeholder="Height" keyboardType="numeric" value={height} onChangeText={(text)=> setHeight(text)}/>
-                    <Button buttonStyle={styles.button} TouchableComponent={TouchableOpacity} onPress = {()=>{ setActivePage(activePage+1)}} title="Next"/>     
+                    <Button buttonStyle={styles.button} disabled={height.length<=2} disabledStyle={{backgroundColor: styleColors.background}} TouchableComponent={TouchableOpacity} onPress = {()=>{ setActivePage(activePage+1)}} title="Next"/>     
                 </>)
                 :(<>
                     <Text style={{fontSize:32,fontWeight:"700", textAlign: "center", paddingBottom:30}} >When would you like to receive your reminders?</Text>             
