@@ -16,18 +16,21 @@ import { useFocusEffect } from '@react-navigation/native';
 import { BackHandler } from 'react-native';
 import store from '../store';
 import { useDispatch } from 'react-redux';
-import { setProfile } from '../slices/authSlice';
+import { selectUser, setProfile } from '../slices/authSlice';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import { selectProfile } from '../slices/authSlice';
 import { useSelector } from 'react-redux';
 
+
 const Stack = createNativeStackNavigator();
 
 const RootProfile = () => {
 
+    const user = useSelector(selectUser);
+
     const navigation = useNavigation();
-    const [name,setName] = useState("Pippo")
+    const [name,setName] = useState(user.fullname?.split(/(\s+)/)[0])
     const [age,setAge] = useState(22)
     const [height,setHeight] = useState("173")    
     const [activePage,setActivePage]= useState(0)
@@ -128,13 +131,11 @@ const RootProfile = () => {
     
     useEffect(() => {
         const backAction = () => {
-            console.log(activePage)
+            
             if(activePage>0){
                 setActivePage(activePage-1)
             }
-            else{
-                navigation.navigate("Root");
-            }
+            
           return true;
         };
     
