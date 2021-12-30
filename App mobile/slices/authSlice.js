@@ -8,11 +8,11 @@ const initialState = {
         photo_url: null
     },
     profile: {
-        name: "pippo",
-        weight: "65",
+        name: "pippo",        
         height: "173",
         rise_time: "07:30",
         sleep_time: "23:30",
+        profile_complete:false
     },
 
     loadingInit: true,

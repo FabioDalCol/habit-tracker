@@ -20,6 +20,8 @@ import darkColors from 'react-native-elements/dist/config/colorsDark';
 import DrawerScreen from './screens/DrawerScreen';
 import DetailScreen from './screens/DetailScreen';
 import RecapScreen from './screens/RecapScreen';
+import RootProfile from './screens/CreateProfileScreen';
+import { selectProfile } from './slices/authSlice';
 
 
 
@@ -28,7 +30,8 @@ const Stack = createNativeStackNavigator();
 
 const StackNavigator = () => {  
 
-    const user = useSelector(selectUser);    
+    const user = useSelector(selectUser);
+    const profile = useSelector(selectProfile);   
     const loadingState = useSelector(selectLoading);     //loading between screens
     const loadingInitState = useSelector(selectLoadingInit); //loading on app opening
    
@@ -55,11 +58,16 @@ const StackNavigator = () => {
     return (
         <Stack.Navigator screenOptions={{headerShown:false }}>
             {user ? (
-                <>
+                profile?.profile_complete?  ( <>                
                 <Stack.Screen name="Root" component={DrawerScreen} options={{ headerShown: false }}/>   
                 <Stack.Screen name="Detail" component={DetailScreen}/>             
                 <Stack.Screen name="Recap" component={RecapScreen} options={{ headerShown: false }}/>               
-                </>
+                </>)
+                :
+                (
+                    <Stack.Screen name="CreateProfile" component={RootProfile} />
+                )
+                
             ) : ( 
                 <>              
                 <Stack.Screen name="Login" component={LoginScreen}/>

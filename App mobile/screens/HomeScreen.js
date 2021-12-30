@@ -112,7 +112,7 @@ const HomeScreen = ({navigation}) => {
   }
   //console.log(newhabits)  
 
-  
+  console.log(profile);
   return (
     <View style={[tailwind('flex-1'),{backgroundColor: styleColors.themeColor}]} >
       <StatusBar barStyle="light-content" backgroundColor={styleColors.themeColor} />      

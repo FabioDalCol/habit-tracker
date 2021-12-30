@@ -10,7 +10,14 @@ const styles =
         width: 200,        
         marginTop: 4,
         borderRadius: 30,
-        paddingVertical: 13,           
+        paddingVertical: 13,
+        backgroundColor: styleColors.themeColor               
+        },
+    buttonGoogle: {
+        width: 200,        
+        marginTop: 4,
+        borderRadius: 30,
+        paddingVertical: 13,                     
         },
     buttonTry: [{                              //TO REMOVE JUST FOR REFERENCE
         width: 200,        
@@ -26,6 +33,7 @@ const styles =
         justifyContent: "center",
         padding: 10,
     }, 
+    
     habit:{
         main:{
             backgroundColor: styleColors.white,
@@ -171,6 +179,35 @@ const styles =
         textAlign: "center"
         
     },
+    
+    profile:{        
+        inputName:{
+            //width: 30,
+            //height: 25,            
+            //flexDirection:'row',
+            backgroundColor: '#f4f6fc',
+            //paddingVertical: 2,
+            paddingHorizontal: 0,
+            borderWidth: 2,
+            paddingVertical: 0,
+            //marginTop:25,
+            borderBottomWidth: 0,
+            borderRadius:12, 
+            fontSize: 18,
+            alignItems: "center",
+            justifyContent: "center",
+            textAlign: "center"
+            
+        },
+        container: {
+            flex: 1,
+            alignItems: "center",
+            alignContent: "space-between",
+            justifyContent: "flex-start",
+            padding: 10,
+            marginTop:"10%"
+        }, 
+    },
 
     checkBox:{
         container:{
@@ -234,25 +271,38 @@ const styles =
             paddingBottom:50
         }
     },
-    
-    timeButton:{
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingVertical: 10,
-        paddingHorizontal: 10,
-        borderRadius: 4,
-        elevation: 3,
-        backgroundColor: "#4263ec",
-        marginBottom: 20,
-    },
-
-    text:{
-        fontSize: 16,
-        lineHeight: 21,
-        fontWeight: 'bold',
-        letterSpacing: 0.25,
-        color: 'white',
+    timePicker:{
+        timeButton:{
+            alignItems: 'center',
+            justifyContent: 'center',
+            paddingVertical: 10,
+            paddingHorizontal: 10,
+            borderRadius: 20,
+            borderWidth:0,
+           
+            elevation: 0,
+            //backgroundColor: "#4263ec",
+            marginBottom: 20,
         },
+    
+        text:{
+            fontSize: 22,
+            lineHeight: 21,
+            fontWeight: 'bold',
+            letterSpacing: 0.25,
+            paddingBottom: 14
+            //color: 'white',
+            },
+        hour:{
+            fontSize: 22,
+            lineHeight: 21,
+            fontWeight: 'bold',
+            letterSpacing: 0.25,
+            textDecorationLine: "underline"
+            //color: 'white',
+            },
+    },
+   
     
     detailRecap: {
         alignSelf:'center', 

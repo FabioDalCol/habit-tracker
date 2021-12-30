@@ -29,7 +29,7 @@ const LoginScreen = () => {
      
         <Button buttonStyle={styles.button} TouchableComponent={TouchableOpacity} onPress = {()=>signin(email,password)} title="Login"/>
         <Button buttonStyle={styles.button} TouchableComponent={TouchableOpacity} onPress = {()=> navigation.navigate('Register')} title="Register"/>     
-        <SocialIcon style={styles.button} title='Sign In With Google' button type='google' onPress={signInWithGoogle}/>
+        <SocialIcon style={styles.buttonGoogle} title='Sign In With Google' button type='google' onPress={signInWithGoogle}/>
        
     </SafeAreaView>
     )
