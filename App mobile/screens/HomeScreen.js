@@ -78,7 +78,7 @@ const HomeScreen = ({navigation}) => {
     if (newhabits != undefined){
       store.dispatch(initDay({uid:uid,token:api_token}))
       for(let habit of newhabits){
-        if(habit.reminder>0 && habit.stats[getDate()].completed != undefined){
+        if(habit.reminder>0 ){
           console.log(habit.id)     
           scheduleHabitNotification(habit,profile.rise_time,profile.sleep_time,notifDB);          
         }
