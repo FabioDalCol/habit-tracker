@@ -34,6 +34,7 @@ export const authSlice = createSlice({
         },
         setProfile: (state, action) => {
             state.profile = action.payload;
+            //call api to update profile
         },  
              
     }

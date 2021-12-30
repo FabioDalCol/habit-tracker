@@ -31,7 +31,7 @@ const styles =
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        padding: 10,
+        padding: 10,        
     }, 
     
     habit:{
@@ -83,6 +83,17 @@ const styles =
             marginHorizontal: 6,
             paddingTop: 20        
         }
+    },
+    profileCard:{
+        
+        backgroundColor: styleColors.background,
+        marginHorizontal: 6,
+        paddingTop: 20   ,
+        backgroundColor: styleColors.themeColor,
+        borderRadius: 20,   
+        width: "95%",
+        height: "40%"
+        
     },
     infoBox: {        
         paddingHorizontal: 16,
@@ -142,6 +153,14 @@ const styles =
         width: 110, 
         height: 110, 
         borderRadius: 60,
+        borderWidth: 1,
+        borderColor:"#a4a4a4"
+    },
+
+    profilePicBig:{
+        width: 180, 
+        height: 180, 
+        borderRadius: 99,
         borderWidth: 1,
         borderColor:"#a4a4a4"
     },
