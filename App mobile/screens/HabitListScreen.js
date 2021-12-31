@@ -44,7 +44,6 @@ const HabitListScreen = () => {
                             }
                             }/>}
                 >       
-                {/* {Object.keys(habitList).forEach(key => console.log(habitList[key]))} */}
                     {habitList.map(habit => 
                                       
                     <Habit

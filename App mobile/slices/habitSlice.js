@@ -162,29 +162,43 @@ export const habitSlice = createSlice({
             uid = action.payload.uid;
             token = action.payload.token;  
             const index = state.habits.findIndex( habit => habit.id == id);                    
-            state.habits[index].is_active = !state.habits[index].is_active;   
-            console.log(!state.habits[index].is_active);                        
+            state.habits[index].is_active = !state.habits[index].is_active;                      
             updateHabit(uid,token,state.habits[index],id)                                           
         }, 
 
         initNotifDb: (state) => {                
                                                     
-            state.notifDB = {};                                    
+            state.notifDB = {};    
+                                            
         }, 
+
+        setDate: (state, action) => {                                          
+            id = action.payload.id;
+            date = action.payload.date;
+            if(state.notifDB[id]==undefined) state.notifDB[id] = {ids:[],date:"2020-11-11"}; 
+            state.notifDB[id].date = date;
+        },  
 
         setNotifIds: (state, action) => {                                          
             id = action.payload.id;
             not_ids = action.payload.not_ids;
-            if(state.notifDB[id]==undefined) state.notifDB[id] = {ids:[],date:"2020-11-11"};         //initialization date                      
-            state.notifDB[id].ids = not_ids;
-            state.notifDB[id].date = getDate();                                         
+            if(state.notifDB[id]==undefined) state.notifDB[id] = {ids:[],date:"2020-11-11"};   //initialization date                      
+            //state.notifDB[id].ids = not_ids;
+            state.notifDB[id].ids=state.notifDB[id].ids.concat(not_ids);
+            state.notifDB[id].date = getDate(); 
+            console.log(state.notifDB[id].ids.length);
+            if(state.notifDB[id].ids.length!=action.payload.notify_num)
+            {
+                state.notifDB[id].date = "2020-12-12"; 
+               // doit();
+            }   
         },        
         
 
     }
 })
 
-export const { setIsActive, setHabits, setRefreshing, incrementValue, decrementValue, triggerCompleted, initDay, setValue, pushValue, initNotifDb, setNotifIds} = habitSlice.actions;
+export const { setIsActive, setHabits, setRefreshing, incrementValue, decrementValue, triggerCompleted, initDay, setValue, pushValue, initNotifDb, setNotifIds, setDate} = habitSlice.actions;
 
 export const selectHabits = (state) => state.hab.habits;
 export const selectRefreshing = (state) => state.hab.refreshing;

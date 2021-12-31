@@ -70,9 +70,11 @@ const NewHabit = (props ) => {
             value: 0,
             countable: newHabitForm.Category!='Custom',
             set_value: pickTarget(newHabitForm.Category),
-            reminder: newHabitForm.Times,
+            reminder: newHabitForm.Reminder?newHabitForm.Times:0,
             is_active: true,
             };  
+        if(!newHabitForm.Reminder)
+            setNewHabitForm({...newHabitForm, Times:0});
         return habit;
         }  
 
@@ -214,8 +216,7 @@ const NewHabit = (props ) => {
             case 'Walk':
                 return (<>                
                         <View style={{flexDirection: 'row', flex:1, justifyContent: 'center', marginLeft:'auto'}}>  
-                            <View style={{flex:0.5,}}> 
-                            {console.log(newHabitForm.Walk_target)}                        
+                            <View style={{flex:0.5,}}>                      
                             <Input inputContainerStyle={[styles.inputTextBox.container, { alignSelf: 'flex-end', width: 30+String(newHabitForm.Walk_target).length*10}]}  style={styles.inputTextBox.box} value={newHabitForm.Walk_target.toString()} onChangeText={(text)=> setNewHabitForm({...newHabitForm,Walk_target:text})} keyboardType='number-pad'/>
                             </View>
                             <View style={{flex:0.5}}>

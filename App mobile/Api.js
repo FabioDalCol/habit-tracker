@@ -26,7 +26,7 @@ const updateHabit = async (uid,token,habit,id) => {
 };
 
 const addHabit = async (uid,token,habit,habits) => { 
-    console.log(habit);   
+    //console.log(habit);   
     const url = baseUrl + uid + '/habits/';       
     await axios.post(url,habit,{headers:{token: token, 'Content-Type': 'application/json'}})    
     .catch(error =>{ alert(error.message)})
@@ -53,7 +53,7 @@ const getTodayHabits = (habits) => {
     var ids = []   
     if(habits == null ) return ids
     for(var habit of habits){             
-        if (habit.repeat_days[weekDays[today.getDay()]]){        //If today weekday is true
+        if (habit.repeat_days[weekDays[today.getDay()]] && habit.is_active){        //If today weekday is true
             ids.push(habit.id)
         }      
     }        

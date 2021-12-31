@@ -8,7 +8,7 @@ import { Text, View, Button, Platform } from 'react-native';
 import moment from 'moment'
 import { getDate, getTodayHabits } from './Api';
 import { useDispatch } from 'react-redux';
-import { initNotifDb,setNotifIds } from './slices/habitSlice';
+import { initNotifDb,setNotifIds, setDate } from './slices/habitSlice';
 import { weekDays } from './Api';
 
 //var notifDB ={habId:{ids:[],date:""}}
@@ -51,6 +51,7 @@ async function schedulePushNotification(rise_time,sleep_time,habit) {
   console.log('I AM HEREEEEEEEE'); 
   var notifData = getNotifContent(habit);
   var notifIds = [];
+  var upDays = 0;
   let rise = Number((rise_time).split(':')[0])+1; 
   let sleep = Number((sleep_time).split(':')[0])+1;   
   if(sleep<rise){
@@ -64,6 +65,7 @@ async function schedulePushNotification(rise_time,sleep_time,habit) {
       startDate.setHours(rise);
       startDate.setMinutes(0);
       startDate.setSeconds(0);       
+      upDays++;
 
       for (let i = 0; i < habit.reminder; i++){   
         var trigger = startDate.setHours(rise + 1 +hoursForNotifications*i);     
@@ -84,8 +86,8 @@ async function schedulePushNotification(rise_time,sleep_time,habit) {
     }
     startDate.setDate(startDate.getDate() + 1);  
   }
-  console.log("imposto notifiche")
-  store.dispatch(setNotifIds({id:habit.id,not_ids:notifIds}));
+  console.log(habit.name+" imposto notifiche")
+  store.dispatch(setNotifIds({id:habit.id,not_ids:notifIds,notify_num:habit.reminder*upDays}));
 }
 
 
@@ -95,20 +97,33 @@ async function scheduleHabitNotification(habit,rise_time,sleep_time,notifDB)
   
   if (notifDB == undefined) store.dispatch(initNotifDb());
  
-  if (notifDB[habit.id]==undefined){    
-    console.log("è und")
+  if (notifDB[habit.id]==undefined){
+        
+    console.log(habit.name+" è und")
     await schedulePushNotification(rise_time,sleep_time,habit);
   }
   else{      
     last_date = moment(notifDB[habit.id].date)     
     if(today.diff(last_date,'days')>=3 ){
-      console.log(today.diff(last_date,'days'))
       for (let notId of notifDB[habit.id].ids){
         Notifications.cancelScheduledNotificationAsync(notId)
       }
       await schedulePushNotification(rise_time,sleep_time,habit)   
     }
-    console.log("non è und");
+    console.log(habit.name+" non è und");
+  }
+}
+
+async function deleteHabitNotification(id,notifDB)
+{
+  if (notifDB != undefined)
+  { 
+    if(notifDB[habit.id]!=undefined){
+      for (let notId of notifDB[id].ids){
+        Notifications.cancelScheduledNotificationAsync(notId)
+      }
+      store.dispatch(setDate({id:id,date:"2020-12-12"}));
+    }
   }
 }
 
@@ -126,4 +141,4 @@ async function cancel (){
 
 
 
-export {schedulePushNotification,scheduleHabitNotification,getNotification,cancel}
+export {schedulePushNotification,scheduleHabitNotification,getNotification,cancel, deleteHabitNotification}

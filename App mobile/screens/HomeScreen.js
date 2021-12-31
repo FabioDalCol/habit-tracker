@@ -54,7 +54,6 @@ const HomeScreen = ({navigation}) => {
   
   useEffect(() => {   
   getHabits(uid,api_token,{})
-  //console.log("Got new habits")
   }, [])
   const [showView, setShowView] = useState(false);   
   const [newHabitForm, setNewHabitForm] = useState({Walk_target:'10000',Drink_target:'10',Times:0,Reminder:false, HabitName:'Default',Target_name:'',Mode:'time',Date_start:new Date(1598051730000), Date_end:new Date(1598051730000), Show_end:false, Show_start:false, Picker_value:'vuoto',Mon:false,Tue:false,Wed:false,Thu:false,Fri:false,Sat:false,Sun:false,Eve:false})
@@ -74,16 +73,20 @@ const HomeScreen = ({navigation}) => {
 
   const newhabits = useSelector(selectHabits);
 
-  useEffect(() => {
-    if (newhabits != undefined){
+  const doit = () =>{
+      if (newhabits != undefined){
       store.dispatch(initDay({uid:uid,token:api_token}))
       for(let habit of newhabits){
-        if(habit.reminder>0 ){
+        if(habit.reminder>0 && habit.is_active){
           console.log(habit.id)     
           scheduleHabitNotification(habit,profile.rise_time,profile.sleep_time,notifDB);          
         }
       }
     }
+  }
+
+  useEffect(() => {
+    doit(); 
   }, [newhabits])
   
   var todayHabits = getTodayHabits(newhabits);
@@ -110,9 +113,7 @@ const HomeScreen = ({navigation}) => {
     days= days.slice(0, -2);
     return days
   }
-  //console.log(newhabits)  
-
-  console.log(profile);
+  
   return (
     <View style={[tailwind('flex-1'),{backgroundColor: styleColors.themeColor}]} >
       <StatusBar barStyle="light-content" backgroundColor={styleColors.themeColor} />      
@@ -153,16 +154,6 @@ const HomeScreen = ({navigation}) => {
           />
         </TouchableOpacity>   
         
-        <TouchableOpacity onPress={async () => {
-            await schedulePushNotification(3,profile.rise_time,profile.sleep_time);
-          }}> 
-          <MaterialCommunityIcons
-            name="plus" //
-            size={40}
-            style={[{color: styleColors.themeColor, backgroundColor: styleColors.white}, styles.plusButton]}
-          />
-        </TouchableOpacity>  
-
         <TouchableOpacity onPress={async () => {
             await cancel();
           }}> 

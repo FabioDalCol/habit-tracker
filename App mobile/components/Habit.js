@@ -8,12 +8,13 @@ import tailwind from 'tailwind-rn';
 import store from '../store';
 import { incrementValue, decrementValue, setValue, triggerCompleted, pushValue, setIsActive } from '../slices/habitSlice';
 import { useSelector } from 'react-redux';
-import { selectUser } from '../slices/authSlice';
+import { selectUser} from '../slices/authSlice';
 import { getDate, removeHabit, updateHabit } from '../Api';
-import { selectHabits } from '../slices/habitSlice';
+import { selectHabits, selectNotifDB } from '../slices/habitSlice';
 import getHabits from '../Api';
 import NewHabit from "../components/NewHabit";
 import { useNavigation } from '@react-navigation/native';
+import {deleteHabitNotification} from '../NotificationHandler'
 
 const categories = {Drink:{icon:"cup-water", color:styleColors.water},     //MOVE CATEGORIES
                     Walk:{icon:"walk",color:"brown"},
@@ -27,6 +28,7 @@ const categories = {Drink:{icon:"cup-water", color:styleColors.water},     //MOV
 const Habit = ({ id, name='Default', date, category, desc, countable, value = null, set_value = null, completeToday, manage_habits = false, is_active, created, show=false, habitToEdit, setHabitToEdit, times, reminder, mon, tue, wed, thu, fri, sat, sun }) => {
 const habits = useSelector(selectHabits);
 const user = useSelector(selectUser);
+const notifDB = useSelector(selectNotifDB);
 const navigation = useNavigation();
 const uid = user.uid
 const api_token = user.api_token;
@@ -46,7 +48,8 @@ const deleteConfirm = () =>
       { 
         text: "Yes", 
         onPress: () => {
-                          removeHabit(uid,api_token,id); 
+                          removeHabit(uid,api_token,id);
+                          deleteHabitNotification(id,notifDB); 
                           alert("habit rimosso");                          
                         }
       }
@@ -167,7 +170,7 @@ const deleteConfirm = () =>
                     name="stop"
                     size={30}
                     style={{ color: categories[category].color, marginRight:5 }} 
-                    onPress={()=>{store.dispatch(setIsActive({id:id,uid:uid,token:api_token})); alert("habit in pause")}}                
+                    onPress={()=>{store.dispatch(setIsActive({id:id,uid:uid,token:api_token})); deleteHabitNotification(id, notifDB); alert("habit in pause")}}                
                   />
                 </TouchableOpacity> 
               </>):
