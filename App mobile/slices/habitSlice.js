@@ -1,6 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { Timestamp } from '@firebase/firestore';
 import { updateHabit, getDate, getTodayHabits } from '../Api';
+import * as Notifications from 'expo-notifications';
+
 
 
 const initialState = {
@@ -185,13 +187,18 @@ export const habitSlice = createSlice({
             if(state.notifDB[id]==undefined) state.notifDB[id] = {ids:[],date:"2020-11-11"};   //initialization date                      
             //state.notifDB[id].ids = not_ids;
             state.notifDB[id].ids=state.notifDB[id].ids.concat(not_ids);
+            num_ids= state.notifDB[id].ids.length
             state.notifDB[id].date = getDate(); 
-            console.log(state.notifDB[id].ids.length);
-            if(state.notifDB[id].ids.length!=action.payload.notify_num)
+            console.log("NUMERO DI IDS PRIMA: "+num_ids+" NUMERO DI IDS ATTESI: "+action.payload.notify_num);
+            if(num_ids>action.payload.notify_num)
             {
-                state.notifDB[id].date = "2020-12-12"; 
-               // doit();
-            }   
+                for (var i=0;i<(num_ids-action.payload.notify_num);i++)
+                    {
+                        Notifications.cancelScheduledNotificationAsync(state.notifDB[id].ids[0]);
+                        state.notifDB[id].ids.shift();
+                    }
+            }  
+            console.log("ALLA FINE RESTANO "+state.notifDB[id].ids.length); 
         },        
         
 

@@ -69,7 +69,6 @@ async function schedulePushNotification(rise_time,sleep_time,habit) {
 
       for (let i = 0; i < habit.reminder; i++){   
         var trigger = startDate.setHours(rise + 1 +hoursForNotifications*i);     
-        
         await Notifications.scheduleNotificationAsync({
           content: {
             title: notifData[0],
@@ -79,8 +78,7 @@ async function schedulePushNotification(rise_time,sleep_time,habit) {
           trigger,
         })
         .then((scheduleId)=>{
-          notifIds.push(scheduleId); 
-                 
+          notifIds.push(scheduleId);         
         });    
       }
     }
@@ -131,7 +129,7 @@ async function getNotification (){
   Notifications.getAllScheduledNotificationsAsync()
   .then(
     (prom)=> 
-    console.log((Object.keys(prom)).length));  
+    console.log(Object.keys(prom).length));  
 }
 
 async function cancel (){
