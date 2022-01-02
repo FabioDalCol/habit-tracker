@@ -9,11 +9,11 @@ const initialState = {
         photo_url: null
     },
     profile: {
-        name: "pippo",        
-        height: "173",
-        rise_time: "07:30",
-        sleep_time: "23:30",
-        profile_complete:false
+        name: null,        
+        height: null,
+        age:null,
+        rise_time: null,
+        sleep_time: null,        
     },
 
     loadingInit: true,
