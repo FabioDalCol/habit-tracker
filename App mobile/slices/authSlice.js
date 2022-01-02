@@ -1,4 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
+import { updateProfile } from '../Api';
 
 const initialState = {
     user: {
@@ -33,8 +34,10 @@ export const authSlice = createSlice({
             state.loading = action.payload;
         },
         setProfile: (state, action) => {
-            state.profile = action.payload;
-            //call api to update profile
+            state.profile = action.payload.profile;
+            uid = action.payload.uid;
+            token = action.payload.token;
+            updateProfile(uid,token,state.profile)
         },  
              
     }

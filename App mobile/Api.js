@@ -1,6 +1,7 @@
 import axios from 'axios';
 import store from './store';
 import { setHabits} from './slices/habitSlice';
+import { setProfile } from './slices/authSlice';
 
 export const weekDays = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
 
@@ -74,19 +75,18 @@ const countCompletedHabits = (habIds,habits) => {
     return completed;
 }
 
-const getProfile = async (uid,token,old,setRefreshing) => {      
+const getProfile = async (uid,token,old) => {      
     const url = baseUrl + uid;   
     await axios.get(url,{headers:{token: token}})
     .then((response) => {             
         if (JSON.stringify(old) != JSON.stringify(response.data)){
-            store.dispatch(setHabits(response.data));           
+            store.dispatch(setProfile(response.data));           
         }              
       })
-    .catch(error => alert(error.message))
-    .finally(()=>{if(setRefreshing != undefined) setRefreshing(false);});
+    .catch(error => alert(error.message));
 };
 
-const updateProfile = async (uid,token,profile,id) => {       
+const updateProfile = async (uid,token,profile) => {       
     const url = baseUrl + uid;   
     await axios.put(url,profile,{headers:{token: token, 'Content-Type': 'application/json'}})    
     .catch(error =>{ alert(error.message)})

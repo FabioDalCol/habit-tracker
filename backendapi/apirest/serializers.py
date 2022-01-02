@@ -17,9 +17,8 @@ class HabitSerializer(serializers.Serializer):
 
 class AccountSerializer(serializers.Serializer):
     id = serializers.CharField(max_length=200, read_only=True)
-    username = serializers.CharField(max_length=200)
-    email = serializers.EmailField()
-    height = serializers.FloatField()
+    username = serializers.CharField(max_length=200)    
+    height = serializers.IntegerField()
     rise_time = serializers.CharField(max_length=5)
     sleep_time = serializers.CharField(max_length=5)
 
