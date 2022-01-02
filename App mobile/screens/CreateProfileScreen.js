@@ -175,7 +175,7 @@ const RootProfile = () => {
                         rise_time = makeTwoDigits(timePicker.Date_start.getHours())+':'+makeTwoDigits(timePicker.Date_start.getMinutes());
                         sleep_time = makeTwoDigits(timePicker.Date_end.getHours())+':'+makeTwoDigits(timePicker.Date_end.getMinutes())
                         diz = {
-                            name: name,
+                            username: name,
                             height: height,
                             age:age,                   
                             rise_time: rise_time,

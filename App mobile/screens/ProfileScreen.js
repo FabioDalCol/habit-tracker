@@ -26,7 +26,7 @@ const ProfileScreen = () => {
                         :
                         (<Image source={require("../images/avatar.jpg")} style={styles.profilePicBig}/>)
                     }
-                    <Text style={{fontSize:28,fontWeight:"600", paddingTop:10, color:"white"}} >{profile.name}</Text>
+                    <Text style={{fontSize:28,fontWeight:"600", paddingTop:10, color:"white"}} >{profile.username}</Text>
                     <Text style={{fontSize:20,fontWeight:"700", paddingTop:5, color:"white"}} >«Tracking habits since 2021»</Text> 
                 </View>
                 <View style={{flexDirection:"row", paddingRight:50}}>

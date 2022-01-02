@@ -3,13 +3,13 @@ import { updateProfile } from '../Api';
 
 const initialState = {
     user: {
-        fullname: null,
-        uid:null,
-        api_token: null,
-        photo_url: null
+        fullname: "null",
+        uid:"null",
+        api_token: "null",
+        photo_url: "null"
     },
     profile: {
-        name: null,        
+        username: null,        
         height: null,
         age:null,
         rise_time: null,
