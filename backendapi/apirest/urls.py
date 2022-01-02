@@ -26,7 +26,7 @@ user_detail = views.AccountViewSet.as_view({
 # The API URLs are now determined automatically by the router.
 urlpatterns = [
     path('users/', user_create, name='user-create'),
-    path('users/<str:pk>/', user_detail, name='user-detail'),
+    path('users/<str:pk>', user_detail, name='user-detail'),
     path('users/<str:uid>/habits/', habit_list, name='habit_list'),
     path('users/<str:uid>/habits/<str:pk>', habit_detail, name='habit_detail')
 ]

@@ -74,5 +74,25 @@ const countCompletedHabits = (habIds,habits) => {
     return completed;
 }
 
+const getProfile = async (uid,token,old,setRefreshing) => {      
+    const url = baseUrl + uid;   
+    await axios.get(url,{headers:{token: token}})
+    .then((response) => {             
+        if (JSON.stringify(old) != JSON.stringify(response.data)){
+            store.dispatch(setHabits(response.data));           
+        }              
+      })
+    .catch(error => alert(error.message))
+    .finally(()=>{if(setRefreshing != undefined) setRefreshing(false);});
+};
+
+const updateProfile = async (uid,token,profile,id) => {       
+    const url = baseUrl + uid;   
+    await axios.put(url,profile,{headers:{token: token, 'Content-Type': 'application/json'}})    
+    .catch(error =>{ alert(error.message)})
+    .finally(() => getProfile(uid, token, {}));     
+};
+
+
 export default getHabits
-export {updateHabit,getDate,addHabit,removeHabit,getTodayHabits,countCompletedHabits}
+export {updateHabit,getDate,addHabit,removeHabit,getTodayHabits,countCompletedHabits,updateProfile,getProfile}
