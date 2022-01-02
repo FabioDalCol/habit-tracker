@@ -120,7 +120,7 @@ const HomeScreen = ({navigation}) => {
       <HomeHeader/>      
       <View style={tailwind('py-0 px-4')}>
         <Text style={[tailwind('text-4xl'),{ color: styleColors.white}]}>
-          Hi,{"\n" + user?.fullname?.split(/(\s+)/)[0]}
+          Hi,{"\n" + profile.username}
         </Text>          
       </View>     
 

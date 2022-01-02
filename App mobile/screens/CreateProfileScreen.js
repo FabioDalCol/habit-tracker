@@ -22,6 +22,7 @@ import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import { selectProfile } from '../slices/authSlice';
 import { useSelector } from 'react-redux';
 import { updateUserProfile } from '../Api';
+import moment from 'moment'
 
 
 const Stack = createNativeStackNavigator();
@@ -31,14 +32,16 @@ const RootProfile = () => {
     const user = useSelector(selectUser);
    
     const navigation = useNavigation();
-    const [name,setName] = useState(user.fullname?.split(/(\s+)/)[0])
-    const [age,setAge] = useState(22)
-    const [height,setHeight] = useState("173")    
+    const profile = useSelector(selectProfile);  
+    const [name,setName] = useState(profile.username.length>1?profile.username:user.fullname?.split(/(\s+)/)[0])
+    const [age,setAge] = useState(profile.age>0?profile.age:30)
+    const [height,setHeight] = useState(parseInt(profile.height)>0?profile.height:170)    
     const [activePage,setActivePage]= useState(0)
     var sleep_time,rise_time;
-    const [timePicker,setTimePicker]=useState({Mode:"time",Date_start:new Date(Date.now()), Date_end: new Date(Date.now()), Show_end:false, Show_start:false, Picker_value:'vuoto'})
+   
+    const [timePicker,setTimePicker]=useState({Mode:"time",Date_start: new Date(Date.now()), Date_end:new Date(Date.now()), Show_end:false, Show_start:false, Picker_value:'vuoto'})
 
-    const profile = useSelector(selectProfile);  
+      
 
     const DotsSlider = () => {
         return(

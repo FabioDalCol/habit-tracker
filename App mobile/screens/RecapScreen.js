@@ -10,7 +10,7 @@ import {getDate} from '../Api'
 import { Image } from 'react-native-elements';
 import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 import { ScrollView, TouchableOpacity, TextInput } from "react-native-gesture-handler";
-import { selectUser } from "../slices/authSlice";
+import { selectUser, selectProfile } from "../slices/authSlice";
 import moment from 'moment'
 import tailwind from 'tailwind-rn';
 
@@ -43,7 +43,7 @@ const RecapScreen = () => {
     const uid = user.uid
     const api_token = user.api_token;
     const habits= useSelector(selectHabits);    
-
+    const profile = useSelector(selectProfile);
     const total = getMonthlyRecap(habits)
     const randomColor = () =>{ 
         return styleColors.custom[Math.floor(Math.random()*styleColors.custom.length)]
@@ -60,7 +60,7 @@ const RecapScreen = () => {
                         />
             <View style={tailwind("flex-row  self-center")}>
                 <Text style={[tailwind("text-4xl font-semibold pl-2 "),{color: styleColors.themeColor}]} >Good job, </Text>
-                <Text style={[tailwind("text-4xl font-bold "),{color: styleColors.themeColor}]} >{user?.fullname?.split(/(\s+)/)[0]}</Text>
+                <Text style={[tailwind("text-4xl font-bold "),{color: styleColors.themeColor}]} >{profile.username}</Text>
                 <Text style={[tailwind("text-4xl font-semibold "),{color: styleColors.themeColor}]} >! </Text>            
             </View>
         </View>    
