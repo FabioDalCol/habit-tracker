@@ -97,6 +97,7 @@ const styles =
             width: "100%",
             height: "40%",    
             alignItems: "center",
+            marginBottom: 25,
             //justifyContent: "flex-start",
         },
         container: {
@@ -105,7 +106,33 @@ const styles =
             //justifyContent: "center",
             //padding: 10,        
         }, 
-        
+        valueBox:{
+            backgroundColor: '#fff',
+            //paddingVertical: 2,
+            paddingHorizontal: 8,
+            borderWidth: 0,        
+            borderBottomWidth: 0,
+            borderRadius:9999,             
+            alignSelf: "flex-start",
+            //width: 20
+            //paddingBottom:8, 
+            marginBottom:12,
+            fontSize:24
+            },
+        label:{
+            fontSize:24,
+            fontWeight:"700", 
+            //paddingTop:5,
+            marginBottom:12, 
+            alignSelf:"flex-start",
+            paddingRight:15,            
+        },
+        line:{
+            flexDirection:'row',
+            width:"80%",            
+           // paddingTop:20,
+            alignSelf:"flex-start"
+        }        
     },
     infoBox: {        
         paddingHorizontal: 16,
@@ -188,7 +215,7 @@ const styles =
             fontSize: 16,
             //alignSelf: 'center',
             width: '95%'
-            },
+            },       
         container:{borderBottomWidth: 0}        
     },
 
