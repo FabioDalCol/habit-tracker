@@ -155,7 +155,7 @@ const RootProfile = () => {
                 {activePage==0? (<>
                     <Text style={{fontSize:32,fontWeight:"700", textAlign: "center", paddingBottom:30}} >How should I call you?</Text>             
                     <Input style={{textAlign: "center"}}  placeholder="Name" value={name} onChangeText={(text)=> setName(text)}/>
-                    <Button buttonStyle={styles.button} disabled={name.length<2} disabledStyle={{backgroundColor: styleColors.background}} TouchableComponent={TouchableOpacity} onPress = {()=>{ setActivePage(activePage+1)}} title="Next"/>     
+                    <Button buttonStyle={styles.button} disabled={name?.length<2} disabledStyle={{backgroundColor: styleColors.background}} TouchableComponent={TouchableOpacity} onPress = {()=>{ setActivePage(activePage+1)}} title="Next"/>     
                 </>)
                 :activePage==1?(<>
                     <Text style={{fontSize:32,fontWeight:"700", textAlign: "center", paddingBottom:30}} >How old are you?</Text>             

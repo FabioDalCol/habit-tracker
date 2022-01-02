@@ -159,7 +159,7 @@ export const habitSlice = createSlice({
                 }                            
             }                         
         },  
-        setIsActive: (state, action) => {                                          //set without calling API update
+        setIsActive: (state, action) => {                                          
             id = action.payload.id;
             uid = action.payload.uid;
             token = action.payload.token;  
