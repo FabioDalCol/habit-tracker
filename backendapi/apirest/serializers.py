@@ -23,3 +23,14 @@ class AccountSerializer(serializers.Serializer):
     height = serializers.FloatField()
     api_token = serializers.CharField(max_length=200)
     #target_weight = serializers.FloatField()
+
+class ProfileSerializer(serializers.Serializer):
+    id = serializers.CharField(max_length=200, read_only=True)
+    username = serializers.CharField(max_length=200)
+    email = serializers.EmailField()
+    weight = serializers.FloatField()
+    height = serializers.FloatField()
+    rise_time = serializers.CharField(max_length=5)
+    sleep_time = serializers.CharField(max_length=5)
+    api_token = serializers.CharField(max_length=200)
+
