@@ -48,7 +48,7 @@ const RecapScreen = () => {
     const randomColor = () =>{ 
         return styleColors.custom[Math.floor(Math.random()*styleColors.custom.length)]
     }
-    
+    console.log(total)
     return (<>
         <View>
             <DefaultHeader title="Monthly Recap"/>
@@ -67,9 +67,9 @@ const RecapScreen = () => {
         
             <View style={[tailwind("flex-1"),{width:"95%",borderWidth:0, alignSelf: "center"}]}>
                 <View >
-                    <Text style={[tailwind("font-semibold pt-8 pb-4 "),{fontSize:26}]} >This month...</Text>
+                    <Text style={[tailwind("font-semibold pt-8 pb-4 "),{fontSize:26}]} >{(total.Walk+total.Drink)>0 ?" This month...":"This month you completed..."}</Text>
                 </View>
-                {total.Walk && (            
+                {total.Walk>0 && (            
                     <View style={tailwind("flex-row  ")}>
                         <Image source={require("../images/man-running.png")} 
                             style={{ width: 50, height: 50 }}
@@ -81,7 +81,7 @@ const RecapScreen = () => {
                         </View>
                     </View>
                 )}
-                {total.Drink && (
+                {total.Drink>0 && (
                 <View style={[tailwind("flex-row  pt-4 "),{marginLeft:-4}]}>
                     <Image source={require("../images/cup.png")} 
                             style={{ width: 50, height: 50 }}
@@ -94,9 +94,11 @@ const RecapScreen = () => {
                         </View>
                     </View>
                 )}
+                {(total.Walk+total.Drink)>0 && (
                 <View >
                     <Text style={[tailwind("font-semibold pt-8 "),{fontSize:26}]} >You also completed... </Text>
                 </View>
+                )}
                 <View >
                 {Object.keys(total.Custom).map(key => 
                     <View key={key} style={[tailwind("flex-row  pt-4 pl-2")]}>

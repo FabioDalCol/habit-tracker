@@ -97,11 +97,11 @@ const styles =
             width: "100%",
             height: "40%",    
             alignItems: "center",
-            marginBottom: 25,
+            marginBottom: 10,
             //justifyContent: "flex-start",
         },
         container: {
-            flex: 1,
+            //flex: 1,
             alignItems: "center",
             //justifyContent: "center",
             //padding: 10,        
@@ -132,7 +132,13 @@ const styles =
             width:"80%",            
            // paddingTop:20,
             alignSelf:"flex-start"
-        }        
+        },        
+        button:{width: 200,        
+            marginTop: 4,
+            borderRadius: 30,
+            paddingVertical: 13,
+            backgroundColor: styleColors.pbRed              
+            }       
     },
     infoBox: {        
         paddingHorizontal: 16,
@@ -197,8 +203,8 @@ const styles =
     },
 
     profilePicBig:{
-        width: 160, 
-        height: 160, 
+        width: 130, 
+        height: 130, 
         borderRadius: 99,
         borderWidth: 1,        
         borderColor:"#a4a4a4",

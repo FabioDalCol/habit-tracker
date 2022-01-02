@@ -9,19 +9,17 @@ import {Calendar, CalendarList, Agenda, LocaleConfig} from 'react-native-calenda
 import {getDate} from '../Api'
 import moment from 'moment'
 
-
+export const getFirstDate = (habits) => {
+    var dates = [];
+    for(var habit of habits) {
+        dates.push(habit.created)
+    }
+    return dates.sort()[0]
+}
 
 const StatsCalendar = ({habits, datepicked, setDate}) =>{  
 
-    const [selectedDate, setSelectedDate] = useState(getDate())    
-    
-    const getFirstDate = () => {
-        var dates = [];
-        for(var habit of habits) {
-            dates.push(habit.created)
-        }
-        return dates.sort()[0]
-    }
+    const [selectedDate, setSelectedDate] = useState(getDate())      
 
     const countCompleteFromDate = (date) =>
     {
@@ -52,7 +50,7 @@ const StatsCalendar = ({habits, datepicked, setDate}) =>{
     //marker for general
     const markDay = () =>
     {
-        let dates=getDaysBetweenDates(moment(getFirstDate()), new Date());
+        let dates=getDaysBetweenDates(moment(getFirstDate(habits)), new Date());
         var markerDates={};
         for (var k of dates){
             let progress=countCompleteFromDate(k);
@@ -89,7 +87,7 @@ const StatsCalendar = ({habits, datepicked, setDate}) =>{
         return markerDates;
     }
     
-    getFirstDate();
+    getFirstDate(habits);
     return (
         
         <View>

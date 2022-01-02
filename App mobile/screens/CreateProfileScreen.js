@@ -29,7 +29,7 @@ const Stack = createNativeStackNavigator();
 const RootProfile = () => {
 
     const user = useSelector(selectUser);
-
+   
     const navigation = useNavigation();
     const [name,setName] = useState(user.fullname?.split(/(\s+)/)[0])
     const [age,setAge] = useState(22)
@@ -172,7 +172,8 @@ const RootProfile = () => {
                     <Text style={{fontSize:32,fontWeight:"700", textAlign: "center", paddingBottom:30}} >When would you like to receive your reminders?</Text>             
                     <HoursPicker/>
                     <Button buttonStyle={styles.button} TouchableComponent={TouchableOpacity} 
-                    onPress = { ()=>{
+                    onPress = { async ()=>{
+                        const edit = profile.username != ""
                         rise_time = makeTwoDigits(timePicker.Date_start.getHours())+':'+makeTwoDigits(timePicker.Date_start.getMinutes());
                         sleep_time = makeTwoDigits(timePicker.Date_end.getHours())+':'+makeTwoDigits(timePicker.Date_end.getMinutes())
                         diz = {
@@ -183,7 +184,8 @@ const RootProfile = () => {
                             sleep_time: sleep_time,                       
                             };
                         store.dispatch(setProfile(diz));
-                        updateUserProfile(user.uid,user.api_token,diz)                        
+                        await updateUserProfile(user.uid,user.api_token,diz) 
+                        if(edit) navigation.navigate('Root')                       
                         }} 
                     title="Let's start"/>     
                 </>)}

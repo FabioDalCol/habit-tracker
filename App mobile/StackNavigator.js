@@ -62,6 +62,7 @@ const StackNavigator = () => {
                 <Stack.Screen name="Root" component={DrawerScreen} options={{ headerShown: false }}/>   
                 <Stack.Screen name="Detail" component={DetailScreen}/>             
                 <Stack.Screen name="Recap" component={RecapScreen} options={{ headerShown: false }}/>               
+                <Stack.Screen name="RecreateProfile" component={RootProfile}/>
                 </>)
                 :
                 (
