@@ -86,13 +86,13 @@ const getProfile = async (uid,token,old) => {
     .catch(error => alert(error.message));
 };
 
-const updateProfile = async (uid,token,profile) => {       
+const updateUserProfile = async (uid,token,profile) => {       
     const url = baseUrl + uid;   
     await axios.put(url,profile,{headers:{token: token, 'Content-Type': 'application/json'}})    
-    .catch(error =>{ alert(error.message)})
-    .finally(() => getProfile(uid, token, {}));     
+    .catch(error =>{ alert(error.message)});
+    
 };
 
 
 export default getHabits
-export {updateHabit,getDate,addHabit,removeHabit,getTodayHabits,countCompletedHabits,updateProfile,getProfile}
+export {updateHabit,getDate,addHabit,removeHabit,getTodayHabits,countCompletedHabits,updateUserProfile,getProfile}
