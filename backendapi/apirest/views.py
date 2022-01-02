@@ -72,7 +72,7 @@ class AccountViewSet(viewsets.ViewSet):
     client = FirebaseClient()
 
     def check_token(self, uid, token):
-        token_to_check = self.client._db.collection(u'users').document(f'{uid}').get().to_dict()['api_token']
+        token_to_check= self.client._db.collection(u'users_api_keys').document(f'{uid}').get().to_dict()['api_token']
         return token==token_to_check
 
     def create(self, request, *args, **kwargs):

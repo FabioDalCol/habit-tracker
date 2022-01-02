@@ -174,14 +174,14 @@ const RootProfile = () => {
                     onPress = { ()=>{
                         rise_time = makeTwoDigits(timePicker.Date_start.getHours())+':'+makeTwoDigits(timePicker.Date_start.getMinutes());
                         sleep_time = makeTwoDigits(timePicker.Date_end.getHours())+':'+makeTwoDigits(timePicker.Date_end.getMinutes())
-                        store.dispatch(setProfile({...profile,
-                        name: name,
-                        height: height,                   
-                        rise_time: rise_time,
-                        sleep_time: sleep_time,
-                        profile_complete: true
-                        }));
-                        
+                        diz = {
+                            name: name,
+                            height: height,
+                            age:age,                   
+                            rise_time: rise_time,
+                            sleep_time: sleep_time,                       
+                            };
+                        store.dispatch(setProfile({profile:diz,uid:user.uid,token:user.api_token}))
                         }} 
                     title="Let's start"/>     
                 </>)}
