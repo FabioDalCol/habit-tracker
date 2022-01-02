@@ -76,12 +76,12 @@ class AccountViewSet(viewsets.ViewSet):
         return token==token_to_check
 
     def create(self, request, *args, **kwargs):
-        #if not self.check_token(kwargs.get("pk"), request.headers['Token']):
-        #    return Response(status=status.HTTP_401_UNAUTHORIZED)
+        if not self.check_token(kwargs.get("pk"), request.headers['Token']):
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+            
         serializer = AccountSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-
-        self.client.create(serializer.data)
+        self.client.createWithId(serializer.data,kwargs.get("pk"))
 
         return Response(
             serializer.data,

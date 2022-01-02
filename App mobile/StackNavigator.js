@@ -40,7 +40,7 @@ const StackNavigator = () => {
     useEffect(() => {        
         onAuthStateChanged(auth, (user)=> {
             if (user){                      
-                 
+                
             }
             else{
                 dispatch(setUser(null));

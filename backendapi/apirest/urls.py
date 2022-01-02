@@ -14,10 +14,8 @@ habit_detail = views.HabitViewSet.as_view({
     'delete': 'destroy'
 })
 
-user_create = views.AccountViewSet.as_view({
-    'post': 'create'
-})
 user_detail = views.AccountViewSet.as_view({
+    'post': 'create',
     'get': 'retrieve',
     'put': 'update',
     'delete': 'destroy'
@@ -25,7 +23,6 @@ user_detail = views.AccountViewSet.as_view({
 
 # The API URLs are now determined automatically by the router.
 urlpatterns = [
-    path('users/', user_create, name='user-create'),
     path('users/<str:pk>', user_detail, name='user-detail'),
     path('users/<str:uid>/habits/', habit_list, name='habit_list'),
     path('users/<str:uid>/habits/<str:pk>', habit_detail, name='habit_detail')

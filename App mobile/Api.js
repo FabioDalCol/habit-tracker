@@ -93,6 +93,22 @@ const updateUserProfile = async (uid,token,profile) => {
     
 };
 
+const createUserProfile = async (uid,token) => {       
+    const url = baseUrl + uid;
+    profile = {
+        username: "null",        
+        height: 0,
+        age:0,
+        rise_time: "null",
+        sleep_time: "null",        
+    }   
+    await axios.post(url,profile,{headers:{token: token, 'Content-Type': 'application/json'}})    
+    .catch(error =>{ alert(error.message)});
+    
+};
+
+
+
 
 export default getHabits
-export {updateHabit,getDate,addHabit,removeHabit,getTodayHabits,countCompletedHabits,updateUserProfile,getProfile}
+export {updateHabit,getDate,addHabit,removeHabit,getTodayHabits,countCompletedHabits,updateUserProfile,getProfile,createUserProfile}

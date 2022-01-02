@@ -182,7 +182,7 @@ const RootProfile = () => {
                             rise_time: rise_time,
                             sleep_time: sleep_time,                       
                             };
-                        store.dispatch(setProfile({profile:diz,uid:user.uid,token:user.api_token}));
+                        store.dispatch(setProfile(diz));
                         updateUserProfile(user.uid,user.api_token,diz)                        
                         }} 
                     title="Let's start"/>     

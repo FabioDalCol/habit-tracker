@@ -40,6 +40,10 @@ class FirebaseClient:
         if doc.exists:
             return {**doc.to_dict(), "id": doc.id}
         return
+    
+    def createWithId(self, data, uid):
+        doc_ref = self._collection.document(f'{uid}')
+        doc_ref.set(data)
 
     def all(self):
         """Get all todo from firestore database"""

@@ -33,7 +33,7 @@ export const authSlice = createSlice({
             state.loading = action.payload;
         },
         setProfile: (state, action) => {
-            state.profile = action.payload.profile;         
+            state.profile = action.payload;         
         },  
              
     }
