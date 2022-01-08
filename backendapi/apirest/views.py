@@ -3,15 +3,20 @@ from apirest.firebase_client import FirebaseClient
 from apirest.serializers import HabitSerializer, AccountSerializer
 from rest_framework import viewsets, status
 from rest_framework.response import Response
+from datetime import datetime
 
 
 class HabitViewSet(viewsets.ViewSet):
     
     client = FirebaseClient() 
-
-    def check_token(self, uid, token):
-        token_to_check= self.client._db.collection(u'users_api_keys').document(f'{uid}').get().to_dict()['api_token']
-        return token==token_to_check
+    
+    def check_token(self, uid, token): 
+        token_to_check= self.client._db.collection(u'users_api_keys').document(f'{uid}').get().to_dict() 
+        print(token_to_check['expire']) 
+        if(datetime.strptime(token_to_check['expire'],"%Y-%m-%d")>=datetime.now()): 
+            return token==token_to_check['api_token'] 
+        else:
+            return False
 
     def create(self, request, *args, **kwargs):
         if not self.check_token(kwargs.get("uid"), request.headers['Token']):
@@ -71,9 +76,13 @@ class AccountViewSet(viewsets.ViewSet):
     
     client = FirebaseClient()
 
-    def check_token(self, uid, token):
-        token_to_check= self.client._db.collection(u'users_api_keys').document(f'{uid}').get().to_dict()['api_token']
-        return token==token_to_check
+    def check_token(self, uid, token): 
+        token_to_check= self.client._db.collection(u'users_api_keys').document(f'{uid}').get().to_dict() 
+        print(token_to_check['expire']) 
+        if(datetime.strptime(token_to_check['expire'],"%Y-%m-%d")>=datetime.now()): 
+            return token==token_to_check['api_token'] 
+        else:
+            return False
 
     def create(self, request, *args, **kwargs):
         if not self.check_token(kwargs.get("pk"), request.headers['Token']):
