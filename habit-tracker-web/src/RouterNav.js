@@ -23,15 +23,9 @@ export default function RouterNav() {
 
       return (      
         <BrowserRouter>                 
-          <Routes>            
-          {user ? 
-            <Route path='/home' element={<Home/>} />
-            :
-            <>           
-            <Route path='/login' element={<Login />} />
-            <Route path='/register' element={<Login />} />
-            </> 
-          }
+          <Routes>          
+            <Route path='/home' element={<Home/>} />                    
+            <Route path='/login' element={<Login />} />                   
           </Routes>             
         </BrowserRouter>
     )

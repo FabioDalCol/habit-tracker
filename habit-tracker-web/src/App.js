@@ -11,6 +11,9 @@ import {
   Routes,
   Route, Switch
 } from "react-router-dom";
+import store, {persistor} from './store';
+import {PersistGate} from 'redux-persist/integration/react';
+import {Provider} from "react-redux"
 
 
 
@@ -24,8 +27,12 @@ function App() {
   //   })
   // }, [])
 
-  return (    
-    <RouterNav/>
+  return (   
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <RouterNav/>
+      </PersistGate>
+    </Provider>
   );
 }
 
