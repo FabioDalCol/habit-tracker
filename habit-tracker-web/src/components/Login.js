@@ -4,12 +4,16 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useState } from "react";
+import store from "../store";
+import { useSelector } from "react-redux";
+import { selectUser } from "../slices/authSlice";
 
 const Login = () => {
 
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');   
-
+    const user = useSelector(selectUser);
+    console.log(user)
     return (
         <div>
             <div>

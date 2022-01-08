@@ -1,4 +1,4 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import localStorage from 'redux-persist/lib/storage';
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
 import authReducer from "./slices/authSlice"
 import habitReducer from "./slices/habitSlice"
@@ -21,7 +21,7 @@ const rootReducer = combineReducers({
 
 const persistConfig = {
   key: 'root',
-  storage: AsyncStorage,
+  storage: localStorage,
   blacklist: []
 };
 
