@@ -27,8 +27,8 @@ import HomeHeader from "../components/HomeHeader";
 import NotificationHandler, { cancel, deleteChannel, getNotification, scheduleHabitNotification, stacca } from "../NotificationHandler"
 import { scheduleNotificationAsync } from "expo-notifications";
 import { schedulePushNotification } from "../NotificationHandler";
+
 import { weekDays } from "../Api";
-import { get } from "react-native/Libraries/Utilities/PixelRatio";
 
 
 const HomeScreen = ({navigation}) => {
@@ -113,7 +113,7 @@ const HomeScreen = ({navigation}) => {
     days= days.slice(0, -2);
     return days
   }
-  
+
   return (
     <View style={[tailwind('flex-1'),{backgroundColor: styleColors.themeColor}]} >
       <StatusBar barStyle="light-content" backgroundColor={styleColors.themeColor} />      

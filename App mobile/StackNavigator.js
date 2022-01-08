@@ -26,6 +26,7 @@ import { selectProfile } from './slices/authSlice';
 
 
 
+
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = () => {  
@@ -58,7 +59,8 @@ const StackNavigator = () => {
     return (
         <Stack.Navigator screenOptions={{headerShown:false }}>
             {user ? (
-                profile?.username?  ( <>                
+                profile?.username?  ( <>  
+                
                 <Stack.Screen name="Root" component={DrawerScreen} options={{ headerShown: false }}/>   
                 <Stack.Screen name="Detail" component={DetailScreen}/>             
                 <Stack.Screen name="Recap" component={RecapScreen} options={{ headerShown: false }}/>               

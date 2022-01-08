@@ -33,7 +33,7 @@ const RootProfile = () => {
    
     const navigation = useNavigation();
     const profile = useSelector(selectProfile);  
-    const [name,setName] = useState(profile.username.length>1?profile.username:user.fullname?.split(/(\s+)/)[0])
+    const [name,setName] = useState(profile.username?.length>1?profile.username:user.fullname?.split(/(\s+)/)[0])
     const [age,setAge] = useState(profile.age>0?profile.age:30)
     const [height,setHeight] = useState(parseInt(profile.height)>0?profile.height:170)    
     const [activePage,setActivePage]= useState(0)

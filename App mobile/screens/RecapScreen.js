@@ -28,7 +28,7 @@ export const getMonthlyRecap = (habits) => {
                     else{
                         if(total[habit.category] == undefined) total[habit.category]={}
                         if(total[habit.category][habit.name] == undefined) total[habit.category][habit.name]=0
-                        total[habit.category][habit.name] ++;
+                        if(habit.stats[date].completed) total[habit.category][habit.name] ++;
                     }
                 }
             }
