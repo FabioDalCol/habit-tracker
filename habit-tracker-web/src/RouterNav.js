@@ -1,31 +1,29 @@
 import React from 'react'
+import { render } from "react-dom";
 import {
-    BrowserRouter as Router,
-    Routes,
-    Route
-  } from "react-router-dom";
+  BrowserRouter,
+  Routes,
+  Route, Switch
+} from "react-router-dom";
 
 import Login from './components/Login';
 import Home from './components/Home';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { auth } from './firebase';
+import firebase from "./hooks/useAuth"
 
 export default function RouterNav() {
   
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState();
+  
   useEffect(() => {
-    auth().onAuthStateChanged(user => {
-      setUser(user);
-    })
+    console.log(user)
   }, [])
 
-  console.log(user);
-    return (
-        <Router>
-          <Route path='/' element={<Login />} />
-        <>
-          <Routes>          
+      return (      
+        <BrowserRouter>                 
+          <Routes>            
           {user ? 
             <Route path='/home' element={<Home/>} />
             :
@@ -34,8 +32,7 @@ export default function RouterNav() {
             <Route path='/register' element={<Login />} />
             </> 
           }
-          </Routes>
-        </>      
-        </Router>
+          </Routes>             
+        </BrowserRouter>
     )
 }
