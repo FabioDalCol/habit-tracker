@@ -7,12 +7,15 @@ import { useState } from "react";
 import store from "../store";
 import { useSelector } from "react-redux";
 import { selectUser } from "../slices/authSlice";
+import { useNavigate } from 'react-router';
+import { signin } from "../hooks/useAuth";
 
 const Login = () => {
 
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');   
     const user = useSelector(selectUser);
+    let navigate = useNavigate();
     console.log(user)
     return (
         <div>
@@ -38,7 +41,7 @@ const Login = () => {
                 <Button variant="contained">Log in</Button>
             </div>
             <div>
-                <Button className="button" onClick={signInWithGoogle}><i className="fab fa-google"></i>Sign in with google</Button>
+                <Button className="button" onClick={ signInWithGoogle}><i className="fab fa-google"></i>Sign in with google</Button>
             </div>
         </div>
     )
