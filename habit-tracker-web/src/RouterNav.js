@@ -15,26 +15,29 @@ import { useEffect } from 'react';
 import { auth } from './firebase';
 import firebase from "./hooks/useAuth"
 import { useSelector } from "react-redux";
-import { selectUser } from "./slices/authSlice";
+import { selectUser,selectProfile } from "./slices/authSlice";
+import CreateProfile from './components/CreateProfile';
 
 
 export default function RouterNav() {
   
   //const [user, setUser] = useState();
   const user = useSelector(selectUser);
+  const profile = useSelector(selectProfile);
   // useEffect(() => {
   //   if(user.fullname){
 
   //   }
   // }, [user])
-
+  console.log(profile)
       return (      
         <BrowserRouter>                 
           <Routes>          
-            <Route path="/" element={user.fullname ? <Navigate to="/home" /> : <Navigate to="/login" />}/> 
+            <Route path="/" element={user.fullname && profile.username && profile.username!="null" ? <Navigate to="/home" /> : user.fullname && !profile.username || profile.username=="null" ? <Navigate to="/createprofile" /> : <Navigate to="/login" />}/> 
             <Route path='/home' element={<Home/>} />                    
             <Route path='/login' element={<Login/>} />  
-            <Route path='/register' element={<RegisterPage/>}  />               
+            <Route path='/register' element={<RegisterPage/>}/>  
+            <Route path='/createprofile' element={<CreateProfile/>}/>              
           </Routes>             
         </BrowserRouter>
     )

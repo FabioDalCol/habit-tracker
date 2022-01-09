@@ -43,7 +43,7 @@ const Login = () => {
                 <Button variant="contained" onClick={ ()=>navigate("/register")}>Register</Button>
             </div>
             <div>
-                <Button className="button" onClick={ ()=>signInWithGoogle}><i className="fab fa-google"></i>Sign in with google</Button>
+                <Button className="button" onClick={ signInWithGoogle}><i className="fab fa-google"></i>Sign in with google</Button>
                 
             </div>
         </div>

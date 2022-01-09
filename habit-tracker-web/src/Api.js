@@ -129,9 +129,14 @@ const getProfile = async (uid,token,old) => {
     .then((response) => {             
         if (JSON.stringify(old) != JSON.stringify(response.data)){
             store.dispatch(setProfile(response.data));           
-        }              
-      }).then(response => console.log(response))
-    .catch(error => console.log(error));
+        }   
+        return true            
+      })
+    .catch(error =>{         
+        var code=error.message.split(' ')
+        console.log(code.pop())
+        if(code.pop()==404)
+            return false;   });
 };
 
 const updateUserProfile = async (uid,token,profile) => {       
@@ -147,8 +152,8 @@ const createUserProfile = async (uid,token) => {
         username: "null",        
         height: 0,
         age:0,
-        rise_time: "null",
-        sleep_time: "null",        
+        rise_time: "00:00",
+        sleep_time: "00:00",        
     }   
     await axios.post(url,profile,{headers:{token: token, 'Content-Type': 'application/json'}})    
     .catch(error =>{ alert(error.message)});
