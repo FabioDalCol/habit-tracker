@@ -9,53 +9,72 @@ import { useSelector } from "react-redux";
 import { selectUser,setProfile } from "../slices/authSlice";
 import { useNavigate } from 'react-router';
 import { updateUserProfile } from "../Api";
-import { async } from "@firebase/util";
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import TimePicker from '@mui/lab/TimePicker';
+import { Stack } from "@mui/material";
+import { styleColors } from "../colors";
+
+const makeTwoDigits = (time) => {
+    const timeString = `${time}`;
+    if (timeString.length === 2) return time
+    return `0${time}`
+  }
 
 const CreateProfile = () => {
 
     const [name,setName] = useState()
     const [age,setAge] = useState()
     const [height,setHeight] = useState()
-    var sleep_time="22:30";
-    var rise_time="10:40";   
+    const [rise, setRise] = useState(null);
+    const [sleep, setSleep] = useState(null);      
     const user = useSelector(selectUser);
     let navigate = useNavigate();
-    console.log(user)
+    console.log(user)    
     return (
-        <div>
-            <div>
-                <div className="heading-container">
-                    <h3>
-                        Login Form
-                    </h3>
-                </div>
+        <div style={{ backgroundColor:"white",display: 'flex', flexDirection:"column", alignItems: 'center', }} >              
+            <h3>
+                Complete your profile
+            </h3>
 
-                <Box
-                    component="form"
-                    sx={{
-                        '& > :not(style)': { m: 1, width: '25ch' },
-                    }}
-                    noValidate
-                    autoComplete="off"
-                    style={{flexDirection:"row"}}
-                >
-                    <TextField id="name" label="Name" value={name} onChange={(text)=>setName(text.target.value)} variant="outlined" />
-                    <TextField id="age" label="Age" type="number" value={age} onChange={(text)=>setAge(text.target.value)} variant="outlined" />
-                    <TextField id="height" label="Height" type="number" value={height} onChange={(text)=>setHeight(text.target.value)} variant="outlined" />                    
-                </Box>
-                <Button variant="contained" onClick={ async()=>{
+                
+                    <Stack spacing={3} width={"100%"} alignItems={"center"} justifyContent={"center"} paddingY={2}>
+                    <TextField  id="name" label="Name" value={name} onChange={(text)=>setName(text.target.value)} variant="outlined" />
+                    <TextField  id="age" label="Age" type="number" value={age} onChange={(text)=>setAge(text.target.value)} variant="outlined" />
+                    <TextField  id="height" label="Height" type="number" value={height} onChange={(text)=>setHeight(text.target.value)} variant="outlined" />
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <TimePicker
+                            label="Rise time"
+                            value={rise}                          
+                            onChange={(newValue) => {
+                            setRise(newValue);
+                            }}
+                            renderInput={(params) => <TextField {...params} />}
+                        />
+                        <TimePicker
+                            label="Sleep time"
+                            value={sleep}                           
+                            onChange={(newValue) => {
+                            setSleep(newValue);
+                            }}
+                            renderInput={(params) => <TextField {...params} />}
+                        />
+                    </LocalizationProvider>  
+                    </Stack>                  
+                
+                <Button sx={{backgroundColor:styleColors.themeColor}} variant="contained" onClick={ async()=>{
                                                             let diz = {
                                                                     username: name,
                                                                     height: height,
                                                                     age:age,                   
-                                                                    rise_time: rise_time,
-                                                                    sleep_time: sleep_time,                       
+                                                                    rise_time: makeTwoDigits(rise.getHours())+':'+makeTwoDigits(rise.getMinutes()),
+                                                                    sleep_time: makeTwoDigits(sleep.getHours())+':'+makeTwoDigits(sleep.getMinutes()),                       
                                                                     };
                                                             store.dispatch(setProfile(diz));
                                                             await updateUserProfile(user.uid,user.api_token,diz).then(navigate("/home"))
                                                             }}>Let's start
                 </Button>
-            </div>           
+                      
         </div>
     )
   }

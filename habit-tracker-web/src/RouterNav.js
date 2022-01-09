@@ -17,7 +17,7 @@ import firebase from "./hooks/useAuth"
 import { useSelector } from "react-redux";
 import { selectUser,selectProfile } from "./slices/authSlice";
 import CreateProfile from './components/CreateProfile';
-
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 export default function RouterNav() {
   
@@ -30,15 +30,19 @@ export default function RouterNav() {
   //   }
   // }, [user])
   console.log(profile)
-      return (      
-        <BrowserRouter>                 
-          <Routes>          
-            <Route path="/" element={user.fullname && profile.username && profile.username!="null" ? <Navigate to="/home" /> : user.fullname && !profile.username || profile.username=="null" ? <Navigate to="/createprofile" /> : <Navigate to="/login" />}/> 
-            <Route path='/home' element={<Home/>} />                    
-            <Route path='/login' element={<Login/>} />  
-            <Route path='/register' element={<RegisterPage/>}/>  
-            <Route path='/createprofile' element={<CreateProfile/>}/>              
-          </Routes>             
-        </BrowserRouter>
+      return (    
+        <div className="pages-wrapper">
+          <div className="pages-inner"> 
+            <BrowserRouter>                 
+              <Routes>          
+                <Route path="/" element={user.fullname && profile.username && profile.username!="null" ? <Navigate to="/home" /> : user.fullname && !profile.username || profile.username=="null" ? <Navigate to="/createprofile" /> : <Navigate to="/login" />}/> 
+                <Route path='/home' element={<Home/>} />                    
+                <Route path='/login' element={<Login/>} />  
+                <Route path='/register' element={<RegisterPage/>}/>  
+                <Route path='/createprofile' element={<CreateProfile/>}/>              
+              </Routes>                
+            </BrowserRouter>
+          </div>
+      </div>   
     )
 }
