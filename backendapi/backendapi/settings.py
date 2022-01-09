@@ -30,8 +30,7 @@ SECRET_KEY = 'django-insecure-#q!v)^^lvu0zm=my)s8)kxs_!7g5uz8coqiym&!zv=!y@kd^#a
 #DA RIVEDERE
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default="*", cast=Csv()) 
-
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -45,16 +44,40 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework', 
     'apirest', 
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',    
+]
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = False
+
+CORS_ALLOW_HEADERS = [
+'accept',
+'accept-encoding',
+'authorization',
+'content-type',
+'dnt',
+'origin',
+'token',
+'user-agent',
+'x-csrftoken',
+'x-requested-with',
+"access-control-allow-origin", 
+"access-control-expose-headers", 
+"access-control-max-age", 
+"access-control-allow-credentials", 
+"access-control-allow-ethods",
+"access-control-allow-headers",
 ]
 
 ROOT_URLCONF = 'backendapi.urls'
@@ -127,7 +150,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# Settings for HTTPS DA CAPIRE FORSE NON RESTFUL
+# Settings for HTTPS 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', config('SSL_HEADER', 'http'))
 SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=False, cast=bool)
 SECURE_CONTENT_TYPE_NOSNIFF = config('SECURE_CONTENT_TYPE_NOSNIFF', default=False, cast=bool)

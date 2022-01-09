@@ -3,3 +3,4 @@ firebase-admin
 pathlib
 django
 djangorestframework
+django-cors-headers 

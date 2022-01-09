@@ -8,7 +8,7 @@ export const weekDays = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
 
 var retry=true;
 
-const baseUrl = `https://habits-app-api.ew.r.appspot.com/api/v1/users/`;  
+const baseUrl = `http://127.0.0.1:8000/api/v1/users/`;  
 
 const getHabits = async (uid,token,old,setRefreshing) => {      
     const url = baseUrl + uid + '/habits/'      
@@ -124,7 +124,7 @@ const countCompletedHabits = (habIds,habits) => {
 }
 
 const getProfile = async (uid,token,old) => {      
-    const url = baseUrl + uid;   
+    const url = baseUrl + uid ;   
     await axios.get(url,{headers:{token: token}})
     .then((response) => {             
         if (JSON.stringify(old) != JSON.stringify(response.data)){

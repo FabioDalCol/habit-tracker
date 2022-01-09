@@ -9,6 +9,7 @@ import {
 
 import Login from './components/Login';
 import Home from './components/Home';
+import RegisterPage from './components/Register';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { auth } from './firebase';
@@ -32,7 +33,8 @@ export default function RouterNav() {
           <Routes>          
             <Route path="/" element={user.fullname ? <Navigate to="/home" /> : <Navigate to="/login" />}/> 
             <Route path='/home' element={<Home/>} />                    
-            <Route path='/login' element={<Login/>} />                   
+            <Route path='/login' element={<Login/>} />  
+            <Route path='/register' element={<RegisterPage/>}  />               
           </Routes>             
         </BrowserRouter>
     )

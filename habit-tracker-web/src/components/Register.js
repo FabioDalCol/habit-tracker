@@ -1,4 +1,4 @@
-import { signInWithGoogle } from "../hooks/useAuth";
+import { register, signInWithGoogle } from "../hooks/useAuth";
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -8,13 +8,12 @@ import store from "../store";
 import { useSelector } from "react-redux";
 import { selectUser } from "../slices/authSlice";
 import { useNavigate } from 'react-router';
-import { signin } from "../hooks/useAuth";
-import { Navigate } from "react-router-dom";
 
-const Login = () => {
+const RegisterPage = () => {
 
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');   
+    const [fullname,setFullName] = useState('');  
     const user = useSelector(selectUser);
     let navigate = useNavigate();
     console.log(user)
@@ -35,19 +34,15 @@ const Login = () => {
                     noValidate
                     autoComplete="off"
                 >
+                    <TextField id="name" label="Name" value={fullname} onChange={(text)=>setFullName(text.target.value)} variant="outlined" />
                     <TextField id="email" label="Enter the Email" value={email} onChange={(text)=>setEmail(text.target.value)} variant="outlined" />
                     <TextField type="password" id="password" label="Enter the Password" value={password} onChange={(text)=>setPassword(text.target.value)} variant="outlined" />
                 </Box>
 
-                <Button variant="contained" onClick={ ()=>signin(email,password)}>Log in</Button>
-                <Button variant="contained" onClick={ ()=>navigate("/register")}>Register</Button>
-            </div>
-            <div>
-                <Button className="button" onClick={ ()=>signInWithGoogle}><i className="fab fa-google"></i>Sign in with google</Button>
-                
-            </div>
+                <Button variant="contained" onClick={ ()=>register(email,password,fullname)}>Register</Button>
+            </div>           
         </div>
     )
   }
   
-  export default Login;
+  export default RegisterPage;
