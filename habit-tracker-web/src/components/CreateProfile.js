@@ -32,14 +32,14 @@ const CreateProfile = () => {
     let navigate = useNavigate();
     console.log(user)    
     return (
-        <div style={{ backgroundColor:"white",display: 'flex', flexDirection:"column", alignItems: 'center', }} >              
+        <div style={{ backgroundColor:"styleColors.background",display: 'flex', flexDirection:"column", alignItems: 'center', }} >              
             <h3>
                 Complete your profile
             </h3>
 
                 
-                    <Stack spacing={3} width={"100%"} alignItems={"center"} justifyContent={"center"} paddingY={2}>
-                    <TextField  id="name" label="Name" value={name} onChange={(text)=>setName(text.target.value)} variant="outlined" />
+                    <Stack spacing={3} width={"100%"} alignItems={"center"} justifyContent={"center"} paddingY={2} >
+                    <TextField id="name" label="Name" value={name} onChange={(text)=>setName(text.target.value)} variant="outlined" />
                     <TextField  id="age" label="Age" type="number" value={age} onChange={(text)=>setAge(text.target.value)} variant="outlined" />
                     <TextField  id="height" label="Height" type="number" value={height} onChange={(text)=>setHeight(text.target.value)} variant="outlined" />
                     <LocalizationProvider dateAdapter={AdapterDateFns}>

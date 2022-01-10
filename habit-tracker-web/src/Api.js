@@ -8,7 +8,7 @@ export const weekDays = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
 
 var retry=true;
 
-const baseUrl = `http://127.0.0.1:8000/api/v1/users/`;  
+const baseUrl = `https://habits-app-api.ew.r.appspot.com/api/v1/users/`;  
 
 const getHabits = async (uid,token,old,setRefreshing) => {      
     const url = baseUrl + uid + '/habits/'      
