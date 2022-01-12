@@ -30,19 +30,20 @@ export default function RouterNav() {
   //   }
   // }, [user])
   console.log(profile)
-      return (    
-        <div className="pages-wrapper">
-          <div className="pages-inner"> 
-            <BrowserRouter>                 
+      return (<>
+          <BrowserRouter className="pages-inner">                 
+            <Routes>          
+              <Route path="/" element={user.fullname && profile.username && profile.username!="null" ? <Navigate to="/home" /> : user.fullname && !profile.username || profile.username=="null" ? <Navigate to="/createprofile" /> : <Navigate to="/login" />}/>                    
+              <Route path='/login' element={<Login/>} />  
+              <Route path='/register' element={<RegisterPage/>}/>  
+              <Route path='/createprofile' element={<CreateProfile/>}/>              
+            </Routes>                
+          </BrowserRouter>
+          <BrowserRouter>                 
               <Routes>          
-                <Route path="/" element={user.fullname && profile.username && profile.username!="null" ? <Navigate to="/home" /> : user.fullname && !profile.username || profile.username=="null" ? <Navigate to="/createprofile" /> : <Navigate to="/login" />}/> 
                 <Route path='/home' element={<Home/>} />                    
-                <Route path='/login' element={<Login/>} />  
-                <Route path='/register' element={<RegisterPage/>}/>  
-                <Route path='/createprofile' element={<CreateProfile/>}/>              
               </Routes>                
-            </BrowserRouter>
-          </div>
-      </div>   
+          </BrowserRouter>
+         </>
     )
 }
