@@ -8,8 +8,10 @@ import store from "../store";
 import { useSelector } from "react-redux";
 import { selectUser } from "../slices/authSlice";
 import { useNavigate } from 'react-router';
+import { Stack } from "@mui/material";
 import { signin } from "../hooks/useAuth";
 import { Navigate } from "react-router-dom";
+
 
 const Login = () => {
 
@@ -21,29 +23,25 @@ const Login = () => {
     return (
         <div>
             <div>
-                <div className="heading-container">
+                <div style={{display:"flex",alignItems:"center",flexDirection:"column"}} >
                     <h3>
-                        Login Form
+                        Habit tracker
                     </h3>
+                    <img src={require("../images/habit.png")} 
+                    style={{ width: 200, height: 200, display:"flex", alignSelf:"center", }}
+                    />
                 </div>
 
-                <Box
-                    component="form"
-                    sx={{
-                        '& > :not(style)': { m: 1, width: '25ch' },
-                    }}
-                    noValidate
-                    autoComplete="off"
-                >
-                    <TextField id="email" label="Enter the Email" value={email} onChange={(text)=>setEmail(text.target.value)} variant="outlined" />
-                    <TextField type="password" id="password" label="Enter the Password" value={password} onChange={(text)=>setPassword(text.target.value)} variant="outlined" />
-                </Box>
+                <Stack spacing={3} width={"100%"} alignItems={"center"} justifyContent={"center"} paddingY={2} >
+                    <TextField inputProps={{style: {fontSize: 18}}}  id="email" label="Email" value={email} onChange={(text)=>setEmail(text.target.value)} variant="outlined" />
+                    <TextField inputProps={{style: {fontSize: 18}}} type="password" id="password" label="Password" value={password} onChange={(text)=>setPassword(text.target.value)} variant="outlined" />
+                </Stack>            
 
-                <Button variant="contained" onClick={ ()=>signin(email,password)}>Log in</Button>
-                <Button variant="contained" onClick={ ()=>navigate("/register")}>Register</Button>
             </div>
-            <div>
-                <Button className="button" onClick={ signInWithGoogle}><i className="fab fa-google"></i>Sign in with google</Button>
+            <div style={{display:"flex",alignItems:"center",flexDirection:"column"}}>                
+                <Button style={{borderRadius:30,marginBottom:5,fontSize:18}} variant="contained" onClick={ ()=>signin(email,password)}>Login</Button>
+                <Button style={{borderRadius:30,marginBottom:5,fontSize:18}} variant="contained" onClick={ ()=>navigate("/register")}>Register</Button>
+                <Button style={{borderRadius:30,marginBottom:5,fontSize:18,backgroundColor:"#ef4444"}} variant ="contained" onClick={ signInWithGoogle}><i className="fab fa-google"></i>Sign in with google</Button>
                 
             </div>
         </div>

@@ -2,7 +2,13 @@
   box-sizing: border-box;
 }
 body {
-  background: #4263ec !important;
+  background: rgb(23, 13, 184);
+  background: linear-gradient(
+    90deg,
+    rgba(23, 13, 184, 1) 0%,
+    rgba(11, 11, 179, 1) 17%,
+    rgba(0, 212, 255, 1) 100%
+  );
   min-height: 100vh;
   display: flex;
   font-weight: 400;

@@ -14,12 +14,20 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import TimePicker from '@mui/lab/TimePicker';
 import { Stack } from "@mui/material";
 import { styleColors } from "../colors";
+import { makeStyles } from '@mui/styles';
 
 const makeTwoDigits = (time) => {
     const timeString = `${time}`;
     if (timeString.length === 2) return time
     return `0${time}`
   }
+
+  const useStyles = makeStyles({
+    root: {
+      fontSize:30,
+      width: 300,
+    },
+  });
 
 const CreateProfile = () => {
 
@@ -30,6 +38,7 @@ const CreateProfile = () => {
     const [sleep, setSleep] = useState(null);      
     const user = useSelector(selectUser);
     let navigate = useNavigate();
+    const classes = useStyles();
     console.log(user)    
     return (
         <div style={{ backgroundColor:"styleColors.background",display: 'flex', flexDirection:"column", alignItems: 'center', }} >              
@@ -39,17 +48,17 @@ const CreateProfile = () => {
 
                 
                     <Stack spacing={3} width={"100%"} alignItems={"center"} justifyContent={"center"} paddingY={2} >
-                    <TextField id="name" label="Name" value={name} onChange={(text)=>setName(text.target.value)} variant="outlined" />
-                    <TextField  id="age" label="Age" type="number" value={age} onChange={(text)=>setAge(text.target.value)} variant="outlined" />
-                    <TextField  id="height" label="Height" type="number" value={height} onChange={(text)=>setHeight(text.target.value)} variant="outlined" />
+                    <TextField inputProps={{style: {fontSize: 18}}} id="name" label="Name" value={name} onChange={(text)=>setName(text.target.value)} variant="outlined" />
+                    <TextField inputProps={{style: {fontSize: 18}}} id="age" label="Age" type="number" value={age} onChange={(text)=>setAge(text.target.value)} variant="outlined" />
+                    <TextField inputProps={{style: {fontSize: 18}}} id="height" label="Height" type="number" value={height} onChange={(text)=>setHeight(text.target.value)} variant="outlined" />
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <TimePicker
-                            label="Rise time"
-                            value={rise}                          
+                            label="Rise time"                            
+                            value={rise}                                              
                             onChange={(newValue) => {
                             setRise(newValue);
                             }}
-                            renderInput={(params) => <TextField {...params} />}
+                            renderInput={(params) => <TextField {...params} InputProps={{style: {fontSize: 18}}} />}
                         />
                         <TimePicker
                             label="Sleep time"
@@ -57,7 +66,7 @@ const CreateProfile = () => {
                             onChange={(newValue) => {
                             setSleep(newValue);
                             }}
-                            renderInput={(params) => <TextField {...params} />}
+                            renderInput={(params) => <TextField {...params} InputProps={{style: {fontSize: 18}}} />}
                         />
                     </LocalizationProvider>  
                     </Stack>                  
