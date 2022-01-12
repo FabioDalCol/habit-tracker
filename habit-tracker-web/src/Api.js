@@ -3,6 +3,7 @@ import store from './store';
 import { setHabits} from './slices/habitSlice';
 import { setProfile, setToken } from './slices/authSlice';
 import { generate_api_token } from './hooks/useAuth'
+import moment from 'moment'
 
 export const weekDays = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
 
@@ -160,8 +161,25 @@ const createUserProfile = async (uid,token) => {
     
 };
 
+const getHabitsFromDate = (habits, date) =>
+{
+    date=moment(date).format("YYYY-MM-DD")
+    var ids = []   
+    if(habits == null ) return ids
+    for(var habit of habits){ 
+        if(habit.stats)        
+        {    
+            if (habit.stats[date]){        //If today weekday is true
+                ids.push(habit.id)
+            }
+        }      
+    }  
+    return ids
+}
+
+
 
 
 
 export default getHabits
-export {updateHabit,getDate,addHabit,removeHabit,getTodayHabits,countCompletedHabits,updateUserProfile,getProfile,createUserProfile,getOnlyHabit,walkToday,updateHabitNoRetrieve}
+export {getHabitsFromDate,updateHabit,getDate,addHabit,removeHabit,getTodayHabits,countCompletedHabits,updateUserProfile,getProfile,createUserProfile,getOnlyHabit,walkToday,updateHabitNoRetrieve}

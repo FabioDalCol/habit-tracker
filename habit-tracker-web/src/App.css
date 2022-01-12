@@ -40,3 +40,68 @@
     transform: rotate(360deg);
   }
 }
+
+
+/* #HOMEPAGE */
+
+.bar {
+  background-color: #282c34;
+  height: 12%;
+  padding-left: 50px;
+  color:aliceblue;
+  text-align: left;
+}
+
+.header {
+  display: flex;
+}
+
+.full-box {
+  display: flex;
+  justify-content: space-evenly;
+  min-height: 100%;
+}
+.center-box {
+  width: 100%;
+  background: #c8cef1;
+  box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
+  padding: 40px 55px 45px 55px;
+  transition: all 0.3s;
+  border-left: 10px solid #ffffff ;
+  border-right: 10px solid #20377a ;
+}
+
+
+.left-box {
+  width: 100%;
+  background: #20377a;
+  box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
+  padding: 40px 55px 45px 55px;
+  transition: all 0.3s;
+}
+
+.right-box {
+  width: 100%;
+  text-align: end;
+  background: #ffffff;
+  box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
+  transition: all 0.3s;
+}
+
+.date-picker{
+  text-align: center;
+  margin-bottom: 20px;
+  color: rgb(0, 132, 255);
+}
+
+.static-picker{
+  color: #000000;
+}
+
+/* .static-picker:selected{
+  background-color: "green";
+}
+
+.Mui-selected{
+  background-color: "green";
+} */
