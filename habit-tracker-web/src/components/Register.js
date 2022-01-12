@@ -14,15 +14,14 @@ const RegisterPage = () => {
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');   
     const [fullname,setFullName] = useState('');  
-    const user = useSelector(selectUser);
-    let navigate = useNavigate();
+    const user = useSelector(selectUser);    
     console.log(user)
     return (
-        <div>
-            <div>
+        <div className="pages-wrapper">
+            <div className="pages-inner">
                 <div className="heading-container">
                     <h3>
-                        Login Form
+                        Signup
                     </h3>
                 </div>
 

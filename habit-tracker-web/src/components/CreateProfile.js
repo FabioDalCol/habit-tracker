@@ -41,50 +41,54 @@ const CreateProfile = () => {
     const classes = useStyles();
     console.log(user)    
     return (
-        <div style={{ backgroundColor:"styleColors.background",display: 'flex', flexDirection:"column", alignItems: 'center', }} >              
-            <h3>
-                Complete your profile
-            </h3>
+        <div className="pages-wrapper">
+        <div className="pages-inner">
+            <div style={{ backgroundColor:"styleColors.background",display: 'flex', flexDirection:"column", alignItems: 'center', }} >              
+                <h3>
+                    Complete your profile
+                </h3>
 
-                
-                    <Stack spacing={3} width={"100%"} alignItems={"center"} justifyContent={"center"} paddingY={2} >
-                    <TextField inputProps={{style: {fontSize: 18}}} id="name" label="Name" value={name} onChange={(text)=>setName(text.target.value)} variant="outlined" />
-                    <TextField inputProps={{style: {fontSize: 18}}} id="age" label="Age" type="number" value={age} onChange={(text)=>setAge(text.target.value)} variant="outlined" />
-                    <TextField inputProps={{style: {fontSize: 18}}} id="height" label="Height" type="number" value={height} onChange={(text)=>setHeight(text.target.value)} variant="outlined" />
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <TimePicker
-                            label="Rise time"                            
-                            value={rise}                                              
-                            onChange={(newValue) => {
-                            setRise(newValue);
-                            }}
-                            renderInput={(params) => <TextField {...params} InputProps={{style: {fontSize: 18}}} />}
-                        />
-                        <TimePicker
-                            label="Sleep time"
-                            value={sleep}                           
-                            onChange={(newValue) => {
-                            setSleep(newValue);
-                            }}
-                            renderInput={(params) => <TextField {...params} InputProps={{style: {fontSize: 18}}} />}
-                        />
-                    </LocalizationProvider>  
-                    </Stack>                  
-                
-                <Button sx={{backgroundColor:styleColors.themeColor}} variant="contained" onClick={ async()=>{
-                                                            let diz = {
-                                                                    username: name,
-                                                                    height: height,
-                                                                    age:age,                   
-                                                                    rise_time: makeTwoDigits(rise.getHours())+':'+makeTwoDigits(rise.getMinutes()),
-                                                                    sleep_time: makeTwoDigits(sleep.getHours())+':'+makeTwoDigits(sleep.getMinutes()),                       
-                                                                    };
-                                                            store.dispatch(setProfile(diz));
-                                                            await updateUserProfile(user.uid,user.api_token,diz).then(navigate("/home"))
-                                                            }}>Let's start
-                </Button>
-                      
+                    
+                        <Stack spacing={3} width={"100%"} alignItems={"center"} justifyContent={"center"} paddingY={2} >
+                        <TextField inputProps={{style: {fontSize: 18}}} id="name" label="Name" value={name} onChange={(text)=>setName(text.target.value)} variant="outlined" />
+                        <TextField inputProps={{style: {fontSize: 18}}} id="age" label="Age" type="number" value={age} onChange={(text)=>setAge(text.target.value)} variant="outlined" />
+                        <TextField inputProps={{style: {fontSize: 18}}} id="height" label="Height" type="number" value={height} onChange={(text)=>setHeight(text.target.value)} variant="outlined" />
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                            <TimePicker
+                                label="Rise time"                            
+                                value={rise}                                              
+                                onChange={(newValue) => {
+                                setRise(newValue);
+                                }}
+                                renderInput={(params) => <TextField {...params} InputProps={{style: {fontSize: 18}}} />}
+                            />
+                            <TimePicker
+                                label="Sleep time"
+                                value={sleep}                           
+                                onChange={(newValue) => {
+                                setSleep(newValue);
+                                }}
+                                renderInput={(params) => <TextField {...params} InputProps={{style: {fontSize: 18}}} />}
+                            />
+                        </LocalizationProvider>  
+                        </Stack>                  
+                    
+                    <Button sx={{backgroundColor:styleColors.themeColor}} variant="contained" onClick={ async()=>{
+                                                                let diz = {
+                                                                        username: name,
+                                                                        height: height,
+                                                                        age:age,                   
+                                                                        rise_time: makeTwoDigits(rise.getHours())+':'+makeTwoDigits(rise.getMinutes()),
+                                                                        sleep_time: makeTwoDigits(sleep.getHours())+':'+makeTwoDigits(sleep.getMinutes()),                       
+                                                                        };
+                                                                store.dispatch(setProfile(diz));
+                                                                await updateUserProfile(user.uid,user.api_token,diz).then(navigate("/home"))
+                                                                }}>Let's start
+                    </Button>
+                        
+            </div>
         </div>
+    </div>
     )
   }
   

@@ -38,6 +38,9 @@ const Home = () => {
 
 
     const getFirstDate = (habits) => {
+        if(habits==null){
+            return getDate()
+        }
         var dates = [];
         for(var habit of habits) {
             dates.push(habit.created)
@@ -129,10 +132,11 @@ const Home = () => {
     var color;
   
 
-    useEffect(() => {   
+    useEffect(async() => {   
         getHabits(uid,api_token,{})
         }, [])
 
+   
     return (<>
         <div className="bar">
             <div className="header">

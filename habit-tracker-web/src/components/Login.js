@@ -21,7 +21,8 @@ const Login = () => {
     let navigate = useNavigate();
     console.log(user)
     return (
-        <div>
+    <div className="pages-wrapper">
+        <div className="pages-inner">
             <div>
                 <div style={{display:"flex",alignItems:"center",flexDirection:"column"}} >
                     <h3>
@@ -39,11 +40,12 @@ const Login = () => {
 
             </div>
             <div style={{display:"flex",alignItems:"center",flexDirection:"column"}}>                
-                <Button style={{borderRadius:30,marginBottom:5,fontSize:18}} variant="contained" onClick={ ()=>signin(email,password)}>Login</Button>
+                <Button style={{borderRadius:30,marginBottom:5,fontSize:18}} variant="contained" onClick={ ()=>signin(email,password)}>Sign In</Button>
                 <Button style={{borderRadius:30,marginBottom:5,fontSize:18}} variant="contained" onClick={ ()=>navigate("/register")}>Register</Button>
                 <Button style={{borderRadius:30,marginBottom:5,fontSize:18,backgroundColor:"#ef4444"}} variant ="contained" onClick={ signInWithGoogle}><i className="fab fa-google"></i>Sign in with google</Button>
                 
             </div>
+        </div>
         </div>
     )
   }
