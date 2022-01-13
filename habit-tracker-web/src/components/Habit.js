@@ -1,4 +1,5 @@
 import React from 'react'
+import { useEffect, useState } from 'react';
 import * as Mui from '@mui/material';
 import Drink from '@mui/icons-material/LocalDrink';
 import Walk from '@mui/icons-material/DirectionsWalk';
@@ -11,8 +12,9 @@ import StarIcon from '@mui/icons-material/StarBorder';
 import store from '../store';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../slices/authSlice';
-import { setValue, pushValue, incrementValue, decrementValue, triggerCompleted } from '../slices/habitSlice';
+import {setValue, pushValue, incrementValue, decrementValue, triggerCompleted } from '../slices/habitSlice';
 import { styleColors } from '../colors';
+import {useDebouncedEffect} from './useDebounceEffect'
 
 const rendericon = (category) => {
     switch (category) {
@@ -22,15 +24,17 @@ const rendericon = (category) => {
             return <Drink sx={{ fontSize: 40, color: '#2acaea' }} />
         case 'Walk':
             return <Walk sx={{ fontSize: 40, color: '#B6134A' }} />
-
     }
 }
+
 
 export const Habit = ({ id, name = 'Default', date, category, desc, countable, value = null, set_value = null, completeToday, manage_habits = false, is_active, created, show = false, habitToEdit, setHabitToEdit, times, reminder, mon, tue, wed, thu, fri, sat, sun, pedometer = null }) => {
 
     const user = useSelector(selectUser);
     const uid = user.uid
     const api_token = user.api_token;
+    
+    useDebouncedEffect(() => store.dispatch(pushValue({ id: id, uid: uid, token: api_token })),[value], 1000);
 
     return (
         <Mui.Card style={{ marginBottom: 10 }} >
@@ -53,27 +57,27 @@ export const Habit = ({ id, name = 'Default', date, category, desc, countable, v
                             </Mui.IconButton> */}
                 <div>
                     {category != "Custom" ? (<>
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', flexDirection: 'column', alignContent: 'flex-end' }}>
+                            <div style={{ display: 'flex', flexDirection: "row", alignItems: 'center', alignContent: "flex-end", justifyItems: "flex-end" }}>
+                                <input
+                                    type='text'
+                                    style={{ width: 10 + String(value).length * 10, height: 20, borderRadius: 20, fontWeight: 650, textAlign: 'center', marginRight: 2, borderColor: styleColors.greyish }}
+                                    value={String(value)}
+                                    onChange={(event) => store.dispatch(setValue({ id: id, value: parseInt(event.target.value), date: date }))}
+                                    onBlur={() => { store.dispatch(pushValue({ id: id, uid: uid, token: api_token })) }}
+                                    size='small'
+                                />
+                                <Mui.Typography fontWeight={700}>/{set_value}</Mui.Typography>
+                            </div>
 
-                        <div style={{ display: 'flex', flexDirection: "row", alignItems: 'center', alignContent: "flex-end", justifyContent: "flex-end" }}>
-                            <input
-                                type='text'
-                                style={{ width: 10 + String(value).length * 10, height: 20, borderRadius: 20, fontWeight: 650, textAlign: 'center', marginRight: 2, borderColor: styleColors.greyish }}
-                                value={String(value)}
-                                onChange={(event) => store.dispatch(setValue({ id: id, value: parseInt(event.target.value), date: date }))}
-                                onBlur={() => { store.dispatch(pushValue({ id: id, uid: uid, token: api_token })) }}
-                                size='small'
-                            />
-                            <Mui.Typography fontWeight={700}>/{set_value}</Mui.Typography>
-                        </div>
-
-
-                        <div style={{ flexDirection: "row", alignSelf: "flex-end" }}>
-                            <Mui.IconButton onClick={() => store.dispatch(incrementValue({ id: id, uid: uid, token: api_token, date: date }))} style={{ marginRight: -10 }}>
-                                <Add sx={{ fontSize: 25, color: category == "Walk" ? '#B6134A' : '#2acaea' }} />
-                            </Mui.IconButton>
-                            <Mui.IconButton onClick={() => store.dispatch(decrementValue({ id: id, uid: uid, token: api_token, date: date }))}>
-                                <Minus sx={{ fontSize: 25, color: category == "Walk" ? '#B6134A' : '#2acaea' }} />
-                            </Mui.IconButton>
+                            <div style={{ flexDirection: "row", alignSelf: "flex-end", justifyContent: "flex-end" }}>
+                                <Mui.IconButton onClick={() => store.dispatch(incrementValue({ id: id, uid: uid, token: api_token, date: date }))} style={{ marginRight: -10 }}>
+                                    <Add sx={{ fontSize: 25, color: category == "Walk" ? '#B6134A' : '#2acaea' }} />
+                                </Mui.IconButton>
+                                <Mui.IconButton onClick={() => store.dispatch(decrementValue({ id: id, uid: uid, token: api_token, date: date }))}>
+                                    <Minus sx={{ fontSize: 25, color: category == "Walk" ? '#B6134A' : '#2acaea' }} />
+                                </Mui.IconButton>
+                            </div>
                         </div>
                     </>)
                         :

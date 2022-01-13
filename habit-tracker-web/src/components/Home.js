@@ -1,6 +1,5 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { auth } from '../firebase';
 import { useSelector } from "react-redux";
 import { selectUser, selectProfile } from "../slices/authSlice";
 import { selectHabits } from '../slices/habitSlice';
@@ -10,30 +9,11 @@ import getHabits, { getTodayHabits, getDate, getHabitsFromDate, weekDays, countC
 import * as Mui from '@mui/material';
 import CustomDatePicker from './CustomDatePicker'
 import moment from 'moment'
-
 import HabitForm from './HabitForm';
-import Drink from '@mui/icons-material/LocalDrink';
-import Walk from '@mui/icons-material/DirectionsWalk';
-import Custom from '@mui/icons-material/EmojiEvents';
-import { Habit } from './Habit';
-import { styles } from "../styles"
 import store from '../store';
-import { ProgressBar } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { initDay } from '../slices/habitSlice';
-import { incrementValue, decrementValue, setValue, triggerCompleted, pushValue, setIsActive } from '../slices/habitSlice';
-
-const rendericon = (category) => {
-    switch (category) {
-        case 'Custom':
-            return <Custom sx={{ fontSize: 40, color: '#ffc600' }} />
-        case 'Drink':
-            return <Drink sx={{ fontSize: 40, color: '#2acaea' }} />
-        case 'Walk':
-            return <Walk sx={{ fontSize: 40, color: '#B6134A' }} />
-
-    }
-}
+import {Habit} from './Habit'
 
 
 const Home = () => {
@@ -44,7 +24,6 @@ const Home = () => {
     const uid = user.uid
     const api_token = user.api_token;
     const [date, setDate] = useState(getDate());
-    const [val, setVal] = useState(10);
 
     var todayHabits = getTodayHabits(habits);
     var completedHabitsCount = countCompletedHabits(todayHabits, habits);
@@ -138,20 +117,12 @@ const Home = () => {
     yellow = markDay()[1];
     green = markDay()[2];
 
-    const handleChange = (event) => {
-        setVal(event.target.value);
-    };
-
-    console.log(date)
-
     useEffect(() => {
         getHabits(uid, api_token, {})
-        console.log("get")
     }, [])
 
     useEffect(() => {
         if (habits != undefined) {
-            console.log("init")
             store.dispatch(initDay({ uid: uid, token: api_token }))
         }
 
@@ -175,9 +146,9 @@ const Home = () => {
                 <div style={{ justifyContent: 'center', display: 'flex' }}>
                     <h3> Daily Progress </h3>
                 </div>
-                <div class="progress position-relative" style={{ height: 25, marginBottom: 20 }}>
-                    <div class={"progress-bar " + dailyProgressColor()} role="progressbar" style={{ width: completedHabitsCount / todayHabits.length * 100 + "%" }} aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                    <h6 class="justify-content-center d-flex position-absolute w-100 mt-1 ">{completedHabitsCount} of {todayHabits.length}</h6>
+                <div className="progress position-relative" style={{ height: 25, marginBottom: 20 }}>
+                    <div className={"progress-bar " + dailyProgressColor()} role="progressbar" style={{ width: completedHabitsCount / todayHabits.length * 100 + "%" }} aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                    <h6 className="justify-content-center d-flex position-absolute w-100 mt-1 ">{completedHabitsCount} of {todayHabits.length}</h6>
                 </div>
                 {habits?.map(habit =>
                 (todayHabits?.includes(habit.id) && (

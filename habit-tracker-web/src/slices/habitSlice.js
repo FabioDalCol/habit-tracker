@@ -30,16 +30,10 @@ export const habitSlice = createSlice({
         setRefreshing: (state, action) => {
             state.habits = action.payload;
         },
-
         incrementValue: (state, action) => {
             let id = action.payload.id;
-            let uid = action.payload.uid;
-            let token = action.payload.token;
             let today = action.payload.date;
-            let habits = JSON.parse(JSON.stringify(state.habits));
             const index = state.habits.findIndex(habit => habit.id == id);
-            if (state.habits[index].category == "Walk")
-                habits = {}
             if (today == getDate()) {
                 state.habits[index].value++;
                 state.habits[index].stats[today].value = state.habits[index].value;
@@ -47,16 +41,6 @@ export const habitSlice = createSlice({
                     if (!state.habits[index].stats[today].completed) {
                         state.habits[index].stats[today].completed = true
                     }
-                }
-                if (state.habits[index].category == "Walk") {
-                    for (let id of walkToday(state.habits)) {
-                        updateHabitNoRetrieve(uid, token, getOnlyHabit(state.habits, id), id)
-                        console.log(getOnlyHabit(state.habits, id).value)
-                    }
-                    getHabits(uid, token, habits)
-                }
-                else {
-                    updateHabit(uid, token, state.habits[index], id, habits)
                 }
             }
             else {
@@ -66,7 +50,6 @@ export const habitSlice = createSlice({
                         state.habits[index].stats[today].completed = true
                     }
                 }
-                updateHabit(uid, token, state.habits[index], id, habits)
             }
         },
         decrementValue: (state, action) => {
@@ -76,8 +59,6 @@ export const habitSlice = createSlice({
             let today = action.payload.date;
             let habits = JSON.parse(JSON.stringify(state.habits));
             const index = state.habits.findIndex(habit => habit.id == id);
-            if (state.habits[index].category == "Walk")
-                habits = {}
             if (today == getDate()) {
                 if (state.habits[index].value > 0) {
                     state.habits[index].value--;
@@ -86,15 +67,6 @@ export const habitSlice = createSlice({
                         if (state.habits[index].stats[today].completed) {
                             state.habits[index].stats[today].completed = false
                         }
-                    }
-                    if (state.habits[index].category == "Walk") {
-                        for (id of walkToday(state.habits)) {
-                            updateHabitNoRetrieve(uid, token, getOnlyHabit(state.habits, id), id)
-                        }
-                        getHabits(uid, token, habits)
-                    }
-                    else {
-                        updateHabit(uid, token, state.habits[index], id, habits)
                     }
                 }
             }
@@ -105,8 +77,7 @@ export const habitSlice = createSlice({
                         if (state.habits[index].stats[today].completed) {
                             state.habits[index].stats[today].completed = false
                         }
-                    }
-                    updateHabit(uid, token, state.habits[index], id, habits)        //add rollback if api write fails
+                    }      
                 }
             }
         },
@@ -149,15 +120,8 @@ export const habitSlice = createSlice({
             let token = action.payload.token;
             let habits = JSON.parse(JSON.stringify(state.habits));
             const index = state.habits.findIndex(habit => habit.id == id);
-            if (state.habits[index].category == "Walk") {
-                for (id of walkToday(state.habits)) {
-                    updateHabitNoRetrieve(uid, token, getOnlyHabit(state.habits, id), id)
-                }
-                getHabits(uid, token, habits)
-            }
-            else {
-                updateHabit(uid, token, state.habits[index], id, habits)
-            }
+            console.log('state.habits[index]')
+            updateHabit(uid, token, state.habits[index], id, habits)
         },
         triggerCompleted: (state, action) => {
             let id = action.payload.id;
@@ -224,7 +188,7 @@ export const habitSlice = createSlice({
     }
 })
 
-export const { setIsActive, setHabits, setRefreshing, incrementValue, decrementValue, triggerCompleted, initDay, setValue, pushValue, } = habitSlice.actions;
+export const { incrementValueNoUpdate, setIsActive, setHabits, setRefreshing, incrementValue, decrementValue, triggerCompleted, initDay, setValue, pushValue, } = habitSlice.actions;
 
 export const selectHabits = (state) => state.hab.habits;
 export const selectRefreshing = (state) => state.hab.refreshing;
