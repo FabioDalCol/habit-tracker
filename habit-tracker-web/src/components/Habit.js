@@ -14,7 +14,6 @@ import { useSelector } from 'react-redux';
 import { selectUser } from '../slices/authSlice';
 import {setValue, pushValue, incrementValue, decrementValue, triggerCompleted } from '../slices/habitSlice';
 import { styleColors } from '../colors';
-import {useDebouncedEffect} from './useDebounceEffect'
 
 const rendericon = (category) => {
     switch (category) {
@@ -27,6 +26,14 @@ const rendericon = (category) => {
     }
 }
 
+const useDebouncedEffect = (effect, deps, delay) => {
+    useEffect(() => {
+      const handler = setTimeout(() => effect(), delay);
+  
+      return () => clearTimeout(handler);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [...(deps || []), delay]);
+  };
 
 export const Habit = ({ id, name = 'Default', date, category, desc, countable, value = null, set_value = null, completeToday, manage_habits = false, is_active, created, show = false, habitToEdit, setHabitToEdit, times, reminder, mon, tue, wed, thu, fri, sat, sun, pedometer = null }) => {
 
