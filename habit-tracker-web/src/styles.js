@@ -425,7 +425,29 @@ const styles =
         {
             marginLeft: "2%"
         }
+    },
+    formWebLabel:
+    {
+        style: { fontSize: 18 }
+    },
+    buttonWeb:
+    {
+        borderRadius: 30,
+        marginBottom: 5,
+        fontSize: 18
+    },
+    buttonGoogleWeb: {
+        borderRadius: 30,
+        marginBottom: 5,
+        fontSize: 18,
+        backgroundColor: "#ef4444"
+    },
+    flexColumnCenter: {
+        display: "flex",
+        alignItems: "center",
+        flexDirection: "column"
     }
+
 
 }
 

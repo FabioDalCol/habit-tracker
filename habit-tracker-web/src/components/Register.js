@@ -7,41 +7,38 @@ import { useState } from "react";
 import store from "../store";
 import { useSelector } from "react-redux";
 import { selectUser } from "../slices/authSlice";
+import { styles } from "../styles";
+import { Stack } from "@mui/material";
 import { useNavigate } from 'react-router';
 
 const RegisterPage = () => {
 
-    const [email,setEmail] = useState('');
-    const [password,setPassword] = useState('');   
-    const [fullname,setFullName] = useState('');  
-    const user = useSelector(selectUser);    
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [fullname, setFullName] = useState('');
+    const user = useSelector(selectUser);
     console.log(user)
     return (
         <div className="pages-wrapper">
             <div className="pages-inner">
                 <div className="heading-container">
                     <h3>
-                        Signup
+                        Sign up
                     </h3>
                 </div>
 
-                <Box
-                    component="form"
-                    sx={{
-                        '& > :not(style)': { m: 1, width: '25ch' },
-                    }}
-                    noValidate
-                    autoComplete="off"
-                >
-                    <TextField id="name" label="Name" value={fullname} onChange={(text)=>setFullName(text.target.value)} variant="outlined" />
-                    <TextField id="email" label="Enter the Email" value={email} onChange={(text)=>setEmail(text.target.value)} variant="outlined" />
-                    <TextField type="password" id="password" label="Enter the Password" value={password} onChange={(text)=>setPassword(text.target.value)} variant="outlined" />
-                </Box>
+                <Stack spacing={3} width={"100%"} alignItems={"center"} justifyContent={"center"} paddingY={2} >
+                    <TextField inputProps={styles.formWebLabel} id="name" label="Name" value={fullname} onChange={(text) => setFullName(text.target.value)} variant="outlined" />
+                    <TextField inputProps={styles.formWebLabel} id="email" label="Email" value={email} onChange={(text) => setEmail(text.target.value)} variant="outlined" />
+                    <TextField inputProps={styles.formWebLabel} type="password" id="password" label="Password" value={password} onChange={(text) => setPassword(text.target.value)} variant="outlined" />
+                </Stack>
 
-                <Button variant="contained" onClick={ ()=>register(email,password,fullname)}>Register</Button>
-            </div>           
+                <div style={styles.flexColumnCenter}>
+                    <Button style={styles.buttonWeb} variant="contained" onClick={() => register(email, password, fullname)}>Register</Button>
+                </div>
+            </div>
         </div>
     )
-  }
-  
-  export default RegisterPage;
+}
+
+export default RegisterPage;

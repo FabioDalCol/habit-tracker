@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import { useState } from "react";
 import store from "../store";
 import { useSelector } from "react-redux";
-import { selectUser,setProfile } from "../slices/authSlice";
+import { selectProfile, selectUser, setProfile } from "../slices/authSlice";
 import { useNavigate } from 'react-router';
 import { updateUserProfile } from "../Api";
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -15,81 +15,90 @@ import TimePicker from '@mui/lab/TimePicker';
 import { Stack } from "@mui/material";
 import { styleColors } from "../colors";
 import { makeStyles } from '@mui/styles';
+import { styles } from "../styles";
+import moment from 'moment'
 
 const makeTwoDigits = (time) => {
     const timeString = `${time}`;
     if (timeString.length === 2) return time
     return `0${time}`
-  }
+}
 
-  const useStyles = makeStyles({
+const useStyles = makeStyles({
     root: {
-      fontSize:30,
-      width: 300,
+        fontSize: 30,
+        width: 300,
     },
-  });
+});
 
-const CreateProfile = () => {
-
-    const [name,setName] = useState()
-    const [age,setAge] = useState()
-    const [height,setHeight] = useState()
-    const [rise, setRise] = useState(null);
-    const [sleep, setSleep] = useState(null);      
+const CreateProfile = ({ edit = false }) => {
+    const profile = useSelector(selectProfile);
     const user = useSelector(selectUser);
+
+    const getHour = (rise = false) => {
+        var datenow = new Date();
+        var hours;
+        rise ? hours = profile.rise_time.split(":") : hours = profile.sleep_time.split(":")
+        return new Date(datenow.setHours(hours[0], hours[1], 0))
+    }
+
+    const [name, setName] = useState(profile.username != null && profile.username != "null" ? profile.username : user.fullname?.split(/(\s+)/)[0])
+    const [age, setAge] = useState(profile.age > 0 ? profile.age : "")
+    const [height, setHeight] = useState(parseInt(profile.height) > 0 ? profile.height : "")
+    const [rise, setRise] = useState(profile.rise_time != 0 ? getHour(true) : null);
+    const [sleep, setSleep] = useState(profile.rise_time != 0 ? getHour() : null);
+
     let navigate = useNavigate();
-    const classes = useStyles();
-    console.log(user)    
+
     return (
         <div className="pages-wrapper">
-        <div className="pages-inner">
-            <div style={{ backgroundColor:"styleColors.background",display: 'flex', flexDirection:"column", alignItems: 'center', }} >              
-                <h3>
-                    Complete your profile
-                </h3>
+            <div className="pages-inner">
+                <div style={{ backgroundColor: "styleColors.background", display: 'flex', flexDirection: "column", alignItems: 'center', }} >
+                    <h3>
+                        {edit ? "Edit your profile" : "Complete your profile"}
+                    </h3>
 
-                    
-                        <Stack spacing={3} width={"100%"} alignItems={"center"} justifyContent={"center"} paddingY={2} >
-                        <TextField inputProps={{style: {fontSize: 18}}} id="name" label="Name" value={name} onChange={(text)=>setName(text.target.value)} variant="outlined" />
-                        <TextField inputProps={{style: {fontSize: 18}}} id="age" label="Age" type="number" value={age} onChange={(text)=>setAge(text.target.value)} variant="outlined" />
-                        <TextField inputProps={{style: {fontSize: 18}}} id="height" label="Height" type="number" value={height} onChange={(text)=>setHeight(text.target.value)} variant="outlined" />
+                    <Stack spacing={3} width={"100%"} alignItems={"center"} justifyContent={"center"} paddingY={2} >
+                        <TextField inputProps={styles.formWebLabel} id="name" label="Name" value={name} onChange={(text) => setName(text.target.value)} variant="outlined" />
+                        <TextField inputProps={styles.formWebLabel} id="age" label="Age" type="number" value={age} onChange={(text) => setAge(text.target.value)} variant="outlined" />
+                        <TextField inputProps={styles.formWebLabel} id="height" label="Height" type="number" value={height} onChange={(text) => setHeight(text.target.value)} variant="outlined" />
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <TimePicker
-                                label="Rise time"                            
-                                value={rise}                                              
+                                label="Rise time"
+                                value={rise}
                                 onChange={(newValue) => {
-                                setRise(newValue);
+                                    setRise(newValue);
                                 }}
-                                renderInput={(params) => <TextField {...params} InputProps={{style: {fontSize: 18}}} />}
+                                renderInput={(params) => <TextField {...params} InputProps={{ style: { fontSize: 18 } }} />}
                             />
                             <TimePicker
                                 label="Sleep time"
-                                value={sleep}                           
+                                value={sleep}
                                 onChange={(newValue) => {
-                                setSleep(newValue);
+                                    setSleep(newValue);
                                 }}
-                                renderInput={(params) => <TextField {...params} InputProps={{style: {fontSize: 18}}} />}
+                                renderInput={(params) => <TextField {...params} InputProps={{ style: { fontSize: 18 } }} />}
                             />
-                        </LocalizationProvider>  
-                        </Stack>                  
-                    
-                    <Button sx={{backgroundColor:styleColors.themeColor}} variant="contained" onClick={ async()=>{
-                                                                let diz = {
-                                                                        username: name,
-                                                                        height: height,
-                                                                        age:age,                   
-                                                                        rise_time: makeTwoDigits(rise.getHours())+':'+makeTwoDigits(rise.getMinutes()),
-                                                                        sleep_time: makeTwoDigits(sleep.getHours())+':'+makeTwoDigits(sleep.getMinutes()),                       
-                                                                        };
-                                                                store.dispatch(setProfile(diz));
-                                                                await updateUserProfile(user.uid,user.api_token,diz).then(navigate("/home"))
-                                                                }}>Let's start
+                        </LocalizationProvider>
+                    </Stack>
+
+                    <Button style={styles.buttonWeb} variant="contained" onClick={async () => {
+                        let diz = {
+                            username: name,
+                            height: height,
+                            age: age,
+                            rise_time: makeTwoDigits(rise.getHours()) + ':' + makeTwoDigits(rise.getMinutes()),
+                            sleep_time: makeTwoDigits(sleep.getHours()) + ':' + makeTwoDigits(sleep.getMinutes()),
+                        };
+                        store.dispatch(setProfile(diz));
+                        updateUserProfile(user.uid, user.api_token, diz).then(navigate("/home"))
+                    }}>{edit ? "Save" : "Let's start"}
                     </Button>
-                        
+
+                </div>
             </div>
         </div>
-    </div>
     )
-  }
-  
-  export default CreateProfile;
+}
+
+export default CreateProfile;

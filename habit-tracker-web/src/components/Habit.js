@@ -12,9 +12,9 @@ import StarIcon from '@mui/icons-material/StarBorder';
 import store from '../store';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../slices/authSlice';
-import {setValue, pushValue, incrementValue, decrementValue, triggerCompleted } from '../slices/habitSlice';
+import { setValue, pushValue, incrementValue, decrementValue, triggerCompleted } from '../slices/habitSlice';
 import { styleColors } from '../colors';
-import {useDebouncedEffect} from './useDebounceEffect'
+import { useDebouncedEffect } from './useDebounceEffect'
 
 const rendericon = (category) => {
     switch (category) {
@@ -33,12 +33,13 @@ export const Habit = ({ id, name = 'Default', date, category, desc, countable, v
     const user = useSelector(selectUser);
     const uid = user.uid
     const api_token = user.api_token;
-    
-    useDebouncedEffect(() => store.dispatch(pushValue({ id: id, uid: uid, token: api_token })),[value], 1000);
+
+
+    useDebouncedEffect(() => store.dispatch(pushValue({ id: id, uid: uid, token: api_token })), [value], 1000);
 
     return (
         <Mui.Card style={{ marginBottom: 10 }} >
-            <Mui.Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between' }}>
+            <Mui.Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between', border: completeToday ? '4px solid green' : '' }}  >
                 <div style={{ flexDirection: 'row', display: 'flex' }}>
                     <div>
                         {rendericon(category)}
@@ -63,7 +64,7 @@ export const Habit = ({ id, name = 'Default', date, category, desc, countable, v
                                     type='text'
                                     style={{ width: 10 + String(value).length * 10, height: 20, borderRadius: 20, fontWeight: 650, textAlign: 'center', marginRight: 2, borderColor: styleColors.greyish }}
                                     value={String(value)}
-                                    onChange={(event) => store.dispatch(setValue({ id: id, value: parseInt(event.target.value), date: date }))}
+                                    onChange={(event) => store.dispatch(setValue({ id: id, value: event.target.value ? parseInt(event.target.value) : 0, date: date }))}
                                     onBlur={() => { store.dispatch(pushValue({ id: id, uid: uid, token: api_token })) }}
                                     size='small'
                                 />
@@ -92,6 +93,6 @@ export const Habit = ({ id, name = 'Default', date, category, desc, countable, v
                         />)}
                 </div>
             </Mui.Box>
-        </Mui.Card>
+        </Mui.Card >
     )
 }

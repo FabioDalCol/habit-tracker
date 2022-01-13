@@ -13,7 +13,7 @@ import HabitForm from './HabitForm';
 import store from '../store';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { initDay } from '../slices/habitSlice';
-import {Habit} from './Habit'
+import { Habit } from './Habit'
 
 
 const Home = () => {
@@ -135,6 +135,7 @@ const Home = () => {
                 <h1>Hi, {profile.username}</h1>
             </div>
             <Mui.Button style={{ marginTop: -15, marginLeft: -5 }} onClick={() => { logout(); navigate('/') }}>Sign out</Mui.Button>
+            <Mui.Button style={{ marginTop: -15, marginLeft: -5 }} onClick={() => { navigate('/editprofile') }}>Profile</Mui.Button>
         </div>
         <div className='full-box'>
             <div className="left-box">
@@ -144,7 +145,7 @@ const Home = () => {
 
             <div className="center-box">
                 <div style={{ justifyContent: 'center', display: 'flex' }}>
-                    <h3> Daily Progress </h3>
+                    <h3> Daily progress </h3>
                 </div>
                 <div className="progress position-relative" style={{ height: 25, marginBottom: 20 }}>
                     <div className={"progress-bar " + dailyProgressColor()} role="progressbar" style={{ width: completedHabitsCount / todayHabits.length * 100 + "%" }} aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
