@@ -1,13 +1,42 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import './HabitForm.css'
+import {getDate, addHabit} from '../Api'
 
-export default function App() {
+
+export default function HabitForm({uid, token}) {
     const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm();
-    const onSubmit = data => console.log(data); //richiama api create
-    console.log(errors);
+    const makeHabit = (data) => {
+        var habit={
+            name: data.Category=='Custom' ? data.HabitName : data.Category, 
+            desc: data.Category=='Custom' ? data.Description : 'Default Habit', 
+            category: data.Category, 
+            created: getDate(), 
+            repeat_days: {
+                Thu: data.Thu,
+                Fri: data.Fri,
+                Sat: data.Sat,
+                Wed: data.Wed,
+                Sun: data.Sun,
+                Tue: data.Tue,
+                Mon: data.Mon
+                },
+            countable: data.Category!='Custom',
+            reminder: data.Reminder?data.Times:0,
+            is_active: true,
+            };  
+            if(data.Category!="Custom")
+            {
+                habit['value']=0;
+                habit['set_value']=data.Category=="Drink"?data.Glasses:data.Steps
+            }
+        return habit;
+        }  
+
+
+    const onSubmit = data => addHabit(uid,token,makeHabit(data)); //richiama api create
     const reminder = watch("Reminder");
-    const everyday = watch("Eve");
+    //const everyday = watch("Eve");
     const mon = watch("Mon");
     const tue = watch("Tue");
     const wed = watch("Wed");
@@ -32,7 +61,7 @@ export default function App() {
             </select>
 
             {category=="Custom" &&(<>
-                    <input type="text" placeholder="Habit name" {...register("Habit name", { required: true, maxLength: 80 })} />
+                    <input type="text" placeholder="Habit name" {...register("HabitName", { required: true, maxLength: 80 })} />
                     <input type="text" placeholder="Description" {...register("Description", { required: true, maxLength: 100 })} />
                     <div className='days'>
                         <div className='checky'>
@@ -65,19 +94,19 @@ export default function App() {
                         </div>
                     </div>
 
-                    <div className='eve'>
+                    {/* <div className='eve'>
                         <label>Everyday</label>
                         <input type="checkbox" {...register("Eve")} />
-                    </div>
+                    </div> */}
                     <div className='optional'>
                         <div className='checky'>
                             <label>Reminder</label>
-                            <input type="checkbox" {...register("Reminder")} />
+                            <input className='checko' type="checkbox" {...register("Reminder")} />
                         </div>
                         {reminder && (
                             <div className='checky'>
                                 <label>Times</label>
-                                <select {...register}>
+                                <select {...register("Times")}>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
@@ -94,13 +123,13 @@ export default function App() {
                     <input
                     type="reset"
                     value="Clear Field"
-                    />
+                    /> 
                 </>)}
 
                 {category=="Drink" && (<>
                     <div className='numbox'>
                         <label className='labello'>Daily glasses</label>
-                        <input type="number" defaultValue={defaultValues.glasses} {...register("Glasses", { max: 99 })} />
+                        <input type="number" defaultValue={defaultValues.glasses} {...register("Glasses", { required: true, max: 99 })} />
                     </div>
                     <div className='days'>
                         <div className='checky'>
@@ -133,10 +162,10 @@ export default function App() {
                         </div>
                     </div>
 
-                    <div className='eve'>
+                    {/* <div className='eve'>
                         <label>Everyday</label>
                         <input type="checkbox" {...register("Eve")} />
-                    </div>
+                    </div> */}
                     <div className='optional'>
                         <div className='checky'>
                             <label>Reminder</label>
@@ -145,7 +174,7 @@ export default function App() {
                         {reminder && (
                             <div className='checky'>
                                 <label>Times</label>
-                                <select {...register}>
+                                <select {...register("Times")}>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
@@ -159,16 +188,16 @@ export default function App() {
                     </div>
 
                     <input type="submit" value="Send" />
-                    <input
+                    {/* <input
                     type="reset"
                     value="Clear Field"
-                    />
+                    /> */}
                 </>)}
 
             {category=="Walk" &&(<>
                     <div className='numbox'>
                         <label className='labello'>Daily steps</label>
-                        <input type="number" defaultValue={defaultValues.steps} {...register("Steps", { max: 500000 })} />
+                        <input type="number" defaultValue={defaultValues.steps} {...register("Steps", {required: true, max: 500000 })} />
                     </div>
                     <div className='days'>
                         <div className='checky'>
@@ -201,10 +230,10 @@ export default function App() {
                         </div>
                     </div>
 
-                    <div className='eve'>
+                    {/* <div className='eve'>
                         <label>Everyday</label>
                         <input type="checkbox" {...register("Eve")} />
-                    </div>
+                    </div> */}
                     <div className='optional'>
                         <div className='checky'>
                             <label>Reminder</label>
@@ -213,7 +242,7 @@ export default function App() {
                         {reminder && (
                             <div className='checky'>
                                 <label>Times</label>
-                                <select {...register}>
+                                <select {...register("Times")}>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
@@ -226,10 +255,10 @@ export default function App() {
                     </div>
 
                     <input type="submit" value="Send" />
-                    <input
+                    {/* <input
                     type="reset"
                     value="Clear Field"
-                    />
+                    /> */}
                 </>)}
         </form>
     );

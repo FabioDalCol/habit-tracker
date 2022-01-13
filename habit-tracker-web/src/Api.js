@@ -94,6 +94,7 @@ const getTodayHabits = (habits) => {
     if(habits == null ) return ids
     for(var habit of habits){             
         if (habit.repeat_days[weekDays[today.getDay()]] && habit.is_active){        //If today weekday is true
+            console.log(habit)
             ids.push(habit.id)
         }      
     }        

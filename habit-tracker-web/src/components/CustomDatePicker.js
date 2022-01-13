@@ -5,12 +5,9 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import StaticDatePicker from '@mui/lab/StaticDatePicker';
 import PickersDay from '@mui/lab/PickersDay';
-import endOfWeek from 'date-fns/endOfWeek';
-import isSameDay from 'date-fns/isSameDay';
-import isWithinInterval from 'date-fns/isWithinInterval';
-import startOfWeek from 'date-fns/startOfWeek';
 import moment from 'moment'
 import '../App.css'
+import Typography from '@mui/material/Typography';
 
 const CustomPickersDay = styled(PickersDay, {
   shouldForwardProp: (prop) =>
@@ -42,10 +39,10 @@ const CustomPickersDay = styled(PickersDay, {
   }),
 }));
 
-export default function CustomDay({red, yellow, green, first}) {
-  const [value, setValue] = React.useState(new Date());
+export default function CustomDay({red, yellow, green, first, setDateHome}) {
+  const [dateCustom, setDateCustom] = React.useState(new Date());
   const renderWeekPickerDay = (date, selectedDates, pickersDayProps) => {
-    if (!value) {
+    if (!dateCustom) {
       return <PickersDay {...pickersDayProps} />;
     }
     const redDate = (date) => {return red.includes(moment(date).format('YYYY-MM-DD'))}
@@ -67,15 +64,16 @@ export default function CustomDay({red, yellow, green, first}) {
     );
   };
 
-  return (     
+  return (  
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <StaticDatePicker
         className='static-picker'
         displayStaticWrapperAs="desktop"
-        label="Week picker"
-        value={value}
+        label="Picked date"
+        value={dateCustom}
         onChange={(newValue) => {
-          setValue(newValue);
+          setDateCustom(newValue);
+          setDateHome(newValue);
         }}
         minDate={new Date(first)} 
         maxDate={new Date()}
