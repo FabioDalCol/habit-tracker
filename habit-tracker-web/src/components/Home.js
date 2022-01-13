@@ -6,21 +6,34 @@ import { selectUser, selectProfile } from "../slices/authSlice";
 import { selectHabits } from '../slices/habitSlice';
 import { logout } from '../hooks/useAuth';
 import { useNavigate } from 'react-router';
-import getHabits, {getTodayHabits, getDate, getHabitsFromDate, weekDays, countCompletedHabits} from '../Api';
+import getHabits, { getTodayHabits, getDate, getHabitsFromDate, weekDays, countCompletedHabits } from '../Api';
 import * as Mui from '@mui/material';
+import CustomDatePicker from './CustomDatePicker'
+import moment from 'moment'
+
+import HabitForm from './HabitForm';
 import Drink from '@mui/icons-material/LocalDrink';
 import Walk from '@mui/icons-material/DirectionsWalk';
 import Custom from '@mui/icons-material/EmojiEvents';
-import CustomDatePicker from './CustomDatePicker'
-import moment from 'moment'
-import HabitForm from './HabitForm';
-import Add from '@mui/icons-material/AddCircleOutline';
-import Minus from '@mui/icons-material/RemoveCircleOutline';
-import { amber } from '@mui/material/colors';
-import Star from '@mui/icons-material/Star';
-import StarIcon from '@mui/icons-material/StarBorder';
+import { Habit } from './Habit';
+import { styles } from "../styles"
 import store from '../store';
+import { ProgressBar } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { initDay } from '../slices/habitSlice';
 import { incrementValue, decrementValue, setValue, triggerCompleted, pushValue, setIsActive } from '../slices/habitSlice';
+
+const rendericon = (category) => {
+    switch (category) {
+        case 'Custom':
+            return <Custom sx={{ fontSize: 40, color: '#ffc600' }} />
+        case 'Drink':
+            return <Drink sx={{ fontSize: 40, color: '#2acaea' }} />
+        case 'Walk':
+            return <Walk sx={{ fontSize: 40, color: '#B6134A' }} />
+
+    }
+}
 
 
 const Home = () => {
@@ -34,27 +47,27 @@ const Home = () => {
     const [val, setVal] = useState(10);
 
     var todayHabits = getTodayHabits(habits);
-    var completedHabitsCount = countCompletedHabits(todayHabits,habits);  
+    var completedHabitsCount = countCompletedHabits(todayHabits, habits);
 
-    const dailyProgressColor = () => {   
-        var percent=completedHabitsCount/todayHabits.length*100+"%" 
-        if(completedHabitsCount/todayHabits.length<=1/3){
-          return {backgroundColor: 'red', width: percent}
+    const dailyProgressColor = () => {
+        var percent = completedHabitsCount / todayHabits.length * 100 + "%"
+        if (completedHabitsCount / todayHabits.length <= 1 / 2) {
+            return "bg-danger"
         }
-        if(completedHabitsCount/todayHabits.length<=1/2){
-          return {backgroundColor: 'orange', width: percent}
+        if (completedHabitsCount / todayHabits.length < 1) {
+            return "bg-warning"
         }
-        else{
-          return {backgroundColor: 'green', width: percent}
+        else {
+            return "bg-success"
         }
     }
 
     const getFirstDate = (habits) => {
-        if(habits==null){
+        if (habits == null) {
             return getDate()
         }
         var dates = [];
-        for(var habit of habits) {
+        for (var habit of habits) {
             dates.push(habit.created)
         }
         return dates.sort()[0]
@@ -62,44 +75,30 @@ const Home = () => {
 
     const repeatDays = (activeDays) => {
         var days = ""
-        for(var day of weekDays){
-          if(activeDays[day]){
-            days = days + day + ", "
-          }
+        for (var day of weekDays) {
+            if (activeDays[day]) {
+                days = days + day + ", "
+            }
         }
-        days= days.slice(0, -2);
+        days = days.slice(0, -2);
         return days
-      }
+    }
 
-    const rendericon = (category) => {
-        switch(category){
-            case 'Custom':
-                return <Custom sx={{ fontSize: 40, color: '#ffc600'}} />
-            case 'Drink':
-                return <Drink sx={{ fontSize: 40, color: '#2acaea'}} />
-            case 'Walk':
-                return <Walk sx={{ fontSize: 40, color: '#B6134A'}} />
-
+    const countCompleteFromDate = (date) => {
+        var completed = 0;
+        var total = 0;
+        if (habits == null) return undefined;
+        for (var habit of habits) {
+            if (habit.stats) {
+                if (habit.stats[date]) {        //If today weekday is true
+                    total = total + 1;
+                    completed = completed + habit.stats[date].completed;
+                }
+            }
         }
+        return (total ? completed / total : undefined);
     }
 
-    const countCompleteFromDate = (date) =>
-    {
-        var completed=0;   
-        var total=0;
-        if(habits == null ) return undefined;
-        for(var habit of habits){             
-            if(habit.stats)
-            {          
-                if (habit.stats[date]){        //If today weekday is true
-                    total=total+1;
-                    completed=completed+habit.stats[date].completed;                
-                } 
-            }     
-        }  
-        return (total?completed/total:undefined);
-    }
-  
     const getDaysBetweenDates = (startDate, endDate) => {
         var now = startDate.clone(), dates = [];
         while (now.isSameOrBefore(endDate)) {
@@ -108,55 +107,63 @@ const Home = () => {
         }
         return dates
     };
-  
-    const markDay = () =>
-    {
-        let dates=getDaysBetweenDates(moment(getFirstDate(habits)), new Date());
-        var red=[]
-        var yellow=[]
-        var green=[]
-        for (var k of dates){
-              let progress=countCompleteFromDate(k);
-              if (progress == undefined) continue;
-              if(progress<0.5)
-                  red.push(k);
-              else
-              { 
-                  if(progress<1)
-                      yellow.push(k)
-                  else
-                      green.push(k);
-              }
-            }    
-         
-        const x=[red,yellow,green]    
+
+    const markDay = () => {
+        let dates = getDaysBetweenDates(moment(getFirstDate(habits)), new Date());
+        var red = []
+        var yellow = []
+        var green = []
+        for (var k of dates) {
+            let progress = countCompleteFromDate(k);
+            if (progress == undefined) continue;
+            if (progress < 0.5)
+                red.push(k);
+            else {
+                if (progress < 1)
+                    yellow.push(k)
+                else
+                    green.push(k);
+            }
+        }
+
+        const x = [red, yellow, green]
         return x;
     }
 
-    var red=[]
-    var yellow=[]
-    var green=[]
+    var red = []
+    var yellow = []
+    var green = []
 
-    red=markDay()[0];
-    yellow=markDay()[1];
-    green=markDay()[2];
+    red = markDay()[0];
+    yellow = markDay()[1];
+    green = markDay()[2];
 
     const handleChange = (event) => {
         setVal(event.target.value);
-      };
-  
-    useEffect(async() => {   
-        getHabits(uid,api_token,{})
-        }, [])
+    };
 
-   
+    console.log(date)
+
+    useEffect(() => {
+        getHabits(uid, api_token, {})
+        console.log("get")
+    }, [])
+
+    useEffect(() => {
+        if (habits != undefined) {
+            console.log("init")
+            store.dispatch(initDay({ uid: uid, token: api_token }))
+        }
+
+    }, [habits])
+
+
     return (<>
         <div className="bar">
             <div className="header">
-                <img src={user.photo_url} alt="" />
-                <h1>Hello, <span></span>{profile.username}</h1>
+                <h1>Hi, {profile.username}</h1>
             </div>
-            <Mui.Button style={{marginTop:-15}} onClick={() => {logout();  navigate('/')}}>Sign out</Mui.Button>
+            <Mui.Button style={{ marginTop: -15, marginLeft: -5 }} onClick={() => { logout(); navigate('/') }}>Sign out</Mui.Button>
         </div>
         <div className='full-box'>
             <div className="left-box">
@@ -165,136 +172,60 @@ const Home = () => {
 
 
             <div className="center-box">
-                <div style={{justifyContent:'center', display:'flex'}}>
-                    BARRA PROGRESSO
-                </div> 
-                {habits?.map(habit => 
-                    (todayHabits?.includes(habit.id) && (<>
-                    <Mui.Card style={{marginBottom:10}} >
-                        <Mui.Box sx={{ p: 2, display: 'flex', justifyContent:'space-between'}}>
-                            <div style={{flexDirection:'row', display:'flex'}}>
-                                <div>
-                                {rendericon(habit.category)}
-                                </div>
-                                <div>
-                                <Mui.Stack spacing={0.5} marginLeft='7%'>
-                                    <Mui.Typography fontWeight={700}>{habit.name}</Mui.Typography>
-                                    <Mui.Typography variant="body2" color="text.secondary">
-                                    {(repeatDays(habit.repeat_days).split(',').length>6) ? 'Everyday':repeatDays(habit.repeat_days)}
-                                    </Mui.Typography>
-                                </Mui.Stack>
-                                </div>
-                            </div>
-                            {/* <Mui.IconButton onPress={()=>console.log('edito')}>
-                                <Edit />
-                            </Mui.IconButton> */}
-                            <div>
-                                {habit.category!="Custom" ?(<>
-                                    <div style={{display:'flex', flexDirection:"row", alignItems:'center'}}>
-                                    <div>
-                                    <input
-                                        type='text'
-                                        style={{width:10+String(val).length*10, height:20, color:'#333333', borderRadius:90, fontWeight: 650, textAlign:'center', marginRight:2, borderColor:'white'}} 
-                                        value={val}
-                                        onChange={handleChange}
-                                        size='small'
-                                    />
-                                    </div>
-                                    <div>
-                                    <Mui.Typography textAlign='center' fontWeight={700}>/{habit.set_value}</Mui.Typography>
-                                    </div>
-                                </div>
-                                <div style={{textAlign: 'end'}}>
-                                    <Mui.IconButton onClick={() => console.log('adssafas')} style={{marginRight:-10}}>
-                                        <Add sx={{ fontSize: 25, color: habit.category=="Walk"?'#B6134A':'#2acaea'}}  />
-                                    </Mui.IconButton>
-                                    <Mui.IconButton onClick={() => console.log('adssafas')}>
-                                        <Minus sx={{ fontSize: 25, color: habit.category=="Walk"?'#B6134A':'#2acaea'}} />
-                                    </Mui.IconButton>
-                                </div>
-                                </>)
-                                :
-                                (<Mui.Checkbox checked={habit.stats[moment(date).format('YYYY-MM-DD')]?.completed} sx={{
-                                    color: amber[800],
-                                    '&.Mui-checked': {
-                                      color: amber[400],
-                                    }}} 
-                                    icon={<StarIcon sx={{ fontSize: 30}}/>}
-                                    checkedIcon={<Star sx={{ fontSize: 30}}/>}
-                                    />)}
-                            </div>
-                        </Mui.Box>
-                    </Mui.Card>
-                    </>
-                    )        
-                    )
-                    )}
+                <div style={{ justifyContent: 'center', display: 'flex' }}>
+                    <h3> Daily Progress </h3>
+                </div>
+                <div class="progress position-relative" style={{ height: 25, marginBottom: 20 }}>
+                    <div class={"progress-bar " + dailyProgressColor()} role="progressbar" style={{ width: completedHabitsCount / todayHabits.length * 100 + "%" }} aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                    <h6 class="justify-content-center d-flex position-absolute w-100 mt-1 ">{completedHabitsCount} of {todayHabits.length}</h6>
+                </div>
+                {habits?.map(habit =>
+                (todayHabits?.includes(habit.id) && (
+                    <Habit
+                        key={habit.id}
+                        id={habit.id}
+                        name={habit.name}
+                        category={habit.category}
+                        desc={(repeatDays(habit.repeat_days).split(',').length > 6) ? 'Everyday' : repeatDays(habit.repeat_days)}
+                        countable={habit.countable}
+                        value={habit.value}
+                        set_value={habit.set_value}
+                        completeToday={habit.stats != undefined ? habit.stats[getDate()]?.completed : false}
+                        date={getDate()}
+                    />
+                )
+                )
+                )}
             </div>
             <div className="right-box" >
                 <div className="static-picker">
                     <CustomDatePicker red={red} yellow={yellow} green={green} first={getFirstDate(habits)} setDateHome={setDate} />
-                    {/* <p style={{textAlign:'center', fontWeight:600, fontSize:22}}>Habits for {date}</p> impazzisce se cambio data non so perchè */}
-                    {habits?.map(habit => 
-                    (getHabitsFromDate(habits, date)?.includes(habit.id) && (<>
-                    <Mui.Card style={{marginBottom:10}} >
-                        <Mui.Box sx={{ p: 2, display: 'flex', justifyContent:'space-between'}}>
-                            <div style={{flexDirection:'row', display:'flex'}}>
-                                <div>
-                                {rendericon(habit.category)}
-                                </div>
-                                <div>
-                                <Mui.Stack spacing={0.5} marginLeft='7%'>
-                                    <Mui.Typography fontWeight={700}>{habit.name}</Mui.Typography>
-                                    <Mui.Typography variant="body2" color="text.secondary">
-                                    {(repeatDays(habit.repeat_days).split(',').length>6) ? 'Everyday':repeatDays(habit.repeat_days)}
-                                    </Mui.Typography>
-                                </Mui.Stack>
-                                </div>
-                            </div>
-                            {/* <Mui.IconButton onPress={()=>console.log('edito')}>
-                                <Edit />
-                            </Mui.IconButton> */}
-                            <div>
-                                {habit.category!="Custom" ?(<>
-                                <div style={{display:'flex', flexDirection:"row", alignItems:'center'}}>
-                                    <div>
-                                    <input
-                                        type='text'
-                                        style={{width:10+String(val).length*10, height:20, color:'#333333', borderRadius:90, fontWeight: 650, textAlign:'center', marginRight:2, borderColor:'white'}} 
-                                        value={val}
-                                        onChange={handleChange}
-                                        size='small'
-                                    />
-                                    </div>
-                                    <div>
-                                    <Mui.Typography textAlign='center' fontWeight={700}>/{habit.set_value}</Mui.Typography>
-                                    </div>
-                                </div>
-                                <div style={{textAlign: 'end'}}>
-                                    <Mui.IconButton onClick={() => console.log('adssafas')} style={{marginRight:-10}}>
-                                        <Add sx={{ fontSize: 25, color: habit.category=="Walk"?'#B6134A':'#2acaea'}}  />
-                                    </Mui.IconButton>
-                                    <Mui.IconButton onClick={() => console.log('adssafas')}>
-                                        <Minus sx={{ fontSize: 25, color: habit.category=="Walk"?'#B6134A':'#2acaea'}} />
-                                    </Mui.IconButton>
-                                </div>
-                                </>)
-                                :
-                                (<Mui.Checkbox checked={habit.stats[moment(date).format('YYYY-MM-DD')]?.completed} sx={{
-                                    color: amber[800],
-                                    '&.Mui-checked': {
-                                      color: amber[400],
-                                    }}} 
-                                    icon={<StarIcon sx={{ fontSize: 30}}/>}
-                                    checkedIcon={<Star sx={{ fontSize: 30}}/>}
-                                    />)}
-                            </div>
-                        </Mui.Box>
-                    </Mui.Card>
-                    </>
-                    )        
-                    )
-                    )}
+                </div>
+                {/* <p style={{textAlign:'center', fontWeight:600, fontSize:22}}>Habits for {date}</p> impazzisce se cambio data non so perchè */}
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                    <div style={{ width: "80%" }}>
+                        {habits?.map(habit =>
+                        (getHabitsFromDate(habits, date)?.includes(habit.id) && (
+                            <Habit
+
+                                key={habit.id}
+                                id={habit.id}
+                                name={habit.name}
+                                category={habit.category}
+                                desc={habit.desc}
+                                countable={habit.countable}
+                                value={habit.stats[moment(date).format("YYYY-MM-DD")].value}
+                                set_value={habit.stats[moment(date).format("YYYY-MM-DD")].set_value}
+                                completeToday={habit.stats != undefined ? habit.stats[moment(date).format("YYYY-MM-DD")]?.completed : false}
+                                uid={uid}
+                                api_token={api_token}
+                                date={moment(date).format("YYYY-MM-DD")}
+                            />
+                        )
+                        )
+                        )}
+
+                    </div>
                 </div>
             </div>
         </div>
