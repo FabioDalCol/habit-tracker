@@ -139,6 +139,9 @@ const Home = () => {
         </div>
         <div className='full-box'>
             <div className="left-box">
+                <div className='titlesx'>
+                    <p> New Habit </p>
+                </div>
                 <HabitForm uid={uid} token={api_token} />
             </div>
 
@@ -170,10 +173,13 @@ const Home = () => {
                 )}
             </div>
             <div className="right-box" >
+                <div className='titledx'>
+                    <p> History stats </p>
+                </div>
                 <div className="static-picker">
                     <CustomDatePicker red={red} yellow={yellow} green={green} first={getFirstDate(habits)} setDateHome={setDate} />
                 </div>
-                {/* <p style={{textAlign:'center', fontWeight:600, fontSize:22}}>Habits for {date}</p> impazzisce se cambio data non so perchè */}
+                <p style={{textAlign:'center', fontWeight:600, fontSize:22, marginTop: -30, color: '#20377a'}}>Habits for {moment(date).format('YYYY-MM-DD')}</p>
                 <div style={{ display: "flex", justifyContent: "center" }}>
                     <div style={{ width: "80%" }}>
                         {habits?.map(habit =>

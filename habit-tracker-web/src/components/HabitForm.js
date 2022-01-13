@@ -3,7 +3,6 @@ import { useForm } from 'react-hook-form';
 import './HabitForm.css'
 import { getDate, addHabit } from '../Api'
 import Checkbox from '@mui/material/Checkbox';
-import Select from '@mui/material/Select';
 
 export default function HabitForm({ uid, token }) {
     const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm();
@@ -36,18 +35,69 @@ export default function HabitForm({ uid, token }) {
 
     const onSubmit = data => addHabit(uid, token, makeHabit(data)); //richiama api create
     const reminder = watch("Reminder");
-    //const everyday = watch("Eve");
-    const mon = watch("Mon");
-    const tue = watch("Tue");
-    const wed = watch("Wed");
-    const thu = watch("Thu");
-    const fri = watch("Fri");
-    const sat = watch("Sat");
-    const sun = watch("Sun");
     const category = watch("Category")
     const defaultValues = {
         glasses: 10,
         steps: 10000,
+    }
+
+    const renderForm = () => {
+        return (<>
+            <div className='days'>
+                <div className='checky'>
+                    <label>Mon</label>
+                    <Checkbox  {...register("Mon")} />
+                </div>
+                <div className='checky'>
+                    <label>Tue</label>
+                    <Checkbox {...register("Tue")} />
+                </div>
+                <div className='checky'>
+                    <label>Wed</label>
+                    <Checkbox {...register("Wed")} />
+                </div>
+                <div className='checky'>
+                    <label>Thu</label>
+                    <Checkbox {...register("Thu")} />
+                </div>
+                <div className='checky'>
+                    <label>Fri</label>
+                    <Checkbox {...register("Fri")} />
+                </div>
+                <div className='checky'>
+                    <label>Sat</label>
+                    <Checkbox {...register("Sat")} />
+                </div>
+                <div className='checky'>
+                    <label>Sun</label>
+                    <Checkbox {...register("Sun")} />
+                </div>
+            </div>
+
+            {/* <div className='eve'>
+                <label>Everyday</label>
+                <input type="checkbox" {...register("Eve")} />
+            </div> */}
+            <div className='optional'>
+                <div className='checky'>
+                    <label>Reminder</label>
+                    <Checkbox {...register("Reminder")} />
+                </div>
+                {reminder && (
+                    <div className='checky'>
+                        <label style={{marginTop:-8}}>Times</label>
+                        <select style={{marginTop:8}} {...register("Times")}>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                        </select>
+                    </div>
+                )}
+            </div>
+            <input type="submit" value="Send" /></>)
     }
 
 
@@ -63,67 +113,7 @@ export default function HabitForm({ uid, token }) {
             {category == "Custom" && (<>
                 <input type="text" placeholder="Habit name" {...register("HabitName", { required: true, maxLength: 80 })} />
                 <input type="text" placeholder="Description" {...register("Description", { required: true, maxLength: 100 })} />
-                <div className='days'>
-                    <div className='checky'>
-                        <label>Mon</label>
-                        <Checkbox  {...register("Mon")} />
-                    </div>
-                    <div className='checky'>
-                        <label>Tue</label>
-                        <Checkbox {...register("Tue")} />
-                    </div>
-                    <div className='checky'>
-                        <label>Wed</label>
-                        <Checkbox {...register("Wed")} />
-                    </div>
-                    <div className='checky'>
-                        <label>Thu</label>
-                        <Checkbox {...register("Thu")} />
-                    </div>
-                    <div className='checky'>
-                        <label>Fri</label>
-                        <Checkbox {...register("Fri")} />
-                    </div>
-                    <div className='checky'>
-                        <label>Sat</label>
-                        <Checkbox {...register("Sat")} />
-                    </div>
-                    <div className='checky'>
-                        <label>Sun</label>
-                        <Checkbox {...register("Sun")} />
-                    </div>
-                </div>
-
-                {/* <div className='eve'>
-                        <label>Everyday</label>
-                        <input type="checkbox" {...register("Eve")} />
-                    </div> */}
-                <div className='optional'>
-                    <div className='checky'>
-                        <label>Reminder</label>
-                        <Checkbox className="checko" {...register("Reminder")} />
-                    </div>
-                    {reminder && (
-                        <div className='checky'>
-                            <label>Times</label>
-                            <select {...register("Times")}>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
-                            </select>
-                        </div>
-                    )}
-
-                </div>
-
-                <input type="submit" value="Send" />
-                <input
-                    type="reset"
-                    value="Clear Field"
-                />
+                {renderForm()}
             </>)}
 
             {category == "Drink" && (<>
@@ -131,67 +121,7 @@ export default function HabitForm({ uid, token }) {
                     <label className='labello'>Daily glasses</label>
                     <input type="number" defaultValue={defaultValues.glasses} {...register("Glasses", { required: true, max: 99 })} />
                 </div>
-                <div className='days'>
-                    <div className='checky'>
-                        <label>Mon</label>
-                        <input type="checkbox" {...register("Mon")} />
-                    </div>
-                    <div className='checky'>
-                        <label>Tue</label>
-                        <input type="checkbox" {...register("Tue")} />
-                    </div>
-                    <div className='checky'>
-                        <label>Wed</label>
-                        <input type="checkbox" {...register("Wed")} />
-                    </div>
-                    <div className='checky'>
-                        <label>Thu</label>
-                        <input type="checkbox" {...register("Thu")} />
-                    </div>
-                    <div className='checky'>
-                        <label>Fri</label>
-                        <input type="checkbox" {...register("Fri")} />
-                    </div>
-                    <div className='checky'>
-                        <label>Sat</label>
-                        <input type="checkbox" {...register("Sat")} />
-                    </div>
-                    <div className='checky'>
-                        <label>Sun</label>
-                        <input type="checkbox" {...register("Sun")} />
-                    </div>
-                </div>
-
-                {/* <div className='eve'>
-                        <label>Everyday</label>
-                        <input type="checkbox" {...register("Eve")} />
-                    </div> */}
-                <div className='optional'>
-                    <div className='checky'>
-                        <label>Reminder</label>
-                        <input type="checkbox" {...register("Reminder")} />
-                    </div>
-                    {reminder && (
-                        <div className='checky'>
-                            <label>Times</label>
-                            <select {...register("Times")}>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
-                            </select>
-                        </div>
-                    )}
-
-                </div>
-
-                <input type="submit" value="Send" />
-                {/* <input
-                    type="reset"
-                    value="Clear Field"
-                    /> */}
+                {renderForm()}
             </>)}
 
             {category == "Walk" && (<>
@@ -199,66 +129,7 @@ export default function HabitForm({ uid, token }) {
                     <label className='labello'>Daily steps</label>
                     <input type="number" defaultValue={defaultValues.steps} {...register("Steps", { required: true, max: 500000 })} />
                 </div>
-                <div className='days'>
-                    <div className='checky'>
-                        <label>Mon</label>
-                        <input type="checkbox" {...register("Mon")} />
-                    </div>
-                    <div className='checky'>
-                        <label>Tue</label>
-                        <input type="checkbox" {...register("Tue")} />
-                    </div>
-                    <div className='checky'>
-                        <label>Wed</label>
-                        <input type="checkbox" {...register("Wed")} />
-                    </div>
-                    <div className='checky'>
-                        <label>Thu</label>
-                        <input type="checkbox" {...register("Thu")} />
-                    </div>
-                    <div className='checky'>
-                        <label>Fri</label>
-                        <input type="checkbox" {...register("Fri")} />
-                    </div>
-                    <div className='checky'>
-                        <label>Sat</label>
-                        <input type="checkbox" {...register("Sat")} />
-                    </div>
-                    <div className='checky'>
-                        <label>Sun</label>
-                        <input type="checkbox" {...register("Sun")} />
-                    </div>
-                </div>
-
-                {/* <div className='eve'>
-                        <label>Everyday</label>
-                        <input type="checkbox" {...register("Eve")} />
-                    </div> */}
-                <div className='optional'>
-                    <div className='checky'>
-                        <label>Reminder</label>
-                        <input type="checkbox" {...register("Reminder")} />
-                    </div>
-                    {reminder && (
-                        <div className='checky'>
-                            <label>Times</label>
-                            <select {...register("Times")}>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
-                            </select>
-                        </div>
-                    )}
-                </div>
-
-                <input type="submit" value="Send" />
-                {/* <input
-                    type="reset"
-                    value="Clear Field"
-                    /> */}
+                {renderForm()}
             </>)}
         </form>
     );

@@ -47,15 +47,15 @@ export const Habit = ({ id, name = 'Default', date, category, desc, countable, v
 
     return (
         <Mui.Card style={{ marginBottom: 10 }} >
-            <Mui.Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between', border: completeToday ? '4px solid green' : '' }}  >
+            <Mui.Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between', borderTop: completeToday ? '4px solid green' : '', borderBottom: completeToday ? '4px solid green' : '' }}  >
                 <div style={{ flexDirection: 'row', display: 'flex' }}>
                     <div>
                         {rendericon(category)}
                     </div>
-                    <div>
+                    <div style={{width:160}}>
                         <Mui.Stack spacing={0.5} marginLeft='7%'>
                             <Mui.Typography fontWeight={700}>{name}</Mui.Typography>
-                            <Mui.Typography variant="body2" color="text.secondary">
+                             <Mui.Typography variant="body2" color="text.secondary"> {/* style={{whiteSpace:'nowrap'}} */}
                                 {desc}
                             </Mui.Typography>
                         </Mui.Stack>

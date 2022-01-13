@@ -75,6 +75,8 @@
 
 .center-box h3{
   font-weight: 600;
+  font-size: 40px;
+  margin-bottom: 20px;
 }
 
 .center-box h6{
@@ -110,13 +112,30 @@ h3 {
 }
 
 .static-picker{
-  color: #000000;
+  color: #20377a
 }
 
-/* .static-picker:selected{
-  background-color: "green";
+.titlesx{
+  display: flex;
+  justify-content: center;
+  margin-top: -10px;
 }
 
-.Mui-selected{
-  background-color: "green";
-} */
+.titlesx p{
+  font-weight: 600;
+  font-size: 40px;
+  color: aliceblue;
+}
+
+.titledx{
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  margin-bottom: -20px;
+}
+
+.titledx p{
+  font-weight: 650;
+  font-size: 40px;
+  color: #20377a;
+}
