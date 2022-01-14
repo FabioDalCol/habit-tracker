@@ -83,6 +83,9 @@
   font-weight: 700;
 }
 
+.hovButton:hover{
+  cursor: pointer;
+}
 
 .left-box {
   width: 100%;

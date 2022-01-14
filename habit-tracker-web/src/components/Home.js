@@ -148,7 +148,7 @@ const Home = () => {
 
             <div className="center-box">
                 <div style={{ justifyContent: 'center', display: 'flex' }}>
-                    <h3> Daily progress </h3>
+                    <h3 className="hovButton" onClick={() => getHabits(uid, api_token, {})}> Daily progress </h3>
                 </div>
                 <div className="progress position-relative" style={{ height: 25, marginBottom: 20 }}>
                     <div className={"progress-bar " + dailyProgressColor()} role="progressbar" style={{ width: completedHabitsCount / todayHabits.length * 100 + "%" }} aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
@@ -179,7 +179,7 @@ const Home = () => {
                 <div className="static-picker">
                     <CustomDatePicker red={red} yellow={yellow} green={green} first={getFirstDate(habits)} setDateHome={setDate} />
                 </div>
-                <p style={{textAlign:'center', fontWeight:600, fontSize:22, marginTop: -30, color: '#20377a'}}>Habits for {moment(date).format('YYYY-MM-DD')}</p>
+                <p style={{ textAlign: 'center', fontWeight: 600, fontSize: 22, marginTop: -30, color: '#20377a' }}>Habits for {moment(date).format('YYYY-MM-DD')}</p>
                 <div style={{ display: "flex", justifyContent: "center" }}>
                     <div style={{ width: "80%" }}>
                         {habits?.map(habit =>
