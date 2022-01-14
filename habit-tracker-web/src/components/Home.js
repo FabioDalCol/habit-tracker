@@ -12,8 +12,18 @@ import moment from 'moment'
 import HabitForm from './HabitForm';
 import store from '../store';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { initDay } from '../slices/habitSlice';
+import { initDay, pushValue } from '../slices/habitSlice';
 import { Habit } from './Habit'
+
+
+const useDebouncedEffect = (effect, deps, delay) => {
+    useEffect(() => {
+        const handler = setTimeout(() => effect(), delay);
+
+        return () => clearTimeout(handler);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [...(deps || []), delay]);
+};
 
 
 const Home = () => {
@@ -24,6 +34,7 @@ const Home = () => {
     const uid = user.uid
     const api_token = user.api_token;
     const [date, setDate] = useState(getDate());
+    const [debounce, setDebounce] = useState(0);
 
     var todayHabits = getTodayHabits(habits);
     var completedHabitsCount = countCompletedHabits(todayHabits, habits);
@@ -128,6 +139,8 @@ const Home = () => {
 
     }, [habits])
 
+    useDebouncedEffect(() => { console.log(debounce.id); if (debounce.id != undefined) store.dispatch(pushValue({ id: debounce.id, uid: uid, token: api_token })) }, [debounce], 1000);
+
 
     return (<>
         <div className="bar">
@@ -167,6 +180,8 @@ const Home = () => {
                         set_value={habit.set_value}
                         completeToday={habit.stats != undefined ? habit.stats[getDate()]?.completed : false}
                         date={getDate()}
+                        setDebounce={setDebounce}
+                        debounce={debounce}
                     />
                 )
                 )
@@ -198,6 +213,8 @@ const Home = () => {
                                 uid={uid}
                                 api_token={api_token}
                                 date={moment(date).format("YYYY-MM-DD")}
+                                debounce={debounce}
+                                setDebounce={setDebounce}
                             />
                         )
                         )

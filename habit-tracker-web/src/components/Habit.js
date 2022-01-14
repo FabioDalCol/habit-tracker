@@ -27,23 +27,15 @@ const rendericon = (category) => {
     }
 }
 
-const useDebouncedEffect = (effect, deps, delay) => {
-    useEffect(() => {
-        const handler = setTimeout(() => effect(), delay);
 
-        return () => clearTimeout(handler);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [...(deps || []), delay]);
-};
 
-export const Habit = ({ id, name = 'Default', date, category, desc, countable, value = null, set_value = null, completeToday, manage_habits = false, is_active, created, show = false, habitToEdit, setHabitToEdit, times, reminder, mon, tue, wed, thu, fri, sat, sun, pedometer = null }) => {
+
+export const Habit = ({ id, name = 'Default', date, category, desc, countable, value = null, set_value = null, completeToday, debounce = debounce, setDebounce = setDebounce }) => {
 
     const user = useSelector(selectUser);
     const uid = user.uid
     const api_token = user.api_token;
 
-
-    useDebouncedEffect(() => store.dispatch(pushValue({ id: id, uid: uid, token: api_token })), [value], 1000);
 
     return (
         <Mui.Card style={{ marginBottom: 10 }} >
@@ -52,10 +44,10 @@ export const Habit = ({ id, name = 'Default', date, category, desc, countable, v
                     <div>
                         {rendericon(category)}
                     </div>
-                    <div style={{width:160}}>
+                    <div style={{ width: 160 }}>
                         <Mui.Stack spacing={0.5} marginLeft='7%'>
                             <Mui.Typography fontWeight={700}>{name}</Mui.Typography>
-                             <Mui.Typography variant="body2" color="text.secondary"> {/* style={{whiteSpace:'nowrap'}} */}
+                            <Mui.Typography variant="body2" color="text.secondary"> {/* style={{whiteSpace:'nowrap'}} */}
                                 {desc}
                             </Mui.Typography>
                         </Mui.Stack>
@@ -80,10 +72,10 @@ export const Habit = ({ id, name = 'Default', date, category, desc, countable, v
                             </div>
 
                             <div style={{ flexDirection: "row", alignSelf: "flex-end", justifyContent: "flex-end" }}>
-                                <Mui.IconButton onClick={() => store.dispatch(incrementValue({ id: id, uid: uid, token: api_token, date: date }))} style={{ marginRight: -10 }}>
+                                <Mui.IconButton onClick={() => { setDebounce({ id: id, debounce: (debounce + 1) }); store.dispatch(incrementValue({ id: id, uid: uid, token: api_token, date: date })) }} style={{ marginRight: -10 }}>
                                     <Add sx={{ fontSize: 25, color: category == "Walk" ? '#B6134A' : '#2acaea' }} />
                                 </Mui.IconButton>
-                                <Mui.IconButton onClick={() => store.dispatch(decrementValue({ id: id, uid: uid, token: api_token, date: date }))}>
+                                <Mui.IconButton onClick={() => { setDebounce({ id: id, debounce: (debounce - 1) }); store.dispatch(decrementValue({ id: id, uid: uid, token: api_token, date: date })) }}>
                                     <Minus sx={{ fontSize: 25, color: category == "Walk" ? '#B6134A' : '#2acaea' }} />
                                 </Mui.IconButton>
                             </div>

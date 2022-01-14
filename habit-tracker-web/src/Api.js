@@ -51,12 +51,14 @@ const getHabits = async (uid, token, old, setRefreshing) => {
 
 const updateHabit = async (uid, token, habit, id, habits = {}) => {
     const url = baseUrl + uid + '/habits/' + id;
+    console.log("update")
     await axios.put(url, habit, { headers: { token: token, 'Content-Type': 'application/json' } })
         .catch(error => { alert(error.message) })
         .finally(() => getHabits(uid, token, habits));
 };
 
 const updateHabitNoRetrieve = (uid, token, habit, id) => {
+    console.log("updateno")
     const url = baseUrl + uid + '/habits/' + id;
     axios.put(url, habit, { headers: { token: token, 'Content-Type': 'application/json' } })
         .catch(error => { alert(error.message) })
