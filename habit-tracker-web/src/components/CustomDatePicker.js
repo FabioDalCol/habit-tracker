@@ -7,8 +7,9 @@ import StaticDatePicker from '@mui/lab/StaticDatePicker';
 import PickersDay from '@mui/lab/PickersDay';
 import moment from 'moment'
 import '../App.css'
-import Typography from '@mui/material/Typography';
 
+
+//Set the custom picker day styles based on progress for day
 const CustomPickersDay = styled(PickersDay, {
   shouldForwardProp: (prop) =>
     prop !== 'Red' && prop !== 'isFirstDay' && prop !== 'isLastDay',
@@ -41,6 +42,8 @@ const CustomPickersDay = styled(PickersDay, {
 
 export default function CustomDay({red, yellow, green, first, setDateHome}) {
   const [dateCustom, setDateCustom] = React.useState(new Date());
+
+  //return a custom picker based on habit progress % for each date
   const renderWeekPickerDay = (date, selectedDates, pickersDayProps) => {
     if (!dateCustom) {
       return <PickersDay {...pickersDayProps} />;

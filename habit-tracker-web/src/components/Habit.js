@@ -1,5 +1,4 @@
 import React from 'react'
-import { useEffect, useState } from 'react';
 import * as Mui from '@mui/material';
 import Drink from '@mui/icons-material/LocalDrink';
 import Walk from '@mui/icons-material/DirectionsWalk';
@@ -15,7 +14,7 @@ import { selectUser } from '../slices/authSlice';
 import { setValue, pushValue, incrementValue, decrementValue, triggerCompleted } from '../slices/habitSlice';
 import { styleColors } from '../colors';
 
-
+//Pick the icon based on the category
 const rendericon = (category) => {
     switch (category) {
         case 'Custom':
@@ -53,9 +52,6 @@ export const Habit = ({ id, name = 'Default', date, category, desc, countable, v
                         </Mui.Stack>
                     </div>
                 </div>
-                {/* <Mui.IconButton onPress={()=>console.log('edito')}>
-                                <Edit />
-                            </Mui.IconButton> */}
                 <div>
                     {category != "Custom" ? (<>
                         <div style={{ display: 'flex', justifyContent: 'flex-end', flexDirection: 'column', alignContent: 'flex-end' }}>
