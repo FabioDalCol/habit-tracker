@@ -13,6 +13,7 @@ const baseUrl = `https://habits-app-api.ew.r.appspot.com/api/v1/users/`;
 
 const getHabits = async (uid, token, old, setRefreshing) => {
     const url = baseUrl + uid + '/habits/'
+    console.log(token)
     await axios.get(url, { headers: { token: token } })
         .then(async (response) => {
             let push = false;
@@ -37,10 +38,10 @@ const getHabits = async (uid, token, old, setRefreshing) => {
             retry = true
         })
         .catch(async (error) => {
-            alert(error.message);
+            if (!retry) alert(error.message);
             //error 401
-            var code = error.message.split(' ')
-            if (code.pop() == 401 && retry) {
+            var code = error.response.status
+            if (code == 401 && retry) {
                 await generate_api_token("empty token", "1970-01-01", uid)
                     .then((tok) => { store.dispatch(setToken(tok)); retry = false; getHabits(uid, tok, old, setRefreshing) })
             }
