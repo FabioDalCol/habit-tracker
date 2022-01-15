@@ -1,35 +1,24 @@
-import { register, signInWithGoogle } from "../hooks/useAuth";
 import * as React from 'react';
-import Box from '@mui/material/Box';
+import { useState } from "react";
+import { useNavigate } from 'react-router';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { useState } from "react";
-import store from "../store";
-import { useSelector } from "react-redux";
-import { selectProfile, selectUser, setProfile } from "../slices/authSlice";
-import { useNavigate } from 'react-router';
-import { updateUserProfile } from "../Api";
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import TimePicker from '@mui/lab/TimePicker';
 import { Stack } from "@mui/material";
-import { styleColors } from "../colors";
-import { makeStyles } from '@mui/styles';
+import store from "../store";
+import { useSelector } from "react-redux";
+import { selectProfile, selectUser, setProfile } from "../slices/authSlice";
+import { updateUserProfile } from "../Api";
 import { styles } from "../styles";
-import moment from 'moment'
+
 
 const makeTwoDigits = (time) => {
     const timeString = `${time}`;
     if (timeString.length === 2) return time
     return `0${time}`
 }
-
-const useStyles = makeStyles({
-    root: {
-        fontSize: 30,
-        width: 300,
-    },
-});
 
 const CreateProfile = ({ edit = false }) => {
     const profile = useSelector(selectProfile);
@@ -45,15 +34,15 @@ const CreateProfile = ({ edit = false }) => {
     const [name, setName] = useState(profile.username != null && profile.username != "null" ? profile.username : user.fullname?.split(/(\s+)/)[0])
     const [age, setAge] = useState(profile.age > 0 ? profile.age : "")
     const [height, setHeight] = useState(parseInt(profile.height) > 0 ? profile.height : "")
-    const [rise, setRise] = useState(profile.rise_time != 0 ? getHour(true) : null);
-    const [sleep, setSleep] = useState(profile.rise_time != 0 ? getHour() : null);
+    const [rise, setRise] = useState(profile.rise_time != 0 && profile.rise_time != null ? getHour(true) : null);
+    const [sleep, setSleep] = useState(profile.rise_time != 0 && profile.rise_time != null ? getHour() : null);
 
     let navigate = useNavigate();
 
     return (
         <div className="pages-wrapper">
             <div className="pages-inner">
-                <div style={{ backgroundColor: "styleColors.background", display: 'flex', flexDirection: "column", alignItems: 'center', }} >
+                <div style={styles.flexColumnCenter} >
                     <h3>
                         {edit ? "Edit your profile" : "Complete your profile"}
                     </h3>

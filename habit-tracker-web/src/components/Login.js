@@ -1,16 +1,12 @@
-import { signInWithGoogle } from "../hooks/useAuth";
 import * as React from 'react';
-import Box from '@mui/material/Box';
+import { useState } from "react";
+import { useNavigate } from 'react-router';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { useState } from "react";
-import store from "../store";
+import { Stack } from "@mui/material";
 import { useSelector } from "react-redux";
 import { selectUser } from "../slices/authSlice";
-import { useNavigate } from 'react-router';
-import { Stack } from "@mui/material";
-import { signin } from "../hooks/useAuth";
-import { Navigate } from "react-router-dom";
+import { signin, signInWithGoogle } from "../hooks/useAuth";
 import { styles } from "../styles";
 
 const Login = () => {
@@ -19,17 +15,17 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const user = useSelector(selectUser);
     let navigate = useNavigate();
-    console.log(user)
+
     return (
         <div className="pages-wrapper">
             <div className="pages-inner">
                 <div>
-                    <div style={{ display: "flex", alignItems: "center", flexDirection: "column" }} >
+                    <div style={styles.flexColumnCenter} >
                         <h3>
                             Habit tracker
                         </h3>
                         <img src={require("../images/habit.png")}
-                            style={{ width: 200, height: 200, display: "flex", alignSelf: "center", }}
+                            style={styles.mainImage}
                         />
                     </div>
 

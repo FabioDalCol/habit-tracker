@@ -1,23 +1,19 @@
-import { register, signInWithGoogle } from "../hooks/useAuth";
 import * as React from 'react';
-import Box from '@mui/material/Box';
+import { useState } from "react";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { useState } from "react";
-import store from "../store";
+import { Stack } from "@mui/material";
 import { useSelector } from "react-redux";
 import { selectUser } from "../slices/authSlice";
+import { register } from "../hooks/useAuth";
 import { styles } from "../styles";
-import { Stack } from "@mui/material";
-import { useNavigate } from 'react-router';
 
 const RegisterPage = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [fullname, setFullName] = useState('');
-    const user = useSelector(selectUser);
-    console.log(user)
+
     return (
         <div className="pages-wrapper">
             <div className="pages-inner">
