@@ -445,9 +445,14 @@ const styles =
     flexColumnCenter: {
         display: "flex",
         alignItems: "center",
-        flexDirection: "column"
+        flexDirection: "column",
+    },
+    mainImage: {
+        width: 200,
+        height: 200,
+        display: "flex",
+        alignSelf: "center",
     }
-
 
 }
 
