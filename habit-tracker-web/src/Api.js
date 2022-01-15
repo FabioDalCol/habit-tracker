@@ -13,7 +13,6 @@ const baseUrl = `https://habits-app-api.ew.r.appspot.com/api/v1/users/`;
 
 const getHabits = async (uid, token, old, setRefreshing) => {
     const url = baseUrl + uid + '/habits/'
-    console.log(token)
     await axios.get(url, { headers: { token: token } })
         .then(async (response) => {
             let push = false;
