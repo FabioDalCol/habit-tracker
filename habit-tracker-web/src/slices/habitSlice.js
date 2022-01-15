@@ -77,7 +77,7 @@ export const habitSlice = createSlice({
                         if (state.habits[index].stats[today].completed) {
                             state.habits[index].stats[today].completed = false
                         }
-                    }      
+                    }
                 }
             }
         },
@@ -120,7 +120,6 @@ export const habitSlice = createSlice({
             let token = action.payload.token;
             let habits = JSON.parse(JSON.stringify(state.habits));
             const index = state.habits.findIndex(habit => habit.id == id);
-            console.log('state.habits[index]')
             updateHabit(uid, token, state.habits[index], id, habits)
         },
         triggerCompleted: (state, action) => {

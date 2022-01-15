@@ -16,12 +16,10 @@ import { initDay, pushValue } from '../slices/habitSlice';
 import { Habit } from './Habit'
 
 
-const useDebouncedEffect = (effect, deps, delay) => {
+const useDebouncedEffect = (effect, deps, delay) => {      //debounce custom hook
     useEffect(() => {
         const handler = setTimeout(() => effect(), delay);
-
         return () => clearTimeout(handler);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [...(deps || []), delay]);
 };
 
@@ -139,7 +137,7 @@ const Home = () => {
 
     }, [habits])
 
-    useDebouncedEffect(() => { console.log(debounce.id); if (debounce.id != undefined) store.dispatch(pushValue({ id: debounce.id, uid: uid, token: api_token })) }, [debounce], 1000);
+    useDebouncedEffect(() => { if (debounce.id != undefined) store.dispatch(pushValue({ id: debounce.id, uid: uid, token: api_token })) }, [debounce], 1000); //debounce updates to limit api calls
 
 
     return (<>

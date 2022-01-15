@@ -38,12 +38,11 @@ const getHabits = async (uid, token, old, setRefreshing) => {
         })
         .catch(async (error) => {
             alert(error.message);
-            //Stringa di controllo su error 401
+            //error 401
             var code = error.message.split(' ')
             if (code.pop() == 401 && retry) {
-                console.log('SONO NELLA RICORSIONEEEE $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
                 await generate_api_token("empty token", "1970-01-01", uid)
-                    .then((tok) => { store.dispatch(setToken(tok)); retry = false; console.log(tok); getHabits(uid, tok, old, setRefreshing) })
+                    .then((tok) => { store.dispatch(setToken(tok)); retry = false; getHabits(uid, tok, old, setRefreshing) })
             }
         })
         .finally(() => { if (setRefreshing != undefined) setRefreshing(false); });
@@ -51,21 +50,18 @@ const getHabits = async (uid, token, old, setRefreshing) => {
 
 const updateHabit = async (uid, token, habit, id, habits = {}) => {
     const url = baseUrl + uid + '/habits/' + id;
-    console.log("update")
     await axios.put(url, habit, { headers: { token: token, 'Content-Type': 'application/json' } })
         .catch(error => { alert(error.message) })
         .finally(() => getHabits(uid, token, habits));
 };
 
 const updateHabitNoRetrieve = (uid, token, habit, id) => {
-    console.log("updateno")
     const url = baseUrl + uid + '/habits/' + id;
     axios.put(url, habit, { headers: { token: token, 'Content-Type': 'application/json' } })
         .catch(error => { alert(error.message) })
 };
 
 const addHabit = async (uid, token, habit, habits = {}) => {
-    //console.log(habit);   
     const url = baseUrl + uid + '/habits/';
     await axios.post(url, habit, { headers: { token: token, 'Content-Type': 'application/json' } })
         .catch(error => { alert(error.message) })
@@ -138,7 +134,6 @@ const getProfile = async (uid, token, old) => {
         })
         .catch(error => {
             var code = error.message.split(' ')
-            console.log(code.pop())
             if (code.pop() == 404)
                 return false;
         });
