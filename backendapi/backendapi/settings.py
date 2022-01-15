@@ -162,5 +162,3 @@ SESSION_COOKIE_HTTPONLY = config(
 SECURE_BROWSER_XSS_FILTER = True
 X_FRAME_OPTIONS = 'DENY'
 
-# Firebase Firestore Settings
-#FIREBASE_ADMIN_CERT = config('FIREBASE_ADMIN_CERT') #Ci va messo il firebase.json

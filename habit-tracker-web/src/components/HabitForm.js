@@ -5,7 +5,9 @@ import { getDate, addHabit } from '../Api'
 import Checkbox from '@mui/material/Checkbox';
 
 export default function HabitForm({ uid, token }) {
-    const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm();
+    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    
+    //Create and return a habit to pass to db
     const makeHabit = (data) => {
         var habit = {
             name: data.Category == 'Custom' ? data.HabitName : data.Category,
@@ -73,11 +75,6 @@ export default function HabitForm({ uid, token }) {
                     <Checkbox {...register("Sun")} />
                 </div>
             </div>
-
-            {/* <div className='eve'>
-                <label>Everyday</label>
-                <input type="checkbox" {...register("Eve")} />
-            </div> */}
             <div className='optional'>
                 <div className='checky'>
                     <label>Reminder</label>

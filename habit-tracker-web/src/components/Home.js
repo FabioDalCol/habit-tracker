@@ -34,11 +34,14 @@ const Home = () => {
     const [date, setDate] = useState(getDate());
     const [debounce, setDebounce] = useState(0);
 
+    //Get the habits for today (mon,tue,wed,...)
     var todayHabits = getTodayHabits(habits);
+
+    //Count the completed habits today
     var completedHabitsCount = countCompletedHabits(todayHabits, habits);
 
+    //Return a color based on the percentage of daily progress
     const dailyProgressColor = () => {
-        var percent = completedHabitsCount / todayHabits.length * 100 + "%"
         if (completedHabitsCount / todayHabits.length <= 1 / 2) {
             return "bg-danger"
         }
@@ -50,6 +53,7 @@ const Home = () => {
         }
     }
 
+    //Get the creation date of the first habit created
     const getFirstDate = (habits) => {
         if (habits == null) {
             return getDate()
@@ -61,6 +65,7 @@ const Home = () => {
         return dates.sort()[0]
     }
 
+    //Return a string with all the active days
     const repeatDays = (activeDays) => {
         var days = ""
         for (var day of weekDays) {
@@ -72,6 +77,7 @@ const Home = () => {
         return days
     }
 
+    //Count the completed habits at the passed date
     const countCompleteFromDate = (date) => {
         var completed = 0;
         var total = 0;
@@ -87,6 +93,7 @@ const Home = () => {
         return (total ? completed / total : undefined);
     }
 
+    //Create an array that contains all the date between two date (es. startDate=2022-01-01, endDate=2022-01-03, it will return [2022-01-01, 2022-01-02, 2022-01-03])
     const getDaysBetweenDates = (startDate, endDate) => {
         var now = startDate.clone(), dates = [];
         while (now.isSameOrBefore(endDate)) {
@@ -96,6 +103,7 @@ const Home = () => {
         return dates
     };
 
+    //Create 3 array of dates based on daily progress for date
     const markDay = () => {
         let dates = getDaysBetweenDates(moment(getFirstDate(habits)), new Date());
         var red = []
@@ -137,6 +145,7 @@ const Home = () => {
 
     }, [habits])
 
+    //Push just when there aren't action since 1 sec (it greatly decreases calls to apis)
     useDebouncedEffect(() => { if (debounce.id != undefined) store.dispatch(pushValue({ id: debounce.id, uid: uid, token: api_token })) }, [debounce], 1000); //debounce updates to limit api calls
 
 
@@ -198,7 +207,6 @@ const Home = () => {
                         {habits?.map(habit =>
                         (getHabitsFromDate(habits, date)?.includes(habit.id) && (
                             <Habit
-
                                 key={habit.id}
                                 id={habit.id}
                                 name={habit.name}

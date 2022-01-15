@@ -10,6 +10,7 @@ class HabitViewSet(viewsets.ViewSet):
     
     client = FirebaseClient() 
     
+    #check token validity
     def check_token(self, uid, token): 
         token_to_check= self.client._db.collection(u'users_api_keys').document(f'{uid}').get().to_dict() 
         print(token_to_check['expire']) 
@@ -18,6 +19,7 @@ class HabitViewSet(viewsets.ViewSet):
         else:
             return False
 
+    #create a new account
     def create(self, request, *args, **kwargs):
         if not self.check_token(kwargs.get("uid"), request.headers['Token']):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
@@ -30,6 +32,7 @@ class HabitViewSet(viewsets.ViewSet):
             status=status.HTTP_201_CREATED
         )
 
+    #retrieve all habits belonging to a given account picked by uid
     def list(self, request, *args, **kwargs):
         if not self.check_token(kwargs.get("uid"), request.headers['Token']):
             return Response(status=status.HTTP_401_UNAUTHORIZED)        
@@ -38,7 +41,7 @@ class HabitViewSet(viewsets.ViewSet):
         serializer = HabitSerializer(Habits, many=True)
         return Response(serializer.data)
             
-
+    #retrieve an habit picked by id from an account picked by uid
     def retrieve(self, request, *args, **kwargs):
         if not self.check_token(kwargs.get("uid"), request.headers['Token']):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
@@ -46,13 +49,13 @@ class HabitViewSet(viewsets.ViewSet):
         pk = kwargs.get('pk')
         Habit = self.client.get_by_id(pk)
         
-
         if Habit:
             serializer = HabitSerializer(Habit)
             return Response(serializer.data)
 
         raise NotFound(detail="Habit Not Found", code=404)
 
+    #delete an habit picked by id from an account picked by uid
     def destroy(self, request, *args, **kwargs):
         if not self.check_token(kwargs.get("uid"), request.headers['Token']):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
@@ -61,6 +64,7 @@ class HabitViewSet(viewsets.ViewSet):
         self.client.delete_by_id(pk)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+    #update an habit picked by id from an account picked by uid
     def update(self, request, *args, **kwargs):
         if not self.check_token(kwargs.get("uid"), request.headers['Token']):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
@@ -75,7 +79,8 @@ class HabitViewSet(viewsets.ViewSet):
 class AccountViewSet(viewsets.ViewSet):
     
     client = FirebaseClient()
-
+    
+    #check token validity
     def check_token(self, uid, token): 
         token_to_check= self.client._db.collection(u'users_api_keys').document(f'{uid}').get().to_dict() 
         print(token_to_check['expire']) 
@@ -84,6 +89,7 @@ class AccountViewSet(viewsets.ViewSet):
         else:
             return False
 
+    #create a new account
     def create(self, request, *args, **kwargs):
         if not self.check_token(kwargs.get("pk"), request.headers['Token']):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
@@ -102,6 +108,7 @@ class AccountViewSet(viewsets.ViewSet):
         serializer = AccountSerializer(Accounts, many=True)
         return Response(serializer.data)
 
+    #retrieve an account picked by uid
     def retrieve(self, request, *args, **kwargs):
         if not self.check_token(kwargs.get("pk"), request.headers['Token']):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
@@ -114,6 +121,7 @@ class AccountViewSet(viewsets.ViewSet):
 
         raise NotFound(detail="Account Not Found", code=404)
 
+    #delete an account picked by uid
     def destroy(self, request, *args, **kwargs):
         if not self.check_token(kwargs.get("pk"), request.headers['Token']):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
@@ -121,6 +129,7 @@ class AccountViewSet(viewsets.ViewSet):
         self.client.delete_by_id(pk)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+    #update an account picked by uid
     def update(self, request, *args, **kwargs):
         if not self.check_token(kwargs.get("pk"), request.headers['Token']):
             return Response(status=status.HTTP_401_UNAUTHORIZED)

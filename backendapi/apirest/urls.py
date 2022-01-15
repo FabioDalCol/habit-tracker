@@ -21,7 +21,6 @@ user_detail = views.AccountViewSet.as_view({
     'delete': 'destroy'
 })
 
-# The API URLs are now determined automatically by the router.
 urlpatterns = [
     path('users/<str:pk>', user_detail, name='user-detail'),
     path('users/<str:uid>/habits/', habit_list, name='habit_list'),
