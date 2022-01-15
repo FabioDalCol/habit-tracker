@@ -73,11 +73,6 @@ export default function HabitForm({ uid, token }) {
                     <Checkbox {...register("Sun")} />
                 </div>
             </div>
-
-            {/* <div className='eve'>
-                <label>Everyday</label>
-                <input type="checkbox" {...register("Eve")} />
-            </div> */}
             <div className='optional'>
                 <div className='checky'>
                     <label>Reminder</label>

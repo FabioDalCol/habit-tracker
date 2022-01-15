@@ -1,6 +1,6 @@
 from rest_framework import serializers 
  
- 
+#Serializer for input/output check
 class HabitSerializer(serializers.Serializer): 
     id = serializers.CharField(max_length=200, read_only=True) 
     name = serializers.CharField(max_length=200, required=False) 

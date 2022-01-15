@@ -12,6 +12,5 @@ import os
 from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backendapi.settings')
-#os.environ['FIREBASE_ADMIN_CERT'] = "firebase-secret.json" 
 
 application = get_wsgi_application()
