@@ -13,6 +13,7 @@ import { useSelector } from 'react-redux';
 import { selectUser } from '../slices/authSlice';
 import { setValue, pushValue, incrementValue, decrementValue, triggerCompleted } from '../slices/habitSlice';
 import { styleColors } from '../colors';
+import { styles } from "../styles";
 
 //Pick the icon based on the category
 const rendericon = (category) => {
@@ -39,14 +40,14 @@ export const Habit = ({ id, name = 'Default', date, category, desc, countable, v
     return (
         <Mui.Card style={{ marginBottom: 10 }} >
             <Mui.Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between', borderTop: completeToday ? '4px solid green' : '', borderBottom: completeToday ? '4px solid green' : '' }}  >
-                <div style={{ flexDirection: 'row', display: 'flex' }}>
+                <div style={styles.flexRow}>
                     <div>
                         {rendericon(category)}
                     </div>
                     <div style={{ width: 160 }}>
                         <Mui.Stack spacing={0.5} marginLeft='7%'>
                             <Mui.Typography fontWeight={700}>{name}</Mui.Typography>
-                            <Mui.Typography variant="body2" color="text.secondary"> {/* style={{whiteSpace:'nowrap'}} */}
+                            <Mui.Typography variant="body2" color="text.secondary">
                                 {desc}
                             </Mui.Typography>
                         </Mui.Stack>
@@ -54,8 +55,8 @@ export const Habit = ({ id, name = 'Default', date, category, desc, countable, v
                 </div>
                 <div>
                     {category != "Custom" ? (<>
-                        <div style={{ display: 'flex', justifyContent: 'flex-end', flexDirection: 'column', alignContent: 'flex-end' }}>
-                            <div style={{ display: 'flex', flexDirection: "row", alignItems: 'center', alignContent: "flex-end", justifyItems: "flex-end" }}>
+                        <div style={styles.habitContainer}>
+                            <div style={styles.valueContainer}>
                                 <input
                                     type='text'
                                     style={{ width: 10 + String(value).length * 10, height: 20, borderRadius: 20, fontWeight: 650, textAlign: 'center', marginRight: 2, borderColor: styleColors.greyish }}
@@ -67,7 +68,7 @@ export const Habit = ({ id, name = 'Default', date, category, desc, countable, v
                                 <Mui.Typography fontWeight={700}>/{set_value}</Mui.Typography>
                             </div>
 
-                            <div style={{ flexDirection: "row", alignSelf: "flex-end", justifyContent: "flex-end" }}>
+                            <div style={styles.flexAllEnd}>
                                 <Mui.IconButton onClick={() => { setDebounce({ id: id, debounce: (debounce + 1) }); store.dispatch(incrementValue({ id: id, uid: uid, token: api_token, date: date })) }} style={{ marginRight: -10 }}>
                                     <Add sx={{ fontSize: 25, color: category == "Walk" ? '#B6134A' : '#2acaea' }} />
                                 </Mui.IconButton>

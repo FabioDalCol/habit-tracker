@@ -5,13 +5,13 @@ import { getDate, addHabit } from '../Api'
 import Checkbox from '@mui/material/Checkbox';
 
 export default function HabitForm({ uid, token }) {
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const { register, handleSubmit, resetField, reset, watch, formState: { errors } } = useForm();
     
     //Create and return a habit to pass to db
     const makeHabit = (data) => {
         var habit = {
             name: data.Category == 'Custom' ? data.HabitName : data.Category,
-            desc: data.Category == 'Custom' ? data.Description : 'Default Habit',
+            desc: pickDescription(data),
             category: data.Category,
             created: getDate(),
             repeat_days: {
@@ -34,13 +34,30 @@ export default function HabitForm({ uid, token }) {
         return habit;
     }
 
+    const pickDescription = (newHabitForm) => {
+        switch (newHabitForm.Category) {
+            case "Custom":
+                return newHabitForm.Description;
+            case "Drink":
+                return "Stay hydrated";
+            case "Walk":
+                return "Get fit";
+        }
+    }
 
-    const onSubmit = data => addHabit(uid, token, makeHabit(data)); //richiama api create
+    
+   
     const reminder = watch("Reminder");
     const category = watch("Category")
     const defaultValues = {
         glasses: 10,
         steps: 10000,
+    }
+
+    //call api create habit and reset the form
+    const onSubmit = data => {
+        addHabit(uid, token, makeHabit(data))
+        .then(reset({Category:data.category}));
     }
 
     const renderForm = () => {
@@ -108,7 +125,9 @@ export default function HabitForm({ uid, token }) {
 
             {category == "Custom" && (<>
                 <input type="text" placeholder="Habit name" {...register("HabitName", { required: true, maxLength: 80 })} />
+                {errors.HabitName?.type === 'required' && <p style={{color:'red'}}>Habit name is required</p>}
                 <input type="text" placeholder="Description" {...register("Description", { required: true, maxLength: 100 })} />
+                {errors.Description?.type === 'required' && <p style={{color:'red'}}>Description is required</p>}
                 {renderForm()}
             </>)}
 
@@ -116,6 +135,7 @@ export default function HabitForm({ uid, token }) {
                 <div className='numbox'>
                     <label className='labello'>Daily glasses</label>
                     <input type="number" defaultValue={defaultValues.glasses} {...register("Glasses", { required: true, max: 99 })} />
+                    {errors.Glasses?.type === 'required' && <p style={{color:'red'}}>Target is required</p>}
                 </div>
                 {renderForm()}
             </>)}
@@ -124,6 +144,7 @@ export default function HabitForm({ uid, token }) {
                 <div className='numbox'>
                     <label className='labello'>Daily steps</label>
                     <input type="number" defaultValue={defaultValues.steps} {...register("Steps", { required: true, max: 500000 })} />
+                    {errors.Steps?.type === 'required' && <p style={{color:'red'}}>Target is required</p>}
                 </div>
                 {renderForm()}
             </>)}
