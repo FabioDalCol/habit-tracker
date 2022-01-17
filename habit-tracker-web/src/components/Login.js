@@ -4,21 +4,20 @@ import { useNavigate } from 'react-router';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { Stack } from "@mui/material";
-import { useSelector } from "react-redux";
-import { selectUser } from "../slices/authSlice";
 import { signin, signInWithGoogle } from "../hooks/useAuth";
 import { styles } from "../styles";
+import { Toaster } from 'react-hot-toast';
 
 const Login = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const user = useSelector(selectUser);
     let navigate = useNavigate();
 
     return (
         <div className="pages-wrapper">
             <div className="pages-inner">
+                <Toaster />
                 <div>
                     <div style={styles.flexColumnCenter} >
                         <h3>
