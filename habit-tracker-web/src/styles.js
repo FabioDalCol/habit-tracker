@@ -86,8 +86,6 @@ const styles =
     },
     profilePage: {
         profileCard: {
-
-            backgroundColor: styleColors.background,
             marginHorizontal: 6,
             paddingTop: 5,
             backgroundColor: styleColors.themeColor,
@@ -453,46 +451,46 @@ const styles =
         display: "flex",
         alignSelf: "center",
     },
-    habitContainer: { 
-        display: 'flex', 
-        justifyContent: 'flex-end', 
-        flexDirection: 'column', 
+    habitContainer: {
+        display: 'flex',
+        justifyContent: 'flex-end',
+        flexDirection: 'column',
         alignItems: 'center'
     },
-    valueContainer: { 
-        display: 'flex', 
-        flexDirection: "row", 
-        alignItems: 'center', 
-        alignContent: "flex-end", 
-        justifyItems: "flex-end" 
+    valueContainer: {
+        display: 'flex',
+        flexDirection: "row",
+        alignItems: 'center',
+        alignContent: "flex-end",
+        justifyItems: "flex-end"
     },
     valueBox: {
-        height: 20, 
-        borderRadius: 20, 
-        fontWeight: 650, 
-        textAlign: 'center', 
-        marginRight: 2, 
-        borderColor: styleColors.greyish 
+        height: 20,
+        borderRadius: 20,
+        fontWeight: 650,
+        textAlign: 'center',
+        marginRight: 2,
+        borderColor: styleColors.greyish
     },
-    flexRow: { 
-        flexDirection: 'row', 
-        display: 'flex' 
+    flexRow: {
+        flexDirection: 'row',
+        display: 'flex'
     },
-    flexAllEnd: { 
-        flexDirection: "row", 
-        alignSelf: "flex-end", 
-        justifyContent: "flex-end" 
+    flexAllEnd: {
+        flexDirection: "row",
+        alignSelf: "flex-end",
+        justifyContent: "flex-end"
     },
-    flexCenter: { 
-        display: "flex", 
-        justifyContent: "center" 
+    flexCenter: {
+        display: "flex",
+        justifyContent: "center"
     },
-    headerIcons: { 
-        marginTop: -15, 
-        marginLeft: -5 
+    headerIcons: {
+        marginTop: -15,
+        marginLeft: -5
     },
-    progressBar: { 
-        height: 25, 
+    progressBar: {
+        height: 25,
         marginBottom: 20
     },
 }

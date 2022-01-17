@@ -3,10 +3,11 @@ import { useForm } from 'react-hook-form';
 import './HabitForm.css'
 import { getDate, addHabit } from '../Api'
 import Checkbox from '@mui/material/Checkbox';
+import toast from 'react-hot-toast';
 
 export default function HabitForm({ uid, token }) {
     const { register, handleSubmit, resetField, reset, watch, formState: { errors } } = useForm();
-    
+
     //Create and return a habit to pass to db
     const makeHabit = (data) => {
         var habit = {
@@ -45,8 +46,8 @@ export default function HabitForm({ uid, token }) {
         }
     }
 
-    
-   
+
+
     const reminder = watch("Reminder");
     const category = watch("Category")
     const defaultValues = {
@@ -57,7 +58,10 @@ export default function HabitForm({ uid, token }) {
     //call api create habit and reset the form
     const onSubmit = data => {
         addHabit(uid, token, makeHabit(data))
-        .then(reset({Category:data.category}));
+            .then(() => {
+                toast('Habit added !');
+                reset({ Category: data.category })
+            });
     }
 
     const renderForm = () => {
@@ -99,8 +103,8 @@ export default function HabitForm({ uid, token }) {
                 </div>
                 {reminder && (
                     <div className='checky'>
-                        <label style={{marginTop:-8}}>Times</label>
-                        <select style={{marginTop:8}} {...register("Times")}>
+                        <label style={{ marginTop: -8 }}>Times</label>
+                        <select style={{ marginTop: 8 }} {...register("Times")}>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -125,9 +129,9 @@ export default function HabitForm({ uid, token }) {
 
             {category == "Custom" && (<>
                 <input type="text" placeholder="Habit name" {...register("HabitName", { required: true, maxLength: 80 })} />
-                {errors.HabitName?.type === 'required' && <p style={{color:'red'}}>Habit name is required</p>}
+                {errors.HabitName?.type === 'required' && <p style={{ color: 'red' }}>Habit name is required</p>}
                 <input type="text" placeholder="Description" {...register("Description", { required: true, maxLength: 100 })} />
-                {errors.Description?.type === 'required' && <p style={{color:'red'}}>Description is required</p>}
+                {errors.Description?.type === 'required' && <p style={{ color: 'red' }}>Description is required</p>}
                 {renderForm()}
             </>)}
 
@@ -135,7 +139,7 @@ export default function HabitForm({ uid, token }) {
                 <div className='numbox'>
                     <label className='labello'>Daily glasses</label>
                     <input type="number" defaultValue={defaultValues.glasses} {...register("Glasses", { required: true, max: 99 })} />
-                    {errors.Glasses?.type === 'required' && <p style={{color:'red'}}>Target is required</p>}
+                    {errors.Glasses?.type === 'required' && <p style={{ color: 'red' }}>Target is required</p>}
                 </div>
                 {renderForm()}
             </>)}
@@ -144,7 +148,7 @@ export default function HabitForm({ uid, token }) {
                 <div className='numbox'>
                     <label className='labello'>Daily steps</label>
                     <input type="number" defaultValue={defaultValues.steps} {...register("Steps", { required: true, max: 500000 })} />
-                    {errors.Steps?.type === 'required' && <p style={{color:'red'}}>Target is required</p>}
+                    {errors.Steps?.type === 'required' && <p style={{ color: 'red' }}>Target is required</p>}
                 </div>
                 {renderForm()}
             </>)}

@@ -15,6 +15,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { initDay, pushValue } from '../slices/habitSlice';
 import { Habit } from './Habit'
 import { styles } from "../styles";
+import { Toaster } from 'react-hot-toast';
 
 
 const useDebouncedEffect = (effect, deps, delay) => {      //debounce custom hook
@@ -168,6 +169,7 @@ const Home = () => {
 
 
             <div className="center-box">
+                <Toaster />
                 <div style={styles.flexCenter}>
                     <h3 className="hovButton" onClick={() => getHabits(uid, api_token, {})}> Daily progress </h3>
                 </div>
