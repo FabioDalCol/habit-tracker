@@ -452,8 +452,49 @@ const styles =
         height: 200,
         display: "flex",
         alignSelf: "center",
-    }
-
+    },
+    habitContainer: { 
+        display: 'flex', 
+        justifyContent: 'flex-end', 
+        flexDirection: 'column', 
+        alignItems: 'center'
+    },
+    valueContainer: { 
+        display: 'flex', 
+        flexDirection: "row", 
+        alignItems: 'center', 
+        alignContent: "flex-end", 
+        justifyItems: "flex-end" 
+    },
+    valueBox: {
+        height: 20, 
+        borderRadius: 20, 
+        fontWeight: 650, 
+        textAlign: 'center', 
+        marginRight: 2, 
+        borderColor: styleColors.greyish 
+    },
+    flexRow: { 
+        flexDirection: 'row', 
+        display: 'flex' 
+    },
+    flexAllEnd: { 
+        flexDirection: "row", 
+        alignSelf: "flex-end", 
+        justifyContent: "flex-end" 
+    },
+    flexCenter: { 
+        display: "flex", 
+        justifyContent: "center" 
+    },
+    headerIcons: { 
+        marginTop: -15, 
+        marginLeft: -5 
+    },
+    progressBar: { 
+        height: 25, 
+        marginBottom: 20
+    },
 }
 
 

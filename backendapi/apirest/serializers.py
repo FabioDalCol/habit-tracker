@@ -11,7 +11,7 @@ class HabitSerializer(serializers.Serializer):
     value = serializers.IntegerField(required=False) 
     set_value = serializers.IntegerField(required=False) 
     countable = serializers.BooleanField()     
-    stats = serializers.DictField(child = serializers.DictField(), required = False) #questo come si sanitizza? 
+    stats = serializers.DictField(child = serializers.DictField(), required = False) 
     reminder = serializers.IntegerField(max_value=20) 
     is_active = serializers.BooleanField() 
     pedometer = serializers.BooleanField(required=False) 

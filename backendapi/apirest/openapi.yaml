@@ -1,0 +1,260 @@
+openapi: 3.0.2
+info:
+  title: Habit tracker
+  description: Api for Habit tracker 
+  version: "1.0"
+servers:
+- url: http://localhost:8000/api/v1
+paths:
+  /api/v1/users/{id}:
+    get:
+      operationId: retrieveAccountViewSet
+      description: 'retrieve data for user with uid=id'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: 'uid of user'
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/account'
+          description: return the account for uid=id
+      tags:
+      - api
+    post:
+      operationId: createAccountViewSet
+      description: 'Create an account'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: 'uid of user'
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/account'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/account'
+          description: return the created account 
+      tags:
+      - api
+  /api/v1/users/{uid}/habits/:
+    get:
+      operationId: listHabitViewSets
+      description: 'Retrieve a list of habits for the user with uid=id'
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        description: 'uid of user'
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/habit'
+          description: Retrieve a list of habits for the user with uid=id
+      tags:
+      - api
+    post:
+      operationId: createHabitViewSet
+      description: 'Create a new habit for the user with uid=id'
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        description: 'uid of user'
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/habit'
+        
+      responses:
+        '201':
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/habit'
+          description: Retrieve the created habit
+      tags:
+      - api
+  /api/v1/users/{uid}/habits/{id}:
+    get:
+      operationId: retrieveHabitViewSet
+      description: 'Retrieve the habit with id=id that belong to the user with uid=uid'
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        description: 'uid of user'
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: 'id of habit'
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/habit'
+          description: Retrieve the habit with id=id that belong to the user with uid=uid
+      tags:
+      - api
+    put:
+      operationId: updateHabitViewSet
+      description: 'update the habit with id=id that belong to the user with uid=uid'
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        description: 'uid of user'
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: 'id of habit'
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/habit'
+        description: 'Send the habit updated locally'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/habit'
+          description: 'Retrieve the habit updated'
+      tags:
+      - api
+    delete:
+      operationId: destroyHabitViewSet
+      description: 'delete the habit with id=id that belong to the user with uid=uid'
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        description: 'uid of user'
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: 'id of habit'
+        schema:
+          type: string
+      responses:
+        '204':
+          description: 'return no content'
+      tags:
+      - api
+components:
+  schemas:
+    account:
+      type: object
+      properties:
+        username:
+          type: string
+          maxLength: 200
+        id:
+          type: string
+          format: uuid
+        age:
+          type: integer
+          maximum: 120
+        height:
+          type: integer
+          maximum: 250
+        rise_time:
+          type: string
+          pattern: "^[0-9]{2}:[0-9]{2}$"
+        sleep_time:
+          type: string
+          pattern: "^[0-9]{2}:[0-9]{2}$"
+    habit:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 200
+        id:
+          type: string
+          format: uuid
+        desc:
+          type: string
+          maxLength: 200
+        category:
+          type: string
+          pattern: "^[a-zA-Z]{4,10}$"
+        created:
+          type: string
+          pattern: "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        value:
+          type: integer
+        set_value:
+          type: integer
+        countable:
+          type: boolean
+        reminder:
+          type: integer
+        is_active:
+          type: boolean
+        pedometer:
+          type: boolean
+        repeat_days:
+          type: object
+          properties:
+            Mon: 
+              type: boolean
+            Tue: 
+              type: boolean
+            Wed: 
+              type: boolean
+            Thu: 
+              type: boolean
+            Fri: 
+              type: boolean
+            Sat: 
+              type: boolean
+            Sun: 
+              type: boolean
+        stats:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/stat'
+    stat:
+      type: object
+      properties:
+        completed:
+         type: boolean
+        value:
+         type: integer
+        set_value:
+          type: integer

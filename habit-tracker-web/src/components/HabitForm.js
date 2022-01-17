@@ -34,8 +34,8 @@ export default function HabitForm({ uid, token }) {
         return habit;
     }
 
-
-    const onSubmit = data => addHabit(uid, token, makeHabit(data)); //richiama api create
+    
+    const onSubmit = data => addHabit(uid, token, makeHabit(data)); //call api create habit
     const reminder = watch("Reminder");
     const category = watch("Category")
     const defaultValues = {

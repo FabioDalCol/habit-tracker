@@ -24,7 +24,7 @@ user_detail = views.AccountViewSet.as_view({
 urlpatterns = [
     path('users/<str:pk>', user_detail, name='user-detail'),
     path('users/<str:uid>/habits/', habit_list, name='habit_list'),
-    path('users/<str:uid>/habits/<str:pk>', habit_detail, name='habit_detail')
+    path('users/<str:uid>/habits/<str:pk>', habit_detail, name='habit_detail'),
 ]
 
 

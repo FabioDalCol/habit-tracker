@@ -14,6 +14,7 @@ import store from '../store';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { initDay, pushValue } from '../slices/habitSlice';
 import { Habit } from './Habit'
+import { styles } from "../styles";
 
 
 const useDebouncedEffect = (effect, deps, delay) => {      //debounce custom hook
@@ -154,8 +155,8 @@ const Home = () => {
             <div className="header">
                 <h1>Hi, {profile.username}</h1>
             </div>
-            <Mui.Button style={{ marginTop: -15, marginLeft: -5 }} onClick={() => { logout(); navigate('/') }}>Sign out</Mui.Button>
-            <Mui.Button style={{ marginTop: -15, marginLeft: -5 }} onClick={() => { navigate('/editprofile') }}>Profile</Mui.Button>
+            <Mui.Button style={styles.headerIcons} onClick={() => { logout(); navigate('/') }}>Sign out</Mui.Button>
+            <Mui.Button style={styles.headerIcons} onClick={() => { navigate('/editprofile') }}>Profile</Mui.Button>
         </div>
         <div className='full-box'>
             <div className="left-box">
@@ -167,10 +168,10 @@ const Home = () => {
 
 
             <div className="center-box">
-                <div style={{ justifyContent: 'center', display: 'flex' }}>
+                <div style={styles.flexCenter}>
                     <h3 className="hovButton" onClick={() => getHabits(uid, api_token, {})}> Daily progress </h3>
                 </div>
-                <div className="progress position-relative" style={{ height: 25, marginBottom: 20 }}>
+                <div className="progress position-relative" style={styles.progressBar}>
                     <div className={"progress-bar " + dailyProgressColor()} role="progressbar" style={{ width: completedHabitsCount / todayHabits.length * 100 + "%" }} aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
                     <h6 className="justify-content-center d-flex position-absolute w-100 mt-1 ">{completedHabitsCount} of {todayHabits.length}</h6>
                 </div>
@@ -201,8 +202,8 @@ const Home = () => {
                 <div className="static-picker">
                     <CustomDatePicker red={red} yellow={yellow} green={green} first={getFirstDate(habits)} setDateHome={setDate} />
                 </div>
-                <p style={{ textAlign: 'center', fontWeight: 600, fontSize: 22, marginTop: -30, color: '#20377a' }}>Habits for {moment(date).format('YYYY-MM-DD')}</p>
-                <div style={{ display: "flex", justifyContent: "center" }}>
+                <p className='habitsdate'>Habits for {moment(date).format('YYYY-MM-DD')}</p>
+                <div style={styles.flexCenter}>
                     <div style={{ width: "80%" }}>
                         {habits?.map(habit =>
                         (getHabitsFromDate(habits, date)?.includes(habit.id) && (
