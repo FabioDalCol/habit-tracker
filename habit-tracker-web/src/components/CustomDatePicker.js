@@ -16,7 +16,7 @@ const CustomPickersDay = styled(PickersDay, {
 })(({ theme, Red, isFirstDay, isLastDay }) => ({
   ...(Red && {
     borderRadius: 90,
-    backgroundColor: 'red',
+    backgroundColor: "#dc3545",
     color: theme.palette.common.white,
     '&:hover, &:focus': {
       backgroundColor: theme.palette.primary.dark,
@@ -24,7 +24,7 @@ const CustomPickersDay = styled(PickersDay, {
   }),
   ...(isFirstDay && {
     borderRadius: 90,
-    backgroundColor: '#ff7d00',
+    backgroundColor: '#ffc107',
     color: theme.palette.common.white,
     '&:hover, &:focus': {
       backgroundColor: theme.palette.primary.dark,
@@ -32,7 +32,7 @@ const CustomPickersDay = styled(PickersDay, {
   }),
   ...(isLastDay && {
     borderRadius: 90,
-    backgroundColor: 'green',
+    backgroundColor: '#198754',
     color: theme.palette.common.white,
     '&:hover, &:focus': {
       backgroundColor: theme.palette.primary.dark,

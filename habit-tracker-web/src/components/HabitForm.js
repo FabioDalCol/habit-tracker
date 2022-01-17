@@ -5,13 +5,13 @@ import { getDate, addHabit } from '../Api'
 import Checkbox from '@mui/material/Checkbox';
 
 export default function HabitForm({ uid, token }) {
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const { register, handleSubmit, resetField, reset, watch, formState: { errors } } = useForm();
     
     //Create and return a habit to pass to db
     const makeHabit = (data) => {
         var habit = {
             name: data.Category == 'Custom' ? data.HabitName : data.Category,
-            desc: data.Category == 'Custom' ? data.Description : 'Default Habit',
+            desc: pickDescription(data),
             category: data.Category,
             created: getDate(),
             repeat_days: {
@@ -34,13 +34,30 @@ export default function HabitForm({ uid, token }) {
         return habit;
     }
 
+    const pickDescription = (newHabitForm) => {
+        switch (newHabitForm.Category) {
+            case "Custom":
+                return newHabitForm.Description;
+            case "Drink":
+                return "Stay hydrated";
+            case "Walk":
+                return "Get fit";
+        }
+    }
+
     
-    const onSubmit = data => addHabit(uid, token, makeHabit(data)); //call api create habit
+   
     const reminder = watch("Reminder");
     const category = watch("Category")
     const defaultValues = {
         glasses: 10,
         steps: 10000,
+    }
+
+    //call api create habit and reset the form
+    const onSubmit = data => {
+        addHabit(uid, token, makeHabit(data))
+        .then(reset({Category:data.category}));
     }
 
     const renderForm = () => {
