@@ -125,7 +125,9 @@ export default function HabitForm({ uid, token }) {
 
             {category == "Custom" && (<>
                 <input type="text" placeholder="Habit name" {...register("HabitName", { required: true, maxLength: 80 })} />
+                {errors.HabitName?.type === 'required' && <p style={{color:'red'}}>Habit name is required</p>}
                 <input type="text" placeholder="Description" {...register("Description", { required: true, maxLength: 100 })} />
+                {errors.Description?.type === 'required' && <p style={{color:'red'}}>Description is required</p>}
                 {renderForm()}
             </>)}
 
@@ -133,6 +135,7 @@ export default function HabitForm({ uid, token }) {
                 <div className='numbox'>
                     <label className='labello'>Daily glasses</label>
                     <input type="number" defaultValue={defaultValues.glasses} {...register("Glasses", { required: true, max: 99 })} />
+                    {errors.Glasses?.type === 'required' && <p style={{color:'red'}}>Target is required</p>}
                 </div>
                 {renderForm()}
             </>)}
@@ -141,6 +144,7 @@ export default function HabitForm({ uid, token }) {
                 <div className='numbox'>
                     <label className='labello'>Daily steps</label>
                     <input type="number" defaultValue={defaultValues.steps} {...register("Steps", { required: true, max: 500000 })} />
+                    {errors.Steps?.type === 'required' && <p style={{color:'red'}}>Target is required</p>}
                 </div>
                 {renderForm()}
             </>)}
