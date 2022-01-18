@@ -14,7 +14,6 @@ import { updateUserProfile } from "../Api";
 import { styles } from "../styles";
 import toast, { Toaster } from 'react-hot-toast';
 
-
 const makeTwoDigits = (time) => {
     const timeString = `${time}`;
     if (timeString.length === 2) return time
@@ -24,7 +23,6 @@ const makeTwoDigits = (time) => {
 const CreateProfile = ({ edit = false }) => {
     const profile = useSelector(selectProfile);
     const user = useSelector(selectUser);
-
     const getHour = (rise = false) => {
         var datenow = new Date();
         var hours;

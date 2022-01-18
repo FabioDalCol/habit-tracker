@@ -142,7 +142,13 @@ const getProfile = async (uid, token, old) => {
 const updateUserProfile = async (uid, token, profile) => {
     const url = baseUrl + uid;
     await axios.put(url, profile, { headers: { token: token, 'Content-Type': 'application/json' } })
-        .catch(error => { alert(error.message) });
+        .catch(async error => {
+            var code = error.response.status
+            if (code == 500) {
+                await createUserProfile(uid, token);
+                await axios.put(url, profile, { headers: { token: token, 'Content-Type': 'application/json' } })
+            }
+        });
 
 };
 
