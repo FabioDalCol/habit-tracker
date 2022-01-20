@@ -4,6 +4,7 @@ import { setHabits } from './slices/habitSlice';
 import { setProfile, setToken } from './slices/authSlice';
 import { generate_api_token } from './hooks/useAuth'
 import moment from 'moment'
+import toast from 'react-hot-toast';
 
 export const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
@@ -13,7 +14,7 @@ const baseUrl = `https://habits-app-api.ew.r.appspot.com/api/v1/users/`;
 
 const getHabits = async (uid, token, old, setRefreshing) => {
     const url = baseUrl + uid + '/habits/'
-    await axios.get(url, { headers: { token: token } })
+    await axios.get(url, { headers: { token: token } }, { timeout: 3000 })
         .then(async (response) => {
             let push = false;
             if (Object.keys(old).length > 0) {
@@ -37,12 +38,17 @@ const getHabits = async (uid, token, old, setRefreshing) => {
             retry = true
         })
         .catch(async (error) => {
-            if (!retry) alert(error.message);
-            //error 401
-            var code = error.response.status
-            if (code == 401 && retry) {
-                await generate_api_token("empty token", "1970-01-01", uid)
-                    .then((tok) => { store.dispatch(setToken(tok)); retry = false; getHabits(uid, tok, old, setRefreshing) })
+            if (error.message == "Network Error") {
+                toast(error.message)
+            }
+            else {
+                if (!retry) toast(error.message);
+                //error 401
+                var code = error.response.status
+                if (code == 401 && retry) {
+                    await generate_api_token("empty token", "1970-01-01", uid)
+                        .then((tok) => { store.dispatch(setToken(tok)); retry = false; getHabits(uid, tok, old, setRefreshing) })
+                }
             }
         })
         .finally(() => { if (setRefreshing != undefined) setRefreshing(false); });
@@ -50,28 +56,28 @@ const getHabits = async (uid, token, old, setRefreshing) => {
 
 const updateHabit = async (uid, token, habit, id, habits = {}) => {
     const url = baseUrl + uid + '/habits/' + id;
-    await axios.put(url, habit, { headers: { token: token, 'Content-Type': 'application/json' } })
-        .catch(error => { alert(error.message) })
+    await axios.put(url, habit, { headers: { token: token, 'Content-Type': 'application/json' } }, { timeout: 3000 })
+        .catch(error => { toast(error.message) })
         .finally(() => getHabits(uid, token, habits));
 };
 
 const updateHabitNoRetrieve = (uid, token, habit, id) => {
     const url = baseUrl + uid + '/habits/' + id;
-    axios.put(url, habit, { headers: { token: token, 'Content-Type': 'application/json' } })
-        .catch(error => { alert(error.message) })
+    axios.put(url, habit, { headers: { token: token, 'Content-Type': 'application/json' } }, { timeout: 3000 })
+        .catch(error => { toast(error.message) })
 };
 
 const addHabit = async (uid, token, habit, habits = {}) => {
     const url = baseUrl + uid + '/habits/';
-    await axios.post(url, habit, { headers: { token: token, 'Content-Type': 'application/json' } })
-        .catch(error => { alert(error.message) })
+    await axios.post(url, habit, { headers: { token: token, 'Content-Type': 'application/json' } }, { timeout: 3000 })
+        .catch(error => { toast(error.message) })
         .finally(() => getHabits(uid, token, habits));
 };
 
 const removeHabit = async (uid, token, id) => {
     const url = baseUrl + uid + '/habits/' + id
-    await axios.delete(url, { headers: { token: token } })
-        .catch(error => { alert(error.message) })
+    await axios.delete(url, { headers: { token: token } }, { timeout: 3000 })
+        .catch(error => { toast(error.message) })
         .finally(() =>
             getHabits(uid, token, {})
         )
@@ -125,7 +131,7 @@ const countCompletedHabits = (habIds, habits) => {
 
 const getProfile = async (uid, token, old) => {
     const url = baseUrl + uid;
-    await axios.get(url, { headers: { token: token } })
+    await axios.get(url, { headers: { token: token } }, { timeout: 3000 })
         .then((response) => {
             if (JSON.stringify(old) != JSON.stringify(response.data)) {
                 store.dispatch(setProfile(response.data));
@@ -133,20 +139,30 @@ const getProfile = async (uid, token, old) => {
             return true
         })
         .catch(error => {
-            var code = error.message.split(' ')
-            if (code.pop() == 404)
-                return false;
+            if (error.message == "Network Error") {
+                toast(error.message)
+            }
+            else {
+                var code = error.message.split(' ')
+                if (code.pop() == 404)
+                    return false;
+            }
         });
 };
 
 const updateUserProfile = async (uid, token, profile) => {
     const url = baseUrl + uid;
-    await axios.put(url, profile, { headers: { token: token, 'Content-Type': 'application/json' } })
+    await axios.put(url, profile, { headers: { token: token, 'Content-Type': 'application/json' } }, { timeout: 3000 })
         .catch(async error => {
-            var code = error.response.status
-            if (code == 500) {
-                await createUserProfile(uid, token);
-                await axios.put(url, profile, { headers: { token: token, 'Content-Type': 'application/json' } })
+            if (error.message == "Network Error") {
+                toast(error.message)
+            }
+            else {
+                var code = error.response.status
+                if (code == 500) {
+                    await createUserProfile(uid, token);
+                    await axios.put(url, profile, { headers: { token: token, 'Content-Type': 'application/json' } }, { timeout: 3000 })
+                }
             }
         });
 
@@ -161,8 +177,8 @@ const createUserProfile = async (uid, token) => {
         rise_time: "00:00",
         sleep_time: "00:00",
     }
-    await axios.post(url, profile, { headers: { token: token, 'Content-Type': 'application/json' } })
-        .catch(error => { alert(error.message) });
+    await axios.post(url, profile, { headers: { token: token, 'Content-Type': 'application/json' } }, { timeout: 3000 })
+        .catch(error => { toast(error.message) });
 
 };
 
@@ -179,10 +195,6 @@ const getHabitsFromDate = (habits, date) => {
     }
     return ids
 }
-
-
-
-
 
 export default getHabits
 export { getHabitsFromDate, updateHabit, getDate, addHabit, removeHabit, getTodayHabits, countCompletedHabits, updateUserProfile, getProfile, createUserProfile, getOnlyHabit, walkToday, updateHabitNoRetrieve }
