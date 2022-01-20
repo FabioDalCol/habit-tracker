@@ -27,6 +27,7 @@ export default function HabitForm({ uid, token }) {
             countable: data.Category != 'Custom',
             reminder: data.Reminder ? data.Times : 0,
             is_active: true,
+            value: 0,
         };
         if (data.Category != "Custom") {
             habit['value'] = 0;
