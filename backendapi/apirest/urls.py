@@ -18,7 +18,6 @@ user_detail = views.AccountViewSet.as_view({
     'post': 'create',
     'get': 'retrieve',
     'put': 'update',
-    'delete': 'destroy'
 })
 
 urlpatterns = [
