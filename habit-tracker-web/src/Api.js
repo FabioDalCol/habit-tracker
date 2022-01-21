@@ -46,7 +46,7 @@ const getHabits = async (uid, token, old, setRefreshing) => {
                 //error 401
                 var code = error.response.status
                 if (code == 401 && retry) {
-                    await generate_api_token("empty token", "1970-01-01", uid)
+                    await generate_api_token(token)
                         .then((tok) => { store.dispatch(setToken(tok)); retry = false; getHabits(uid, tok, old, setRefreshing) })
                 }
             }
@@ -159,7 +159,7 @@ const updateUserProfile = async (uid, token, profile) => {
             }
             else {
                 var code = error.response.status
-                if (code == 500) {
+                if (code == 401) {
                     await createUserProfile(uid, token);
                     await axios.put(url, profile, { headers: { token: token, 'Content-Type': 'application/json' } }, { timeout: 3000 })
                 }

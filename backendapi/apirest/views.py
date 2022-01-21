@@ -1,3 +1,4 @@
+from pickle import FALSE
 from rest_framework.exceptions import NotFound
 from apirest.firebase_client import FirebaseClient
 from apirest.serializers import HabitSerializer, AccountSerializer
@@ -5,18 +6,19 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from datetime import datetime
 
-
 class HabitViewSet(viewsets.ViewSet):
     
     client = FirebaseClient() 
     
     #check token validity
     def check_token(self, uid, token): 
-        token_to_check= self.client._db.collection(u'users_api_keys').document(f'{uid}').get().to_dict() 
-        if(token_to_check and datetime.strptime(token_to_check['expire'],"%Y-%m-%d")>=datetime.now()): 
-            return token==token_to_check['api_token'] 
-
-        raise NotFound(detail="Account Not Found", code=404)
+        token_to_check= self.client._db.collection(u'users_api_keys').document(f'{uid}').get().to_dict()      
+        if token_to_check != None: 
+            if datetime.strptime(token_to_check['expire'],"%Y-%m-%d")>=datetime.now():              
+                return token==token_to_check['api_token']       
+            else:                
+                return False  
+        raise NotFound(detail="Account Not Found", code=404)   
 
     #create a new account
     def create(self, request, *args, **kwargs):
@@ -81,11 +83,14 @@ class AccountViewSet(viewsets.ViewSet):
     
     #check token validity
     def check_token(self, uid, token): 
-        token_to_check= self.client._db.collection(u'users_api_keys').document(f'{uid}').get().to_dict() 
-        if(token_to_check and datetime.strptime(token_to_check['expire'],"%Y-%m-%d")>=datetime.now()): 
-            return token==token_to_check['api_token'] 
-
-        raise NotFound(detail="Account Not Found", code=404)
+        token_to_check= self.client._db.collection(u'users_api_keys').document(f'{uid}').get().to_dict()
+        if token_to_check != None: 
+            if datetime.strptime(token_to_check['expire'],"%Y-%m-%d")>=datetime.now():              
+                return token==token_to_check['api_token']       
+            else:                
+                return False  
+        raise NotFound(detail="Account Not Found", code=404)    
+          
 
     #create a new account
     def create(self, request, *args, **kwargs):
@@ -107,15 +112,13 @@ class AccountViewSet(viewsets.ViewSet):
         return Response(serializer.data)
 
     #retrieve an account picked by uid
-    def retrieve(self, request, *args, **kwargs):
+    def retrieve(self, request, *args, **kwargs):       
         if not self.check_token(kwargs.get("pk"), request.headers['Token']):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         pk = kwargs.get('pk')
-        Account = self.client.get_by_id(pk)
-        print(Account)
+        Account = self.client.get_by_id(pk)       
         if Account:
-            serializer = AccountSerializer(Account)
-            print(serializer)
+            serializer = AccountSerializer(Account)          
             return Response(serializer.data)
         
         raise NotFound(detail="Account Not Found", code=404)
