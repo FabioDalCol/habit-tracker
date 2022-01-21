@@ -24,6 +24,10 @@ paths:
               schema: 
                 $ref: '#/components/schemas/account'
           description: return the account for uid=id
+        '401':
+          description: Unauthorized
+        '404':
+          description: User not found
       tags:
       - api
     post:
@@ -48,6 +52,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/account'
           description: return the created account 
+        '401':
+          description: Unauthorized
+        '404':
+          description: User not found
       tags:
       - api
   /api/v1/users/{uid}/habits/:
@@ -70,6 +78,10 @@ paths:
                 items: 
                   $ref: '#/components/schemas/habit'
           description: Retrieve a list of habits for the user with uid=id
+        '401':
+          description: Unauthorized
+        '404':
+          description: User not found
       tags:
       - api
     post:
@@ -95,6 +107,10 @@ paths:
               schema: 
                 $ref: '#/components/schemas/habit'
           description: Retrieve the created habit
+        '401':
+          description: Unauthorized
+        '404':
+          description: User not found
       tags:
       - api
   /api/v1/users/{uid}/habits/{id}:
@@ -121,6 +137,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/habit'
           description: Retrieve the habit with id=id that belong to the user with uid=uid
+        '401':
+          description: Unauthorized
+        '404':
+          description: User or habit not found
       tags:
       - api
     put:
@@ -152,6 +172,10 @@ paths:
               schema: 
                 $ref: '#/components/schemas/habit'
           description: 'Retrieve the habit updated'
+        '401':
+          description: Unauthorized
+        '404':
+          description: User or habit not found
       tags:
       - api
     delete:
@@ -172,7 +196,11 @@ paths:
           type: string
       responses:
         '204':
-          description: 'return no content'
+          description: 'Habit deleted'
+        '401':
+          description: Unauthorized
+        '404':
+          description: User or habit not found
       tags:
       - api
 components:
