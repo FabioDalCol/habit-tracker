@@ -136,8 +136,8 @@ const Home = () => {
     yellow = markDay()[1];
     green = markDay()[2];
 
-    useEffect(() => {
-        getHabits(uid, api_token, {})
+    useEffect(async () => {
+        await getHabits(uid, api_token, {})
     }, [])
 
     useEffect(() => {

@@ -40,7 +40,7 @@ const Login = () => {
 
                     </div>
                     <div style={styles.flexColumnCenter}>
-                        <Button style={styles.buttonWeb} variant="contained" onClick={() => { setLoading(true); signin(email, password) }}>Sign In</Button>
+                        <Button style={styles.buttonWeb} variant="contained" onClick={() => { setLoading(true); signin(email, password, setLoading) }}>Sign In</Button>
                         <Button style={styles.buttonWeb} variant="contained" onClick={() => navigate("/register")}>Register</Button>
                         <Button style={styles.buttonGoogleWeb} variant="contained" onClick={() => { setLoading(true); signInWithGoogle() }}><i className="fab fa-google"></i>Sign in with google</Button>
 

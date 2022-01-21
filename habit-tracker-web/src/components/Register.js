@@ -49,7 +49,7 @@ const RegisterPage = () => {
                         <Button style={styles.buttonWeb} variant="contained" onClick={() => {
                             if (validation()) {
                                 setLoading(true)
-                                register(email, password, fullname)
+                                register(email, password, fullname, setLoading)
                             }
                             else {
                                 toast("Invalid input")
