@@ -6,7 +6,7 @@ import Checkbox from '@mui/material/Checkbox';
 import toast from 'react-hot-toast';
 
 export default function HabitForm({ uid, token }) {
-    const { register, handleSubmit, resetField, reset, watch, formState: { errors } } = useForm();
+    const { register, handleSubmit, reset, watch, formState: { errors } } = useForm();
 
     //Create and return a habit to pass to db
     const makeHabit = (data) => {
@@ -30,7 +30,6 @@ export default function HabitForm({ uid, token }) {
             value: 0,
         };
         if (data.Category != "Custom") {
-            habit['value'] = 0;
             habit['set_value'] = data.Category == "Drink" ? data.Glasses : data.Steps
         }
         return habit;
@@ -61,7 +60,7 @@ export default function HabitForm({ uid, token }) {
         addHabit(uid, token, makeHabit(data))
             .then(() => {
                 toast('Habit added !');
-                reset({ Category: data.category })
+                reset()
             });
     }
 
@@ -128,31 +127,29 @@ export default function HabitForm({ uid, token }) {
                 <option value="Walk">Walk</option>
             </select>
 
-            {category == "Custom" && (<>
-                <input type="text" placeholder="Habit name" {...register("HabitName", { required: true, maxLength: 80 })} />
-                {errors.HabitName?.type === 'required' && <p style={{ color: 'red' }}>Habit name is required</p>}
-                <input type="text" placeholder="Description" {...register("Description", { required: true, maxLength: 100 })} />
-                {errors.Description?.type === 'required' && <p style={{ color: 'red' }}>Description is required</p>}
-                {renderForm()}
-            </>)}
-
-            {category == "Drink" && (<>
-                <div className='numbox'>
-                    <label className='labello'>Daily glasses</label>
-                    <input type="number" defaultValue={defaultValues.glasses} {...register("Glasses", { required: true, max: 99 })} />
-                    {errors.Glasses?.type === 'required' && <p style={{ color: 'red' }}>Target is required</p>}
-                </div>
-                {renderForm()}
-            </>)}
-
-            {category == "Walk" && (<>
+            {category == "Walk" ? (<>
                 <div className='numbox'>
                     <label className='labello'>Daily steps</label>
                     <input type="number" defaultValue={defaultValues.steps} {...register("Steps", { required: true, max: 500000 })} />
                     {errors.Steps?.type === 'required' && <p style={{ color: 'red' }}>Target is required</p>}
                 </div>
-                {renderForm()}
-            </>)}
+            </>)
+                :
+                category == "Drink" ? (<>
+                    <div className='numbox'>
+                        <label className='labello'>Daily glasses</label>
+                        <input type="number" defaultValue={defaultValues.glasses} {...register("Glasses", { required: true, max: 99 })} />
+                        {errors.Glasses?.type === 'required' && <p style={{ color: 'red' }}>Target is required</p>}
+                    </div>
+                </>)
+                    :
+                    (<>
+                        <input type="text" placeholder="Habit name" {...register("HabitName", { required: true, maxLength: 80 })} />
+                        {errors.HabitName?.type === 'required' && <p style={{ color: 'red' }}>Habit name is required</p>}
+                        <input type="text" placeholder="Description" {...register("Description", { required: true, maxLength: 100 })} />
+                        {errors.Description?.type === 'required' && <p style={{ color: 'red' }}>Description is required</p>}
+                    </>)}
+            {renderForm()}
         </form>
     );
 }

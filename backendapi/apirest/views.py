@@ -13,11 +13,10 @@ class HabitViewSet(viewsets.ViewSet):
     #check token validity
     def check_token(self, uid, token): 
         token_to_check= self.client._db.collection(u'users_api_keys').document(f'{uid}').get().to_dict() 
-        print(token_to_check['expire']) 
-        if(datetime.strptime(token_to_check['expire'],"%Y-%m-%d")>=datetime.now()): 
+        if(token_to_check and datetime.strptime(token_to_check['expire'],"%Y-%m-%d")>=datetime.now()): 
             return token==token_to_check['api_token'] 
-        else:
-            return False
+
+        raise NotFound(detail="Account Not Found", code=404)
 
     #create a new account
     def create(self, request, *args, **kwargs):
@@ -83,11 +82,10 @@ class AccountViewSet(viewsets.ViewSet):
     #check token validity
     def check_token(self, uid, token): 
         token_to_check= self.client._db.collection(u'users_api_keys').document(f'{uid}').get().to_dict() 
-        print(token_to_check['expire']) 
-        if(datetime.strptime(token_to_check['expire'],"%Y-%m-%d")>=datetime.now()): 
+        if(token_to_check and datetime.strptime(token_to_check['expire'],"%Y-%m-%d")>=datetime.now()): 
             return token==token_to_check['api_token'] 
-        else:
-            return False
+
+        raise NotFound(detail="Account Not Found", code=404)
 
     #create a new account
     def create(self, request, *args, **kwargs):
@@ -114,11 +112,12 @@ class AccountViewSet(viewsets.ViewSet):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         pk = kwargs.get('pk')
         Account = self.client.get_by_id(pk)
-
+        print(Account)
         if Account:
             serializer = AccountSerializer(Account)
+            print(serializer)
             return Response(serializer.data)
-
+        
         raise NotFound(detail="Account Not Found", code=404)
 
     #delete an account picked by uid
