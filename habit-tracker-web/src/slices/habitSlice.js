@@ -1,7 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { Timestamp } from '@firebase/firestore';
 import getHabits, { updateHabit, updateHabitNoRetrieve, getDate, getTodayHabits, getOnlyHabit } from '../Api';
-import { walkToday } from '../Api';
 import moment from 'moment';
 
 const getDaysBetweenDates = (startDate, endDate) => {
@@ -16,8 +14,6 @@ const getDaysBetweenDates = (startDate, endDate) => {
 const initialState = {
     habits: null,
     refreshing: false,
-    notifDB: {},
-    pedometerIsActive: false,
 }
 
 export const habitSlice = createSlice({
@@ -191,7 +187,5 @@ export const { incrementValueNoUpdate, setIsActive, setHabits, setRefreshing, in
 
 export const selectHabits = (state) => state.hab.habits;
 export const selectRefreshing = (state) => state.hab.refreshing;
-export const selectNotifDB = (state) => state.hab.notifDB;
-export const selectPedometer = (state) => state.hab.pedometerIsActive;
 
 export default habitSlice.reducer;

@@ -2,7 +2,7 @@ import localStorage from 'redux-persist/lib/storage';
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
 import authReducer from "./slices/authSlice"
 import habitReducer from "./slices/habitSlice"
-import {combineReducers} from 'redux';
+import { combineReducers } from 'redux';
 import {
   FLUSH,
   PAUSE,
@@ -22,7 +22,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: 'root',
   storage: localStorage,
-  blacklist: []
+  blacklist: [habitReducer]
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
