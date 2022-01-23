@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import './HabitForm.css'
 import { getDate, addHabit } from '../Api'
@@ -7,6 +7,8 @@ import toast from 'react-hot-toast';
 
 export default function HabitForm({ uid, token }) {
     const { register, handleSubmit, reset, watch, formState: { errors } } = useForm();
+    const daysString = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const [days, setDays] = useState({ Mon: false, Tue: false, Wed: false, Thu: false, Fri: false, Sat: false, Sun: false, Reminder: false, Eve: false });
 
     //Create and return a habit to pass to db
     const makeHabit = (data) => {
@@ -46,9 +48,6 @@ export default function HabitForm({ uid, token }) {
         }
     }
 
-
-
-    const reminder = watch("Reminder");
     const category = watch("Category")
     const defaultValues = {
         glasses: 10,
@@ -60,7 +59,8 @@ export default function HabitForm({ uid, token }) {
         addHabit(uid, token, makeHabit(data))
             .then(() => {
                 toast('Habit added !');
-                reset()
+                reset();
+                setDays({ Mon: false, Tue: false, Wed: false, Thu: false, Fri: false, Sat: false, Sun: false, Reminder: false });
             });
     }
 
@@ -69,39 +69,77 @@ export default function HabitForm({ uid, token }) {
             <div className='days'>
                 <div className='checky'>
                     <label>Mon</label>
-                    <Checkbox  {...register("Mon")} />
+                    <Checkbox
+                        checked={days.Mon}
+                        onClick={() => setDays({ ...days, Mon: !days.Mon })}
+                        {...register("Mon")} />
                 </div>
                 <div className='checky'>
                     <label>Tue</label>
-                    <Checkbox {...register("Tue")} />
+                    <Checkbox
+                        checked={days.Tue}
+                        onClick={() => setDays({ ...days, Tue: !days.Tue })}
+                        {...register("Tue")} />
                 </div>
                 <div className='checky'>
                     <label>Wed</label>
-                    <Checkbox {...register("Wed")} />
+                    <Checkbox
+                        checked={days.Wed}
+                        onClick={() => setDays({ ...days, Wed: !days.Wed })}
+                        {...register("Wed")} />
                 </div>
                 <div className='checky'>
                     <label>Thu</label>
-                    <Checkbox {...register("Thu")} />
+                    <Checkbox
+                        checked={days.Thu}
+                        onClick={() => setDays({ ...days, Thu: !days.Thu })}
+                        {...register("Thu")} />
                 </div>
                 <div className='checky'>
                     <label>Fri</label>
-                    <Checkbox {...register("Fri")} />
+                    <Checkbox
+                        checked={days.Fri}
+                        onClick={() => setDays({ ...days, Fri: !days.Fri })}
+                        {...register("Fri")} />
                 </div>
                 <div className='checky'>
                     <label>Sat</label>
-                    <Checkbox {...register("Sat")} />
+                    <Checkbox
+                        checked={days.Sat}
+                        onClick={() => setDays({ ...days, Sat: !days.Sat })}
+                        {...register("Sat")} />
                 </div>
                 <div className='checky'>
                     <label>Sun</label>
-                    <Checkbox {...register("Sun")} />
+                    <Checkbox
+                        checked={days.Sun}
+                        onClick={() => setDays({ ...days, Sun: !days.Sun })}
+                        {...register("Sun")} />
                 </div>
             </div>
+            <div className='checky'>
+                <label>Everyday</label>
+                <Checkbox
+                    checked={days.Eve}
+                    onClick={() => {
+                        let diz = {};
+                        for (var key of daysString) {
+                            diz[key] = !days['Eve'];
+                        }
+                        setDays({ ...days, ...diz, Eve: !days['Eve'] });
+                    }}
+                />
+            </div>
+
             <div className='optional'>
                 <div className='checky'>
                     <label>Reminder</label>
-                    <Checkbox {...register("Reminder")} />
+                    <Checkbox
+                        checked={days.Reminder}
+                        onClick={() => setDays({ ...days, Reminder: !days.Reminder })}
+                        {...register("Reminder")} />
                 </div>
-                {reminder && (
+                {days.Reminder && (
                     <div className='checky'>
                         <label style={{ marginTop: -8 }}>Times</label>
                         <select style={{ marginTop: 8 }} {...register("Times")}>
