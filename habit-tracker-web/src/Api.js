@@ -15,7 +15,7 @@ const baseUrl = `https://habits-app-api.ew.r.appspot.com/api/v1/users/`;
 const getHabits = async (uid, token, old, setRefreshing) => {
     const url = baseUrl + uid + '/habits/'
     await axios.get(url, { headers: { token: token } }, { timeout: 3000 })
-        .then(async (response) => {
+        .then((response) => {
             let push = false;
             if (Object.keys(old).length > 0) {
                 for (let id of walkToday(old)) {

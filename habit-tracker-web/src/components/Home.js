@@ -1,5 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
+import { useFirstRender } from '../hooks/useFirstRender';
 import { useSelector } from "react-redux";
 import { selectUser, selectProfile } from "../slices/authSlice";
 import { selectHabits } from '../slices/habitSlice';
@@ -35,6 +36,7 @@ const Home = () => {
     const api_token = user.api_token;
     const [date, setDate] = useState(getDate());
     const [debounce, setDebounce] = useState(0);
+    const firstRender = useFirstRender();
 
     //Get the habits for today (mon,tue,wed,...)
     var todayHabits = getTodayHabits(habits);
@@ -136,20 +138,19 @@ const Home = () => {
     yellow = markDay()[1];
     green = markDay()[2];
 
-    useEffect(async () => {
-        await getHabits(uid, api_token, {})
+
+    useEffect(() => {
+        getHabits(uid, api_token, {})
     }, [])
 
     useEffect(() => {
-        if (habits != undefined) {
+        if (habits != undefined && !firstRender) {
             store.dispatch(initDay({ uid: uid, token: api_token }))
         }
-
-    }, [habits])
+    }, [habits, firstRender])
 
     //Push just when there aren't action since 1 sec (it greatly decreases calls to apis)
     useDebouncedEffect(() => { if (debounce.id != undefined) store.dispatch(pushValue({ id: debounce.id, uid: uid, token: api_token })) }, [debounce], 1000); //debounce updates to limit api calls
-
 
     return (<>
         <div className="bar">
