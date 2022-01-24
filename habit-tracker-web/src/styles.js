@@ -493,6 +493,28 @@ const styles =
         height: 25,
         marginBottom: 20
     },
+    externalBoxHabit: {
+        display: 'flex',
+        flex: 20,
+        flexDirection: 'row',
+        marginLeft: -37
+    },
+    cardBox: {
+        display: 'flex',
+        flex: 19,
+        marginBottom: 10,
+    },
+    internalBox: {
+        p: 2,
+        display: 'flex',
+        flex: 19,
+        justifyContent: 'space-between',
+        height: 90
+    },
+    flex: {
+        display: 'flex',
+        flex: 1
+    }
 }
 
 

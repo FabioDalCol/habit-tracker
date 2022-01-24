@@ -62,16 +62,16 @@ export const Habit = ({ id, name = 'Default', date, category, desc, countable, v
 
 
     return (
-        <div style={{ display: 'flex', flex: 20, flexDirection: 'row', marginLeft: -37 }}>
-            <div style={{ display: 'flex', flex: 1 }}>
-                <div style={{display: 'flex', alignItems:'center'}}>
+        <div style={styles.externalBoxHabit}>
+            <div style={styles.flex}>
+                <div style={styles.flexCenter}>
                 <Mui.IconButton onClick={() => deleteConfirm()}>
                     <Delete sx={{ fontSize: 20, color: '#272727' }} />
                 </Mui.IconButton>
                 </div>
             </div>
-            <Mui.Card style={{ display: 'flex', flex: 19, marginBottom: 10, }} >
-                <Mui.Box sx={{ p: 2, display: 'flex', flex: 19, justifyContent: 'space-between', borderTop: completeToday ? '4px solid green' : '', borderBottom: completeToday ? '4px solid green' : '' }}  >
+            <Mui.Card style={styles.cardBox} >
+                <Mui.Box sx={[styles.internalBox,{borderTop: completeToday ? '4px solid green' : '', borderBottom: completeToday ? '4px solid green' : '' }]}  >
                     <div style={styles.flexRow}>
                         <div style={styles.flexColumnCenter}>
                             <div>
