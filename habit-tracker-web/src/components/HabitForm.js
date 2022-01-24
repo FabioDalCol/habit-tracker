@@ -18,16 +18,16 @@ export default function HabitForm({ uid, token }) {
             category: data.Category,
             created: getDate(),
             repeat_days: {
-                Thu: data.Thu,
-                Fri: data.Fri,
-                Sat: data.Sat,
-                Wed: data.Wed,
-                Sun: data.Sun,
-                Tue: data.Tue,
-                Mon: data.Mon
+                Thu: days.Thu,
+                Fri: days.Fri,
+                Sat: days.Sat,
+                Wed: days.Wed,
+                Sun: days.Sun,
+                Tue: days.Tue,
+                Mon: days.Mon
             },
             countable: data.Category != 'Custom',
-            reminder: data.Reminder ? data.Times : 0,
+            reminder: days.Reminder ? data.Times : 0,
             is_active: true,
             value: 0,
         };

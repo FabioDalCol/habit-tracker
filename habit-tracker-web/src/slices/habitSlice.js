@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import getHabits, { updateHabit, updateHabitNoRetrieve, getDate, getTodayHabits, getOnlyHabit } from '../Api';
+import getHabits, { weekDays, updateHabit, updateHabitNoRetrieve, getDate, getTodayHabits, getOnlyHabit } from '../Api';
 import moment from 'moment';
 
 const getDaysBetweenDates = (startDate, endDate) => {
@@ -128,41 +128,47 @@ export const habitSlice = createSlice({
             state.habits[index].stats[today].completed = !state.habits[index].stats[today].completed;
             updateHabit(uid, token, state.habits[index], id, habits)
         },
-        initDay: (state, action) => {
+        initDay: (state, action) => {            //initalize stats and new date of habits
             let uid = action.payload.uid;
             let token = action.payload.token;
             var today = getDate();
             var edited = false;
-            for (let habId of getTodayHabits(state.habits)) {
-                const index = state.habits.findIndex(habit => habit.id == habId);
-                var first_date = [moment(today).add(-7, 'days'), moment(state.habits[index].created)].sort()[1]
-                var days = getDaysBetweenDates(first_date, moment(today))
-                if (state.habits[index].stats == undefined) state.habits[index].stats = {};
-                if (state.habits[index].countable) {
-                    for (let day of days)
-                        if (state.habits[index].stats[day] == undefined) {
-                            state.habits[index].stats[day] = {}
-                            state.habits[index].stats[day].set_value = state.habits[index].set_value
-                            state.habits[index].stats[day].value = 0
-                            state.habits[index].stats[day].completed = false
-                            if (day == today)
-                                state.habits[index].value = 0;
-                            edited = true;
-                        }
-                    if (edited)
-                        updateHabit(uid, token, state.habits[index], habId);
-                    edited = false;
-                }
-                else {
-                    for (let day of days)
-                        if (state.habits[index].stats[day] == undefined) {
-                            state.habits[index].stats[day] = {}
-                            state.habits[index].stats[day].completed = false
-                            edited = true;
-                        }
-                    if (edited)
-                        updateHabit(uid, token, state.habits[index], habId);
-                    edited = false;
+            for (var hab of state.habits) {
+                const index = state.habits.findIndex(habit => habit.id == hab.id);
+                if (state.habits[index].is_active) {
+                    var first_date = [moment(today).add(-7, 'days'), moment(state.habits[index].created)].sort()[1]
+                    var days = [];
+                    for (var day of getDaysBetweenDates(first_date, moment(today))) {
+                        if (state.habits[index].repeat_days[weekDays[new Date(day).getDay()]])
+                            days.push(day);
+                    }
+                    if (state.habits[index].stats == undefined) state.habits[index].stats = {};
+                    if (state.habits[index].countable) {
+                        for (var day of days)
+                            if (state.habits[index].stats[day] == undefined) {
+                                state.habits[index].stats[day] = {}
+                                state.habits[index].stats[day].set_value = state.habits[index].set_value
+                                state.habits[index].stats[day].value = 0
+                                state.habits[index].stats[day].completed = false
+                                if (day == today)
+                                    state.habits[index].value = 0;
+                                edited = true;
+                            }
+                        if (edited)
+                            updateHabit(uid, token, state.habits[index], hab.id);
+                        edited = false;
+                    }
+                    else {
+                        for (var day of days)
+                            if (state.habits[index].stats[day] == undefined) {
+                                state.habits[index].stats[day] = {}
+                                state.habits[index].stats[day].completed = false
+                                edited = true;
+                            }
+                        if (edited)
+                            updateHabit(uid, token, state.habits[index], hab.id);
+                        edited = false;
+                    }
                 }
             }
         },
