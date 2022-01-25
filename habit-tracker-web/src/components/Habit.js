@@ -64,7 +64,7 @@ export const Habit = ({ id, name = 'Default', date, category, desc, countable, v
     return (
         <div style={styles.externalBoxHabit}>
             <div style={styles.flex}>
-                <div style={styles.flexCenter}>
+                <div style={styles.flexCenterAlign}>
                 <Mui.IconButton onClick={() => deleteConfirm()}>
                     <Delete sx={{ fontSize: 20, color: '#272727' }} />
                 </Mui.IconButton>

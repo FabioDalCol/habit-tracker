@@ -483,7 +483,7 @@ const styles =
     },
     flexCenter: {
         display: "flex",
-        justifyContent: "center"
+        justifyContent: "center",
     },
     headerIcons: {
         marginTop: -15,
@@ -514,7 +514,11 @@ const styles =
     flex: {
         display: 'flex',
         flex: 1
-    }
+    },
+    flexCenterAlign: {
+        display: "flex",
+        alignItems: "center",
+    },
 }
 
 
