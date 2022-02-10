@@ -1,0 +1,25 @@
+[debug] [2022-01-26T11:07:17.432Z] ----------------------------------------------------------------------
+[debug] [2022-01-26T11:07:17.438Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\fabia\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js hosting:disable
+[debug] [2022-01-26T11:07:17.439Z] CLI Version:   10.0.1
+[debug] [2022-01-26T11:07:17.440Z] Platform:      win32
+[debug] [2022-01-26T11:07:17.440Z] Node Version:  v16.13.1
+[debug] [2022-01-26T11:07:17.442Z] Time:          Wed Jan 26 2022 12:07:17 GMT+0100 (Ora standard dell’Europa centrale)
+[debug] [2022-01-26T11:07:17.443Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2022-01-26T11:07:17.536Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-01-26T11:07:17.537Z] > authorizing via signed-in user (chiaranabba@gmail.com)
+[debug] [2022-01-26T11:07:17.538Z] [iam] checking project habits-app-api for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2022-01-26T11:07:17.541Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2022-01-26T11:07:17.541Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2022-01-26T11:07:17.735Z] <<< HTTP RESPONSE 200 {"expires":"Mon, 01 Jan 1990 00:00:00 GMT","pragma":"no-cache","date":"Wed, 26 Jan 2022 11:07:18 GMT","cache-control":"no-cache, no-store, max-age=0, must-revalidate","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2022-01-26T11:07:17.754Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/habits-app-api:testIamPermissions  
+ {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2022-01-26T11:07:18.528Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Wed, 26 Jan 2022 11:07:19 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","server-timing":"gfet4t7; dur=653","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2022-01-26T11:07:18.532Z] > refreshing access token with scopes: []
+[debug] [2022-01-26T11:07:18.532Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2022-01-26T11:07:18.634Z] <<< HTTP RESPONSE 200 {"pragma":"no-cache","date":"Wed, 26 Jan 2022 11:07:19 GMT","cache-control":"no-cache, no-store, max-age=0, must-revalidate","expires":"Mon, 01 Jan 1990 00:00:00 GMT","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2022-01-26T11:07:18.648Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/habits-app-api [none]
+[debug] [2022-01-26T11:07:18.973Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/habits-app-api 200
+[debug] [2022-01-26T11:07:18.974Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/habits-app-api {"projectId":"habits-app-api","projectNumber":"912230635769","displayName":"habits app api","name":"projects/habits-app-api","resources":{"hostingSite":"habits-app-api","storageBucket":"habits-app-api.appspot.com","locationId":"europe-west"},"state":"ACTIVE"}
