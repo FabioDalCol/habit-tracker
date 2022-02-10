@@ -1,0 +1,22 @@
+{
+  "android": {
+    "package": "com.app.habitsapp",
+    "googleServicesFile": "./google-services.json",
+    "config": {
+      "googleSignIn":{
+        "certificateHash": "your hash"
+      }
+      }
+  },
+  "expo": {
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "userInterfaceStyle": "light"
+    },
+    "android": {
+      "userInterfaceStyle": "dark",
+      "package": "com.app.habitsapp",
+      "googleServicesFile": "./google-services.json"
+    }
+  }
+}
